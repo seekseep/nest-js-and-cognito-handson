@@ -18,8 +18,6 @@ BFF を作っていると、画面を作る前に「API が正しく応答する
 
 ## エンドポイントを足す
 
-`bff/src/app.controller.ts` を次のように書き換えます。
-
 ::diff{file="bff/src/app.controller.ts"}
 
 - `@Query('name')` は、URL の `?name=...` の値を引数に入れます。無ければ `undefined` です

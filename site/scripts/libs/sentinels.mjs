@@ -192,7 +192,15 @@ export async function expandSentinels(body, { lectureAbsDir, sec, lec, base, whe
   const exampleAbs = inLecture ? path.join(lectureAbsDir, EXAMPLE_DIR) : null;
   const lines = body.split('\n');
   const out = [];
+  // ::diff の見出しの深さを決めるため、直前の見出しの深さを覚えておく（コードブロックの中は数えない）。
+  let inFence = false;
+  let headingLevel = 1;
   for (const line of lines) {
+    if (/^\s*(```|~~~)/.test(line)) inFence = !inFence;
+    if (!inFence) {
+      const h = line.match(/^(#{1,6})\s/);
+      if (h) headingLevel = h[1].length;
+    }
     const cv = line.match(CODEVIEW_RE);
     if (cv) {
       if (!inLecture) {
@@ -231,6 +239,7 @@ export async function expandSentinels(body, { lectureAbsDir, sec, lec, base, whe
         attrs: parseAttrs(df[2]),
         label: df[1] ? df[1].trim() : '',
         where,
+        headingLevel: Math.min(headingLevel + 1, 6),
       });
       if (block) out.push(block);
       continue;

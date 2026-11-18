@@ -104,8 +104,6 @@ NestJS で「このリクエストを通すかどうか」を決める部品を 
 
 ![AuthGuard の流れ。リクエストの Authorization ヘッダーからトークンを取り出し、Cognito の公開鍵で署名と中身を確かめる。正しければコントローラーへ進み、そうでなければ 401 を返す](./images/01-guard.svg)
 
-`bff/src/auth/auth.guard.ts` を作ります。
-
 ::diff{file="bff/src/auth/auth.guard.ts"}
 
 - `CognitoJwtVerifier.create(...)` … ユーザープール ID・`tokenUse: 'access'`・クライアント ID を渡すと、それに合うトークンだけを正しいとする検証器ができます。ID トークンや、別のアプリケーションクライアントのトークンは通りません

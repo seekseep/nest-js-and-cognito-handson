@@ -2,7 +2,9 @@
  * 「前の節と比べて何が変わったか」を本文に出すセンチネル。sentinels.mjs から呼ばれる。
  *
  *   ::diff{file="bff/src/main.ts"}
- *     … 前の節（libs/lectures.mjs の previousProjectLecture）の同じファイルと比べた差分を、
+ *     … 先頭に「`bff/src/main.ts` を変更する」の見出し（前の節に無ければ「作成する」、
+ *       この節で消していれば「削除する」）を付け、直前の見出しより 1 つ深くする。
+ *       続けて、前の節（libs/lectures.mjs の previousProjectLecture）の同じファイルと比べた差分を、
  *       `:::code{filepath=... offset=... newOffset=...}` ＋ 差分のコードブロックに展開する。
  *       前の節に無いファイルは全行が `+`、この節で消したファイルは全行が `-` になる。
  *       変更箇所が離れていれば、塊（hunk）ごとにブロックを分ける。
@@ -90,7 +92,7 @@ function baseLectureOf(lectureRel, from) {
 }
 
 /** ::diff を展開した Markdown を返す。展開できなければ null（呼び出し側が警告する）。 */
-export async function buildDiffBlock({ lectureRel, attrs, label, where }) {
+export async function buildDiffBlock({ lectureRel, attrs, label, where, headingLevel = 3 }) {
   const file = String(attrs.file ?? '').trim();
   if (!file || file.split('/').some((seg) => seg === '..')) {
     console.warn(`[sentinels] ::diff needs file="<path>" in ${where} (skipped)`);
@@ -131,7 +133,9 @@ export async function buildDiffBlock({ lectureRel, attrs, label, where }) {
       ].join('\n'),
     );
   });
-  return blocks.join('\n\n');
+  const action = previous === null ? '作成' : current === null ? '削除' : '変更';
+  const heading = `${'#'.repeat(headingLevel)} \`${file}\` を${action}する`;
+  return [heading, ...blocks].join('\n\n');
 }
 
 /** レクチャー相対のプロジェクトファイル一覧（ツリーに出すものだけ）。 */

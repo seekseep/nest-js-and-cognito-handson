@@ -24,8 +24,6 @@ openapi-fetch は、`fetch` を薄く包んだ小さなライブラリです。o
 
 ## クライアントを作る
 
-`frontend/lib/api/client.ts` を作ります。
-
 ::diff{file="frontend/lib/api/client.ts"}
 
 - `createClient<paths>({ baseUrl })` … `paths` の型を持つクライアントを作ります。`client.GET("/notes")` のように、メソッド名とパスで呼びます
