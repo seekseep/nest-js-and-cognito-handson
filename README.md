@@ -20,6 +20,8 @@ Next.js（SSG）で作った画面から、NestJS で作った BFF（Backend for
 
 ## このハンズオンで作るもの
 
+![アプリの構成。ブラウザは S3 から静的ファイルを読み込み、Cognito でサインインし、トークンを付けて NestJS の BFF を呼び出す](./sections/02-hello-world/01-nextjs/images/01-architecture.svg)
+
 ### 01. 基本的な環境構築
 
 Node.js と Podman を入れます。Node.js はバージョンを切り替えられるように、バージョン管理ツールを通して入れます。

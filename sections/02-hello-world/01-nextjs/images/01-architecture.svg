@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460" role="img" aria-label="アプリの構成。ブラウザは S3 から静的ファイルを読み込み、Cognito でサインインし、トークンを付けて NestJS の BFF を呼び出す">
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker>
+<style>text{font-family:'Hiragino Sans','Noto Sans JP','Yu Gothic UI',system-ui,sans-serif}.t{font-size:22px;font-weight:700;fill:#0f172a}.s{font-size:15px;fill:#475569}.l{font-size:15px;fill:#1e293b;font-weight:600}</style>
+</defs>
+<rect width="960" height="460" rx="20" fill="#f8fafc"/>
+<rect x="40" y="170" width="220" height="120" rx="16" fill="#fff" stroke="#94a3b8" stroke-width="2"/>
+<text x="150" y="220" text-anchor="middle" class="t">ブラウザ</text>
+<text x="150" y="250" text-anchor="middle" class="s">Next.js の画面が動く</text>
+<rect x="640" y="30" width="280" height="110" rx="16" fill="#f0fdf4" stroke="#3f8624" stroke-width="2"/>
+<text x="780" y="76" text-anchor="middle" class="t">Amazon S3</text>
+<text x="780" y="106" text-anchor="middle" class="s">out/ の HTML・JS・CSS</text>
+<rect x="640" y="175" width="280" height="110" rx="16" fill="#fff1f2" stroke="#dd344c" stroke-width="2"/>
+<text x="780" y="221" text-anchor="middle" class="t">Amazon Cognito</text>
+<text x="780" y="251" text-anchor="middle" class="s">ユーザープール（サインイン）</text>
+<rect x="640" y="320" width="280" height="110" rx="16" fill="#fdf2f8" stroke="#e0234e" stroke-width="2"/>
+<text x="780" y="366" text-anchor="middle" class="t">NestJS（BFF）</text>
+<text x="780" y="396" text-anchor="middle" class="s">トークンを検証して API に応答</text>
+<path d="M260 195 C 420 120, 480 85, 636 85" fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#a)"/>
+<text x="330" y="112" class="l">① 画面を読み込む</text>
+<path d="M262 230 L 636 230" fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#a)" marker-start="url(#a)"/>
+<text x="330" y="220" class="l">② サインイン → トークンを受け取る</text>
+<path d="M260 265 C 420 340, 480 375, 636 375" fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#a)"/>
+<text x="300" y="338" class="l">③ Authorization: Bearer トークン</text>
+</svg>
