@@ -1,0 +1,271 @@
+openapi: 3.1.0
+info:
+  title: メモ API
+  version: 1.0.0
+  description: Next.js × NestJS × Cognito ハンズオンで作る BFF の API。
+servers:
+  - url: http://localhost:3001
+    description: 手元の BFF
+# すべての API で、Cognito のアクセストークンが必要
+security:
+  - bearerAuth: []
+tags:
+  - name: notes
+    description: メモ
+  - name: me
+    description: サインイン中のユーザー
+  - name: admin
+    description: admin グループの人だけが使える管理用の API
+paths:
+  /me:
+    get:
+      tags: [me]
+      operationId: getMe
+      summary: サインイン中のユーザーを返す
+      responses:
+        '200':
+          description: サインイン中のユーザー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Me'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /notes:
+    get:
+      tags: [notes]
+      operationId: listNotes
+      summary: メモの一覧を返す
+      description: 自分のメモだけを返す。admin グループの人には全員のメモを返す。
+      responses:
+        '200':
+          description: メモの一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Note'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags: [notes]
+      operationId: createNote
+      summary: メモを作る
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNoteInput'
+      responses:
+        '201':
+          description: 作ったメモ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /notes/{id}:
+    parameters:
+      - $ref: '#/components/parameters/NoteId'
+    get:
+      tags: [notes]
+      operationId: getNote
+      summary: メモを 1 件返す
+      responses:
+        '200':
+          description: メモ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags: [notes]
+      operationId: updateNote
+      summary: メモを書き換える
+      description: 送った項目だけを書き換える。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNoteInput'
+      responses:
+        '200':
+          description: 書き換えたメモ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [notes]
+      operationId: deleteNote
+      summary: メモを消す
+      responses:
+        '204':
+          description: 消した
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /admin/notes:
+    get:
+      tags: [admin]
+      operationId: listAllNotes
+      summary: 全員のメモの一覧を返す（admin だけ）
+      responses:
+        '200':
+          description: 全員のメモ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Note'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Cognito のアクセストークン
+  parameters:
+    NoteId:
+      name: id
+      in: path
+      required: true
+      description: メモの ID
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    Note:
+      type: object
+      additionalProperties: false
+      required: [id, ownerId, title, body, createdAt, updatedAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        ownerId:
+          type: string
+          description: 作った人の sub（Cognito のユーザー ID）
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+        body:
+          type: string
+          maxLength: 1000
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    CreateNoteInput:
+      type: object
+      additionalProperties: false
+      required: [title]
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: 前後の空白は取り除かれる
+        body:
+          type: string
+          maxLength: 1000
+          default: ''
+    UpdateNoteInput:
+      type: object
+      additionalProperties: false
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+        body:
+          type: string
+          maxLength: 1000
+    Me:
+      type: object
+      additionalProperties: false
+      required: [sub, username, groups]
+      properties:
+        sub:
+          type: string
+        username:
+          type: string
+        groups:
+          type: array
+          items:
+            type: string
+    Error:
+      type: object
+      required: [statusCode, message]
+      properties:
+        statusCode:
+          type: integer
+        message:
+          description: エラーの説明。入力チェックのエラーでは、項目ごとの説明の配列になる
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+        error:
+          type: string
+  responses:
+    BadRequest:
+      description: 入力が決まりに合わない
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: トークンが無い・正しくない
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: その操作をする権限が無い（他の人のメモ・admin 専用の API）
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: メモが無い
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
