@@ -74,11 +74,17 @@ BFF も、どのユーザープールのトークンを受け付けるかを知�
 
 ::diff{file="bff/.env.example"}
 
-コピーして `bff/.env` を作り、05 章で控えた値に書き換えます。`bff/.env` はリポジトリ直下の `.gitignore` で Git に入らないようにしてあります。
+コピーして `bff/.env` を作り、05 章で控えた値に書き換えます。
 
 ```bash
 cp .env.example .env
 ```
+
+`nest new --skip-git` で作った `bff/` には `.gitignore` がありません。このままでは、`my-app` を Git で管理したときに `bff/.env` が入ってしまうので、`bff/.gitignore` を作ります。
+
+::diff{file="bff/.gitignore"}
+
+`.env` で始まるファイルを無視し、見本の `.env.example` だけを例外にしています。`git status` に `bff/.env` が出てこないことを確かめてください。
 
 compose では、frontend と同じく `env_file` で渡します。
 
