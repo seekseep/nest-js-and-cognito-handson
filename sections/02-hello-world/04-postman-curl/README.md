@@ -1,4 +1,4 @@
-# 02-03 Postman と curl で API を呼ぶ
+# 02-04 Postman と curl で API を呼ぶ
 
 BFF に `GET /greeting` と `POST /echo` を足し、curl と Postman で呼び出す節を終えた状態です。教材: `LECTURE.md`
 
