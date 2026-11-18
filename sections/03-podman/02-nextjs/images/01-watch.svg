@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 380" width="960" height="380" role="img" aria-label="compose の watch。手元の app/ を保存するとコンテナの中へコピーされ、Next.js の開発サーバーが反映する。package.json を変えるとイメージを作り直す">
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker>
+<style>text{font-family:'Hiragino Sans','Noto Sans JP','Yu Gothic UI',system-ui,sans-serif}.t{font-size:22px;font-weight:700;fill:#0f172a}.s{font-size:15px;fill:#475569}.l{font-size:15px;fill:#1e293b;font-weight:600}.m{font-size:15px;fill:#1e293b;font-family:ui-monospace,Menlo,monospace}</style>
+</defs>
+<rect width="960" height="380" rx="20" fill="#f8fafc"/>
+<rect x="30" y="40" width="300" height="300" rx="16" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="180" y="82" text-anchor="middle" class="t">手元（frontend/）</text>
+<rect x="60" y="110" width="240" height="70" rx="12" fill="#f1f5f9"/>
+<text x="180" y="152" text-anchor="middle" class="m">app/・public/</text>
+<rect x="60" y="230" width="240" height="70" rx="12" fill="#f1f5f9"/>
+<text x="180" y="272" text-anchor="middle" class="m">package.json</text>
+<path d="M306 145 L 604 145" stroke="#334155" stroke-width="2.5" marker-end="url(#a)"/>
+<text x="455" y="128" text-anchor="middle" class="l">保存すると コピー（sync）</text>
+<path d="M306 265 L 604 265" stroke="#334155" stroke-width="2.5" marker-end="url(#a)" stroke-dasharray="6 5"/>
+<text x="455" y="248" text-anchor="middle" class="l">変えると 作り直す（rebuild）</text>
+<rect x="610" y="40" width="320" height="300" rx="16" fill="#faf5ff" stroke="#892ca0" stroke-width="2"/>
+<text x="770" y="82" text-anchor="middle" class="t">コンテナ（/app）</text>
+<rect x="640" y="110" width="260" height="70" rx="12" fill="#fff" stroke="#892ca0" stroke-width="1.5"/>
+<text x="770" y="140" text-anchor="middle" class="m">next dev</text>
+<text x="770" y="164" text-anchor="middle" class="s">変更を見つけて画面を更新</text>
+<rect x="640" y="230" width="260" height="70" rx="12" fill="#fff" stroke="#892ca0" stroke-width="1.5"/>
+<text x="770" y="260" text-anchor="middle" class="m">npm ci</text>
+<text x="770" y="284" text-anchor="middle" class="s">イメージを作るときに実行</text>
+</svg>
