@@ -11,8 +11,6 @@ title: 生成した型を使う
 
 ## メモの型を置き換える
 
-`bff/src/notes/note.ts` を書き換えます。
-
 ::diff{file="bff/src/notes/note.ts"}
 
 ### Note は生成した型にする

@@ -29,8 +29,6 @@ npm install aws-amplify @aws-amplify/ui-react
 
 ## サインインの部品を作る
 
-`app/auth.tsx` を作ります。
-
 ::diff{file="frontend/app/auth.tsx"}
 
 上から順に見ていきます。
