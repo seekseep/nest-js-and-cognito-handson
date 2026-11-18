@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 380" width="960" height="380" role="img" aria-label="AuthGuard の流れ。リクエストの Authorization ヘッダーからトークンを取り出し、Cognito の公開鍵で署名と中身を確かめる。正しければコントローラーへ進み、そうでなければ 401 を返す">
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker>
+<style>text{font-family:'Hiragino Sans','Noto Sans JP','Yu Gothic UI',system-ui,sans-serif}.t{font-size:20px;font-weight:700;fill:#0f172a}.s{font-size:14px;fill:#475569}.l{font-size:15px;fill:#1e293b;font-weight:600}.m{font-size:13px;fill:#1e293b;font-family:ui-monospace,Menlo,monospace}</style>
+</defs>
+<rect width="960" height="380" rx="20" fill="#f8fafc"/>
+<rect x="20" y="120" width="190" height="110" rx="14" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="115" y="160" text-anchor="middle" class="l">リクエスト</text>
+<text x="115" y="188" text-anchor="middle" class="m">Authorization:</text>
+<text x="115" y="208" text-anchor="middle" class="m">Bearer eyJ…</text>
+<path d="M216 175 L 264 175" stroke="#334155" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="270" y="30" width="400" height="290" rx="16" fill="#fdf2f8" stroke="#e0234e" stroke-width="2"/>
+<text x="470" y="68" text-anchor="middle" class="t">AuthGuard</text>
+<text x="295" y="110" class="l">① トークンを取り出す</text>
+<text x="295" y="150" class="l">② 署名を確かめる</text>
+<text x="315" y="174" class="s">Cognito の公開鍵（JWKS）で</text>
+<text x="295" y="214" class="l">③ 中身を確かめる</text>
+<text x="315" y="238" class="s">発行元・期限・token_use・client_id</text>
+<text x="295" y="278" class="l">④ request.user に入れる</text>
+<path d="M676 120 L 754 90" stroke="#16a34a" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="760" y="40" width="180" height="90" rx="14" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+<text x="850" y="80" text-anchor="middle" class="l">コントローラー</text>
+<text x="850" y="106" text-anchor="middle" class="s">メモを返す</text>
+<path d="M676 230 L 754 260" stroke="#dc2626" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="760" y="215" width="180" height="90" rx="14" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+<text x="850" y="255" text-anchor="middle" class="l">401</text>
+<text x="850" y="281" text-anchor="middle" class="s">Unauthorized</text>
+</svg>

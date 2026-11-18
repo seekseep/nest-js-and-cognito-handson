@@ -16,12 +16,12 @@
 <text x="790" y="118" text-anchor="middle" class="l">アプリケーション</text>
 <text x="790" y="144" text-anchor="middle" class="l">クライアント</text>
 <path d="M286 160 L 394 110" stroke="#334155" stroke-width="2.5" marker-end="url(#a)"/>
-<text x="300" y="112" class="s">① サインイン</text>
+<text x="332" y="116" text-anchor="end" class="s">① サインイン</text>
 <path d="M394 150 L 286 195" stroke="#334155" stroke-width="2.5" marker-end="url(#a)"/>
 <text x="310" y="200" class="s">② トークン</text>
 <rect x="400" y="250" width="530" height="120" rx="16" fill="#fdf2f8" stroke="#e0234e" stroke-width="2" stroke-dasharray="6 5"/>
 <text x="665" y="300" text-anchor="middle" class="t">BFF（NestJS）</text>
 <text x="665" y="332" text-anchor="middle" class="s">トークンを検証してから応答する（06 章）</text>
 <path d="M286 240 L 394 300" stroke="#334155" stroke-width="2.5" marker-end="url(#a)" stroke-dasharray="6 5"/>
-<text x="250" y="318" class="s">③ トークンを付けて呼ぶ</text>
+<text x="155" y="305" text-anchor="middle" class="s">③ トークンを付けて呼ぶ</text>
 </svg>
