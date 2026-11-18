@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" role="img" aria-label="CORS。localhost:3000 の画面から localhost:3001 の BFF を呼ぶと、ブラウザは BFF の応答に Access-Control-Allow-Origin があるかを確かめ、許可されていれば画面に結果を渡す">
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker>
+<style>text{font-family:'Hiragino Sans','Noto Sans JP','Yu Gothic UI',system-ui,sans-serif}.t{font-size:22px;font-weight:700;fill:#0f172a}.s{font-size:15px;fill:#475569}.l{font-size:15px;fill:#1e293b;font-weight:600}.m{font-size:14px;fill:#1e293b;font-family:ui-monospace,Menlo,monospace}</style>
+</defs>
+<rect width="960" height="400" rx="20" fill="#f8fafc"/>
+<rect x="30" y="40" width="380" height="320" rx="16" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="220" y="80" text-anchor="middle" class="t">ブラウザ</text>
+<rect x="60" y="110" width="320" height="80" rx="12" fill="#f1f5f9"/>
+<text x="220" y="142" text-anchor="middle" class="l">メモの画面</text>
+<text x="220" y="170" text-anchor="middle" class="m">http://localhost:3000</text>
+<rect x="60" y="230" width="320" height="100" rx="12" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="220" y="262" text-anchor="middle" class="l">ブラウザの確認</text>
+<text x="220" y="290" text-anchor="middle" class="s">応答が「3000 からの呼び出しを</text>
+<text x="220" y="314" text-anchor="middle" class="s">許可する」と言っているか？</text>
+<path d="M386 150 L 584 150" stroke="#334155" stroke-width="2.5" marker-end="url(#a)"/>
+<text x="485" y="132" text-anchor="middle" class="m">Origin: …:3000</text>
+<path d="M584 280 L 386 280" stroke="#334155" stroke-width="2.5" marker-end="url(#a)"/>
+<text x="485" y="262" text-anchor="middle" class="m">Access-Control-</text>
+<text x="485" y="310" text-anchor="middle" class="m">Allow-Origin: …:3000</text>
+<rect x="590" y="40" width="340" height="320" rx="16" fill="#fdf2f8" stroke="#e0234e" stroke-width="2"/>
+<text x="760" y="80" text-anchor="middle" class="t">BFF（NestJS）</text>
+<text x="760" y="110" text-anchor="middle" class="m">http://localhost:3001</text>
+<text x="620" y="180" class="m">app.enableCors({</text>
+<text x="640" y="206" class="m">origin:</text>
+<text x="650" y="232" class="m">'http://localhost:3000'</text>
+<text x="620" y="258" class="m">})</text>
+</svg>
