@@ -1,24 +1,29 @@
-# 引き継ぎメモ（2026-11-18）
+# 引き継ぎメモ（2026-11-18 更新）
 
 ## 状況
 
-- マージ済み: サイトの骨格（#2）、01 章 基本的な環境構築（#3）
-- draft PR #4（ブランチ `chapter-02-hello-world`）: 02 章 Hello World。コードと本文は書き終えている
-  - 残り 1: `::tree` のコードブロックに Expressive Code の枠・色（ins / mark）が当たらない。
-    生成 HTML には `.expressive-code` と `ins` クラスが出ている。同じページの他のコードブロックも、
-    計算済みスタイルを測ると背景が透明だったので、測り方が悪かった可能性もある。原因は未特定
-  - 残り 2: トップの README.md「このハンズオンで作るもの」の上に構成図
-    `sections/02-hello-world/01-nextjs/images/01-architecture.svg` を戻す（02 章が入るまで外していた）
-- 03〜09 章は未着手
+- 01〜09 章をすべてマージ済み（#2〜#4、#16〜#18、#20〜#23）。GitHub Pages へのデプロイも成功している
+- 残りは #19「本物の Cognito での手元確認」だけ。AWS の認証情報が無い環境で作ったので、05・06・08・09 章の Cognito を使う部分は実物で試していない
+  - 代わりに、手元で作った RSA 鍵で Cognito と同じ形のアクセストークンに署名し、`aws-jwt-verify` の `cacheJwks` に公開鍵を入れて、Guard・認可・middleware を HTTP 越しに確かめた（各 PR の本文を参照）
 
-## 最初にやること（環境構築）
+## 環境
 
-1. 道具: Node.js 26 LTS（nvm）、npm、pnpm 11（`site/package.json` の packageManager に合わせる）、gh（認証済みか）、
-   Podman 6 と compose（`podman compose version`。入れられない環境なら「使えない」と報告する）
-2. 確認: `cd site && pnpm install && pnpm run build` が通る。02 章の各節で
-   `frontend` の `npm install && npm run build`、`bff` の `npm install && npm run build && npm test` が通る
-3. 残りの作業を 1 件ずつイシューにして、#1 のチェックリストからリンクする
-   （02 章の残り、03〜09 章を 1 章 1 イシュー。下の設計を各イシューに書く）
+- Node.js 26（nvm。default を 26 にした）、pnpm は `site/package.json` の packageManager（11.21.0）に従う
+- Podman 6.2（macOS、libkrun の Podman マシン）、compose のプロバイダは docker-compose 5.8
+- `PODMAN_COMPOSE_WARNING_LOGS=false` で `podman compose` のお知らせを消せる
+
+## 作っていて分かったこと（本文にも書いてある）
+
+- compose の `build` は `dockerfile: Containerfile` を明示する（既定は Dockerfile）
+- ファイルの反映はバインドマウントではなく `develop.watch`（sync / rebuild）。`podman compose up --build --watch`。ファイルの削除は同期されない
+- `node:26-slim` には `ps` が無く、`nest start --watch` が古いプロセスを止められず EADDRINUSE になる。bff の Containerfile で `procps` を入れる
+- `.env.local` / `bff/.env` はイメージに入れず（`.containerignore`）、compose の `env_file`（`required: false`）で渡す
+- `nest new --skip-git` の bff には `.gitignore` が無いので、06-01 から `bff/.gitignore` を置いている
+- Zod の `createNoteSchema.partial()` は `default('')` が残るので、更新用のスキーマは別に書く
+- openapi-typescript 7.13 は `typescript ^5` 前提。bff（TypeScript 6）には入れず、`my-app/` 直下の `package.json` にまとめた。`redocly.yaml` の `x-openapi-ts` は `output` しか読まれないので、`--default-non-nullable false` はコマンドに書く
+- `satisfies z.ZodType<unknown, Api>` は一方向なので、`Expect<Equal<z.input<...>, Api>>` も併用している
+- `my-app/package-lock.json` があると Next.js がルートを取り違えるので、`next.config.ts` に `turbopack.root`。ルートを変えたら `.next` を消す
+- middleware は Guard より先に動く。middleware の例外を拾えるのはグローバルの ExceptionFilter（`APP_FILTER`）だけ
 
 ## 決まっている設計
 
