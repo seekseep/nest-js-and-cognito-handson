@@ -28,7 +28,7 @@ Node.js と Podman を入れます。Node.js はバージョンを切り替え�
 
 ### 02. Hello World
 
-Next.js と NestJS のプロジェクトを作り、それぞれ「Hello World」を表示します。Next.js は静的ファイルに書き出す設定にし、`out/` にできたファイルがそのまま S3 に置けることを確かめます。BFF は curl と Postman で呼び出します。
+Next.js と NestJS のプロジェクトを作り、それぞれ「Hello World」を表示します。Next.js は静的ファイルに書き出す設定にし、`out/` にできたファイルがそのまま S3 に置けることを確かめます。NestJS で使う `@Controller()` のようなデコレーターが、TypeScript の標準ではなく NestJS が前提にしている書き方であることも押さえます。BFF は curl と Postman で呼び出します。
 
 ### 03. Podman
 
