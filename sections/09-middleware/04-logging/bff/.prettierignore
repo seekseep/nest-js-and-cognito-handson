@@ -1,0 +1,2 @@
+# openapi-typescript が作るファイル。手で直さず、npm run generate:api で作り直す
+src/api/schema.d.ts

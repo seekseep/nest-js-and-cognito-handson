@@ -86,6 +86,29 @@ You have 2 warnings.
 
 ::diff{file=".gitignore"}
 
+### Next.js にルートを教える
+
+`my-app/` の直下に `package-lock.json` ができたので、手元で frontend をビルドすると、Next.js が次の警告を出すようになります。
+
+```text
+We detected multiple lockfiles and selected the directory of .../my-app/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, ...
+```
+
+Next.js は `package-lock.json` のある場所をプロジェクトのルートとみなします。2 つ見つかると、上のほう（`my-app/`）を選んでしまいます。frontend のルートは `frontend/` なので、`next.config.ts` の `turbopack.root` で明示します。
+
+::diff{file="frontend/next.config.ts"}
+
+`__dirname` は、`next.config.ts` のあるフォルダ（`frontend/`）です。
+
+ルートを変えたら、手元のビルドの結果（`.next/`）を一度消してください。前のルートで作った `.next/` が残っていると、次のビルドで `frontend/frontend/.next/` という入れ子のフォルダができ、`npm run lint` がその中のファイルまで調べてエラーになります。
+
+```bash
+cd frontend
+rm -rf .next frontend
+npm run build
+```
+
 ## この節を終えたときのディレクトリ
 
 ::tree
