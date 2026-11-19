@@ -34,6 +34,9 @@ const TOOL_COLORS = {
   Guard: '#475569',
   Filter: '#475569',
   Logger: '#475569',
+  Vitest: '#729B1B',
+  supertest: '#475569',
+  Playwright: '#2EAD33',
 };
 
 const THUMBNAILS = [
@@ -62,6 +65,9 @@ const THUMBNAILS = [
   ['09-middleware/02-route-auth', '09', 'パス単位の認証認可', ['NestJS', 'Middleware']],
   ['09-middleware/03-error-handling', '09', 'エラーハンドリング', ['NestJS', 'Filter']],
   ['09-middleware/04-logging', '09', 'ロギング', ['NestJS', 'Middleware', 'Logger']],
+  ['10-testing/01-unit-test', '10', '単体テスト', ['Vitest', 'NestJS']],
+  ['10-testing/02-integration-test', '10', '結合テスト', ['Vitest', 'supertest', 'NestJS']],
+  ['10-testing/03-e2e-test', '10', 'E2E テスト', ['Playwright', 'Next.js', 'NestJS']],
 ];
 
 function escapeXml(s) {

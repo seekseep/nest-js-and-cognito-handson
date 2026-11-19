@@ -58,6 +58,10 @@ BFF の API を OpenAPI（YAML）で書きます。VS Code の拡張機能でプ
 
 コントローラーごとに書いていた認証・認可を、アプリケーション全体・パス単位の仕組みに寄せます。エラーの形をそろえ、リクエストごとのログを出します。
 
+### 10. テスト
+
+BFF の単体テスト（Vitest）、BFF を丸ごと HTTP で呼ぶ結合テスト（Vitest と supertest）、ブラウザで画面を操作する E2E テスト（Playwright）を書きます。テストでの認証は、決め打ちのトークンで行います（本来の方法には触れません）。
+
 ## ドキュメントサイト
 
 各節の解説は GitHub Pages で読めます: <https://seekseep.github.io/nest-js-and-cognito-handson/>

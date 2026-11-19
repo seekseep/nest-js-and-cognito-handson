@@ -1,0 +1,7 @@
+# my-app/ 直下の道具（Redocly CLI・openapi-typescript）の依存
+node_modules/
+# Playwright の結果とレポート
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
