@@ -1,8 +1,8 @@
-# 引き継ぎメモ（2026-11-18 更新）
+# 引き継ぎメモ（2026-11-19 更新）
 
 ## 状況
 
-- 01〜09 章をすべてマージ済み（#2〜#4、#16〜#18、#20〜#23）。GitHub Pages へのデプロイも成功している
+- 01〜10 章をすべてマージ済み（#2〜#4、#16〜#18、#20〜#23、10 章は #27）。GitHub Pages へのデプロイも成功している
 - 残りは #19「本物の Cognito での手元確認」だけ。AWS の認証情報が無い環境で作ったので、05・06・08・09 章の Cognito を使う部分は実物で試していない
   - 代わりに、手元で作った RSA 鍵で Cognito と同じ形のアクセストークンに署名し、`aws-jwt-verify` の `cacheJwks` に公開鍵を入れて、Guard・認可・middleware を HTTP 越しに確かめた（各 PR の本文を参照）
 
@@ -50,6 +50,11 @@
 - 08 章: 生成した型を BFF（Zod スキーマに `satisfies`）と frontend（openapi-fetch）で使う
 - 09 章: APP_GUARD + `@Public()` でアプリ全体、middleware の `forRoutes` でパス単位、ExceptionFilter で
   エラーの形をそろえる、ロギング用 middleware
+- 10 章: テスト。単体（Vitest。nest new の既定なので Jest にしない）、結合（Vitest + supertest。
+  `test/*.integration-spec.ts`。nest new の `app.e2e-spec.ts` は改名）、E2E（Playwright。my-app/ 直下）。
+  テストでの認証は「トークンの直書き」（`alice-token` などを通す `FakeTokenVerifier`。E2E では
+  bff の `USE_FAKE_AUTH=true` と frontend の `NEXT_PUBLIC_FAKE_TOKEN`）。本来の方法（テスト用ユーザーで
+  サインイン・storageState など）には触れない、と本文に書く（ユーザーの指示）
 - 本物の Cognito で確認できない環境では、ビルドと「トークン無しなら 401」までを確かめ、
   残りは PR に「手元で確認が必要」と書く
 - S3 は章を作らず、02-01 のコラムで `aws s3 sync out/` を紹介する（イシュー #1）

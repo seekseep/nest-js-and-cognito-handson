@@ -147,6 +147,7 @@ export default defineConfig({
         { label: '07. OpenAPI', items: [{ autogenerate: { directory: '07-openapi' } }] },
         { label: '08. OpenAPI とアプリケーションの連携', items: [{ autogenerate: { directory: '08-openapi-integration' } }] },
         { label: '09. ミドルウェアを使った最適化', items: [{ autogenerate: { directory: '09-middleware' } }] },
+        { label: '10. テスト', items: [{ autogenerate: { directory: '10-testing' } }] },
         // 過去のハンズオンの一覧（sections/PAST-HANDSON.md）。章を足したら、この上に足す。
         { label: '過去のハンズオン', link: '/past-handson/' },
       ],
