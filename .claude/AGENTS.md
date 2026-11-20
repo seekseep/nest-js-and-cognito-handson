@@ -38,7 +38,7 @@ sections/<sec>/<lec>/
 - 言語は **TypeScript**（handson-builder 既定の「JS のみ」から外している。NestJS と OpenAPI からの型生成を扱うため）
 - Podman・compose・Next.js は使わない
 - パッケージマネージャはレクチャー側が **npm**（`api/package-lock.json`）、サイトが pnpm
-- `api/` は、ビルドして動かすのに要るものだけにする（`src/`・`public/`・`package.json`・`package-lock.json`・`tsconfig.json`・`tsconfig.build.json`・`nest-cli.json`・`.gitignore`、06 章から `openapi.yaml`・`redocly.yaml`・`.vscode/extensions.json`）。
+- `api/` は、ビルドして動かすのに要るものだけにする（`src/`・`public/`・`package.json`・`package-lock.json`・`tsconfig.json`・`tsconfig.build.json`・`nest-cli.json`・`.gitignore`、06 章から `openapi.yaml`・`redocly.yaml`）。
   テスト（Vitest・`test/`・`*.spec.ts`）、lint・整形（oxlint・Prettier）、`AGENTS.md`・`README.md`・`.gitattributes` は持たない。
   `nest new --skip-tests --no-observe` のあとに消す手順は 02-01 に 1 回だけ書く
 - ポート: `nest new` の既定の 3000
