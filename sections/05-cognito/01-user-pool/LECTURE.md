@@ -120,6 +120,8 @@ podman compose exec ui printenv NEXT_PUBLIC_COGNITO_USER_POOL_ID
 
 AWS CLI の認証情報を設定してあれば、コマンドでも作れます。
 
+:::::platform
+::::macos-linux
 ```bash
 aws cognito-idp create-user-pool \
   --region ap-northeast-1 \
@@ -136,6 +138,26 @@ aws cognito-idp create-user-pool-client \
   --explicit-auth-flows ALLOW_USER_SRP_AUTH ALLOW_REFRESH_TOKEN_AUTH \
   --query UserPoolClient.ClientId --output text
 ```
+::::
+::::windows
+```powershell
+aws cognito-idp create-user-pool `
+  --region ap-northeast-1 `
+  --pool-name memo-app `
+  --username-attributes email `
+  --auto-verified-attributes email `
+  --query UserPool.Id --output text
+
+aws cognito-idp create-user-pool-client `
+  --region ap-northeast-1 `
+  --user-pool-id <ユーザープール ID> `
+  --client-name memo-app `
+  --no-generate-secret `
+  --explicit-auth-flows ALLOW_USER_SRP_AUTH ALLOW_REFRESH_TOKEN_AUTH `
+  --query UserPoolClient.ClientId --output text
+```
+::::
+:::::
 
 1 つ目がユーザープール ID、2 つ目がクライアント ID を表示します。
 :::

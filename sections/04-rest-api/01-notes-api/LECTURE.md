@@ -116,11 +116,24 @@ curl http://localhost:3001/notes
 
 メモを作ります。
 
+:::::platform
+::::macos-linux
 ```bash
 curl -X POST http://localhost:3001/notes \
   -H "Content-Type: application/json" \
   -d '{"title":"買い物","body":"牛乳を買う"}'
 ```
+::::
+::::windows
+Windows の curl は、日本語の本文をうまく送れないことがあるので、本文を英語にしています。
+
+```powershell
+curl -X POST http://localhost:3001/notes `
+  -H "Content-Type: application/json" `
+  -d '{"title":"Shopping","body":"Buy milk"}'
+```
+::::
+:::::
 
 ```json
 {"id":"3b698a13-ddf5-40ec-8ec6-720004f0e9cd","title":"買い物","body":"牛乳を買う","createdAt":"2026-11-18T04:02:24.623Z","updatedAt":"2026-11-18T04:02:24.623Z"}
@@ -132,11 +145,22 @@ curl -X POST http://localhost:3001/notes \
 
 `title` を数値にして、`body` を省いて送ってみます。
 
+:::::platform
+::::macos-linux
 ```bash
 curl -i -X POST http://localhost:3001/notes \
   -H "Content-Type: application/json" \
   -d '{"title":123}'
 ```
+::::
+::::windows
+```powershell
+curl -i -X POST http://localhost:3001/notes `
+  -H "Content-Type: application/json" `
+  -d '{"title":123}'
+```
+::::
+:::::
 
 ```text
 HTTP/1.1 201 Created

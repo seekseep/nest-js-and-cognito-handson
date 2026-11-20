@@ -28,7 +28,7 @@ API を作っていると、画面を作る前に「API が正しく応答する
 
 ## curl で呼ぶ
 
-curl は macOS・Linux・Windows に最初から入っているコマンドです。
+curl は macOS・Linux・Windows に最初から入っているコマンドです。Windows では PowerShell 7 から `curl` と打つと、Windows に入っている `curl.exe` が動きます。
 
 ### GET
 
@@ -64,11 +64,24 @@ Content-Length: 27
 
 ### POST で JSON を送る
 
+:::::platform
+::::macos-linux
 ```bash
 curl -X POST http://localhost:3001/echo \
   -H "Content-Type: application/json" \
   -d '{"title":"買い物","body":"牛乳を買う"}'
 ```
+::::
+::::windows
+PowerShell では、行の終わりの `` ` ``（バッククォート）で、次の行に続けます。Windows の curl は、日本語の本文をうまく送れないことがあるので、本文を英語にしています。
+
+```powershell
+curl -X POST http://localhost:3001/echo `
+  -H "Content-Type: application/json" `
+  -d '{"title":"Shopping","body":"Buy milk"}'
+```
+::::
+:::::
 
 ```json
 {"received":{"title":"買い物","body":"牛乳を買う"}}
@@ -106,10 +119,17 @@ curl -s "http://localhost:3001/greeting?name=jq" | jq
 brew install jq
 ```
 ::::
-::::windows-linux
+::::linux
 ```bash
 sudo apt install -y jq
 ```
+::::
+::::windows
+```powershell
+winget install jqlang.jq
+```
+
+入れたら、PowerShell を開き直します。
 ::::
 :::::
 
@@ -156,8 +176,8 @@ API が起動していません。`api/` で `npm run start:dev` を実行して
 
 Web 版の Postman（ブラウザで開く Postman）からは、そのままでは手元の `localhost` に届きません。デスクトップアプリを使うか、Postman Agent を入れてください。
 
-### Windows の PowerShell で curl の例が動かない
+### Windows で curl の例が動かない
 
-PowerShell では `curl` が別のコマンドの別名になっていたり、`'` と `"` の扱いが違ったりします。このハンズオンでは WSL2 の Ubuntu のターミナルで実行してください。
+Windows に最初から入っている **Windows PowerShell 5.1** では、`curl` が `Invoke-WebRequest` の別名になっていて、オプションの書き方が違います。01 章で入れた **PowerShell 7**（`pwsh`）で実行してください。`$PSVersionTable.PSVersion` で、使っている PowerShell のバージョンが分かります。
 
 :::

@@ -30,12 +30,28 @@ brew install podman
 画面で操作したい人は [Podman Desktop](https://podman-desktop.io/) を入れてもかまいません。Podman Desktop は Podman 本体もいっしょに入れてくれます。
 ::::
 ::::windows
-WSL2 の Ubuntu は Linux そのものなので、Linux と同じ手順で入れます。コンテナは、仮想マシンを作らずにそのまま動きます。
+Windows でも、コンテナは Linux の仮想マシン（**Podman マシン**）の中で動きます。Podman は、この仮想マシンに **WSL**（Windows Subsystem for Linux）を使います。仮想マシンは 03 章で作ります。
 
-```bash
-sudo apt update
-sudo apt install -y podman
+まず WSL を入れます。PowerShell を **管理者として実行** し、次のコマンドを実行して、パソコンを再起動します。
+
+```powershell
+wsl --install
 ```
+
+再起動したら、WSL のバージョンが 2.5.1 以上かを確かめます。古いときは `wsl --update` で新しくします。
+
+```powershell
+wsl --version
+```
+
+次に、[Podman の GitHub のリリースのページ](https://github.com/containers/podman/releases) から、Windows 用のインストーラー（`podman-installer-windows-amd64.msi`。Arm の Windows なら `arm64`）をダウンロードして開きます。
+
+- 入れる範囲は、既定の「自分だけ」（管理者の権限が要らない）のままでかまいません
+- 仮想マシンの種類（プロバイダ）を聞かれたら、**WSL** を選びます
+
+入れ終わったら、PowerShell 7 を開き直します。
+
+画面で操作したい人は [Podman Desktop](https://podman-desktop.io/) を入れてもかまいません。
 ::::
 ::::linux
 apt で入れます。コンテナは、仮想マシンを作らずにそのまま動きます。
@@ -57,7 +73,7 @@ podman --version
 podman version 6.2.0
 ```
 
-Homebrew（macOS）で入れると 6 系が入ります。Ubuntu の apt で入れると、Ubuntu のバージョンによっては 4 系や 5 系になりますが、このハンズオンの範囲ではどれでも動きます。
+Homebrew（macOS）や Windows のインストーラーで入れると 6 系が入ります。Ubuntu の apt で入れると、Ubuntu のバージョンによっては 4 系や 5 系になりますが、このハンズオンの範囲ではどれでも動きます。
 
 ## Docker との違い
 

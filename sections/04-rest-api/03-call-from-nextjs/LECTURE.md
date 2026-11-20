@@ -78,11 +78,22 @@ API の応答に `Access-Control-Allow-Origin: http://localhost:3000` が付い�
 
 `POST`（JSON の本文付き）や `DELETE` の前には、ブラウザが **プリフライト**（`OPTIONS` メソッドで「このメソッドで呼んでいい？」と聞くリクエスト）を送ります。`enableCors()` はこれにも答えてくれます。
 
+:::::platform
+::::macos-linux
 ```bash
 curl -i -X OPTIONS http://localhost:3001/notes \
   -H "Origin: http://localhost:3000" \
   -H "Access-Control-Request-Method: DELETE"
 ```
+::::
+::::windows
+```powershell
+curl -i -X OPTIONS http://localhost:3001/notes `
+  -H "Origin: http://localhost:3000" `
+  -H "Access-Control-Request-Method: DELETE"
+```
+::::
+:::::
 
 ```text
 HTTP/1.1 204 No Content
@@ -131,6 +142,6 @@ API が動いていないか、CORS の設定が効いていません。`curl ht
 
 ### 本番では API の URL をどう変える？
 
-`NEXT_PUBLIC_API_URL` を設定してから `npm run build` します（`NEXT_PUBLIC_API_URL=https://api.example.com npm run build`）。値はビルドのときに埋め込まれるので、書き出したあとで変えることはできません。API の `enableCors` の `origin` も、本番の画面のオリジンに合わせます。
+`NEXT_PUBLIC_API_URL` を設定してから `npm run build` します（macOS・Linux なら `NEXT_PUBLIC_API_URL=https://api.example.com npm run build`、Windows の PowerShell なら `$env:NEXT_PUBLIC_API_URL = 'https://api.example.com'; npm run build`）。値はビルドのときに埋め込まれるので、書き出したあとで変えることはできません。API の `enableCors` の `origin` も、本番の画面のオリジンに合わせます。
 
 :::

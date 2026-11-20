@@ -62,11 +62,24 @@ AuthGuard の最初で、メタデータを読みます。
 
 ## 動かす
 
+:::::platform
+::::macos-linux
 ```bash
 curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3001/
 curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3001/notes
 curl -s -o /dev/null -w "%{http_code}\n" -X DELETE http://localhost:3001/notes/abc
 ```
+::::
+::::windows
+Windows では、捨て先の `/dev/null` の代わりに `NUL` と書きます。
+
+```powershell
+curl -s -o NUL -w "%{http_code}\n" http://localhost:3001/
+curl -s -o NUL -w "%{http_code}\n" http://localhost:3001/notes
+curl -s -o NUL -w "%{http_code}\n" -X DELETE http://localhost:3001/notes/abc
+```
+::::
+:::::
 
 ```text
 200

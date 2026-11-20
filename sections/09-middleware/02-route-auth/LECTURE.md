@@ -96,9 +96,18 @@ admin でないユーザーだと `403` です。
 
 トークン無しなら `401` です。存在しない `/admin` を呼んでも `404` ではなく `401` になります。middleware は、ルートがあるかを調べるより先に、パスだけを見て動くからです。
 
+:::::platform
+::::macos-linux
 ```bash
 curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3001/admin
 ```
+::::
+::::windows
+```powershell
+curl -s -o NUL -w "%{http_code}\n" http://localhost:3001/admin
+```
+::::
+:::::
 
 ```text
 401

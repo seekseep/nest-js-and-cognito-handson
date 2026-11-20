@@ -24,13 +24,38 @@ LTS（Long Term Support）は長期サポート版のことです。偶数番号
 macOS では、ターミナル（「アプリケーション」→「ユーティリティ」→「ターミナル」）で進めます。
 ::::
 ::::windows
-このハンズオンのコマンドは、macOS と Linux のターミナルを前提にしています。Windows の人は、WSL2（Windows Subsystem for Linux）で Ubuntu を入れ、その中で進めてください。PowerShell を **管理者として実行** し、次のコマンドを実行して再起動します。
+Windows では、**PowerShell 7** で進めます。コマンドの書き方が macOS・Linux と違うところは、Windows の書き方を表示します。
+
+**必要なスペック**
+
+| 項目 | 必要なもの |
+|---|---|
+| OS | Windows 11（Home・Pro どちらでも）。Podman 6 が Windows 11 を必要とします |
+| CPU | 64 ビット。仮想化（Intel VT-x / AMD-V）が有効になっていること |
+| WSL | 2.5.1 以上。Podman が、コンテナを動かす仮想マシンに使います（01-02 で入れます） |
+| メモリ | 16 GB 以上をすすめます（8 GB でも動きますが、コンテナとブラウザとエディタを同時に開くと重くなります） |
+| ディスクの空き | 30 GB 以上をすすめます（Node.js・Podman の仮想マシン・コンテナのイメージ・`node_modules`） |
+| 権限 | 管理者として PowerShell を開けること（WSL を入れるときに使います） |
+
+仮想化が有効かは、タスクマネージャーの「パフォーマンス」→「CPU」の「仮想化」で確かめられます。「無効」なら、パソコンの BIOS（UEFI）の設定で有効にします。
+
+**PowerShell 7 を入れる**
+
+Windows に最初から入っている「Windows PowerShell」（5.1）ではなく、新しい PowerShell 7 を使います。5.1 では、`&&` でコマンドをつなげない・`curl` が別のコマンドになっている、など、このハンズオンのコマンドがそのままでは動かないためです。
+
+スタートメニューから「Windows PowerShell」を開き、次のコマンドで入れます。
 
 ```powershell
-wsl --install
+winget install --id Microsoft.PowerShell --source winget
 ```
 
-再起動すると Ubuntu が起動します。ユーザー名とパスワードを決めると、Linux のターミナルが使えるようになります。以降の手順は、Ubuntu のターミナルで進めます。
+入れたら、スタートメニューから **PowerShell 7**（`pwsh`）を開きます。以降のコマンドは、すべて PowerShell 7 で実行します。
+
+```powershell
+$PSVersionTable.PSVersion
+```
+
+`7.` から始まる番号が出れば大丈夫です。
 ::::
 ::::linux
 Linux では、ふだんのターミナルで進めます。パッケージを入れる手順は、Ubuntu のコマンド（`apt`）で書いています。
@@ -59,35 +84,34 @@ node -v
 macOS 用のインストーラー（`.pkg`）をダウンロードして開き、画面の案内に従って進めます。
 ::::
 ::::windows
-OS に **Linux** を選び、表示されたコマンドを WSL2 の Ubuntu のターミナルで実行します。Windows 用のインストーラー（.msi）で入れた Node.js は、Ubuntu の中からは使えません。
+Windows 用のインストーラー（`.msi`）をダウンロードして開き、画面の案内に従って進めます。winget で入れることもできます。
+
+```powershell
+winget install OpenJS.NodeJS.LTS
+```
+
+`OpenJS.NodeJS.LTS` は、その時点の LTS を入れます。2026 年 10 月から 2027 年 10 月までは Node.js 26 です。
 ::::
 ::::linux
 OS に **Linux** を選び、表示されたコマンドをターミナルで実行します。Ubuntu の `apt install nodejs` で入る Node.js は古いことが多いので、使いません。
 ::::
 :::::
 
-入れたら、ターミナルを開き直して「[バージョンを確かめる](#バージョンを確かめる)」に進みます。
+入れたら、ターミナル（Windows では PowerShell 7）を開き直して「[バージョンを確かめる](#バージョンを確かめる)」に進みます。
 
 ## バージョン管理ツールで入れる
 
 プロジェクトごとに必要な Node.js のバージョンが違うことは、よくあります。バージョン管理ツールを使うと、`nvm use 26` のように 1 行でバージョンを切り替えられます。ここでは **nvm** を例にします（fnm・Volta・mise など、ほかのツールでもかまいません）。
 
+:::::platform
+::::macos
 ターミナルで nvm のインストールスクリプトを実行します。
 
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.41.0/install.sh | bash
 ```
 
-スクリプトは、nvm を読み込む設定を、シェルの設定ファイルに書き足します。
-
-:::::platform
-::::macos
-書き足す先は `~/.zshrc` です。
-::::
-::::windows-linux
-書き足す先は `~/.bashrc` です。
-::::
-:::::
+スクリプトは、nvm を読み込む設定を、シェルの設定ファイル（`~/.zshrc`）に書き足します。
 
 設定を反映するため、**ターミナルを開き直して** から確かめます。
 
@@ -100,7 +124,7 @@ nvm --version
 ```
 
 :::warning
-`nvm: command not found` と出るときは、ターミナルを開き直したか確かめてください。それでも出るときは、`~/.zshrc` か `~/.bashrc` の末尾に `NVM_DIR` から始まる行が書き足されているか確かめます。
+`nvm: command not found` と出るときは、ターミナルを開き直したか確かめてください。それでも出るときは、`~/.zshrc` の末尾に `NVM_DIR` から始まる行が書き足されているか確かめます。
 :::
 
 Node.js 26 を入れます。
@@ -111,6 +135,43 @@ nvm alias default 26
 ```
 
 `nvm alias default 26` で、新しくターミナルを開いたときに Node.js 26 が使われるようにします。
+::::
+::::linux
+ターミナルで nvm のインストールスクリプトを実行します。
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.41.0/install.sh | bash
+```
+
+スクリプトは、nvm を読み込む設定を、シェルの設定ファイル（`~/.bashrc`）に書き足します。
+
+設定を反映するため、**ターミナルを開き直して** から確かめます。
+
+```bash
+nvm --version
+```
+
+```text
+0.41.0
+```
+
+:::warning
+`nvm: command not found` と出るときは、ターミナルを開き直したか確かめてください。それでも出るときは、`~/.bashrc` の末尾に `NVM_DIR` から始まる行が書き足されているか確かめます。
+:::
+
+Node.js 26 を入れます。
+
+```bash
+nvm install 26
+nvm alias default 26
+```
+
+`nvm alias default 26` で、新しくターミナルを開いたときに Node.js 26 が使われるようにします。
+::::
+::::windows
+nvm は macOS・Linux 向けのツールで、Windows では動きません。Windows で切り替えたいときは、Windows でも動く fnm や Volta を使ってください（使い方はそれぞれのドキュメントを見てください）。迷ったら、上の「公式サイトから入れる」で入れれば十分です。
+::::
+:::::
 
 ## バージョンを確かめる
 
@@ -144,7 +205,7 @@ npx --version
 
 ### Node.js を 2 つの方法で入れてしまった
 
-公式サイトのインストーラー・Homebrew・nvm などで重ねて入れると、どれが使われているか分かりにくくなります。`which node` で、使われている Node.js の場所を確かめてください（nvm なら `~/.nvm/` の下です）。使わないほうをアンインストールするか、`PATH` の順番を見直します。
+公式サイトのインストーラー・Homebrew・nvm などで重ねて入れると、どれが使われているか分かりにくくなります。`which node`（Windows の PowerShell では `Get-Command node`）で、使われている Node.js の場所を確かめてください（nvm なら `~/.nvm/` の下です）。使わないほうをアンインストールするか、`PATH` の順番を見直します。
 
 ### 会社のネットワークで `curl` が失敗する
 

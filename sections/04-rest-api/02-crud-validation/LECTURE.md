@@ -87,11 +87,24 @@ Zod には、すべての項目を省略できるようにする `createNoteSche
 
 まず、正しいメモを作ります。返ってきた `id` を、以降のコマンドで使います。
 
+:::::platform
+::::macos-linux
 ```bash
 curl -X POST http://localhost:3001/notes \
   -H "Content-Type: application/json" \
   -d '{"title":"買い物","body":"牛乳を買う"}'
 ```
+::::
+::::windows
+Windows の curl は、日本語の本文をうまく送れないことがあるので、本文を英語にしています。
+
+```powershell
+curl -X POST http://localhost:3001/notes `
+  -H "Content-Type: application/json" `
+  -d '{"title":"Shopping","body":"Buy milk"}'
+```
+::::
+:::::
 
 ```json
 {"id":"c126ae93-b01b-4a2c-b460-abf53996f0f9","title":"買い物","body":"牛乳を買う","createdAt":"2026-11-18T04:03:12.677Z","updatedAt":"2026-11-18T04:03:12.677Z"}
@@ -101,11 +114,22 @@ curl -X POST http://localhost:3001/notes \
 
 前の節で通ってしまった値を送ると、今度は `400 Bad Request` になります。
 
+:::::platform
+::::macos-linux
 ```bash
 curl -X POST http://localhost:3001/notes \
   -H "Content-Type: application/json" \
   -d '{"title":123}'
 ```
+::::
+::::windows
+```powershell
+curl -X POST http://localhost:3001/notes `
+  -H "Content-Type: application/json" `
+  -d '{"title":123}'
+```
+::::
+:::::
 
 ```json
 {"message":["title: Invalid input: expected string, received number"],"error":"Bad Request","statusCode":400}
@@ -113,11 +137,22 @@ curl -X POST http://localhost:3001/notes \
 
 `message` には、どの項目がどう違うかが入ります。知らないキーを送ったときも弾かれます。
 
+:::::platform
+::::macos-linux
 ```bash
 curl -X POST http://localhost:3001/notes \
   -H "Content-Type: application/json" \
   -d '{"title":"a","body":"b","owner":"x"}'
 ```
+::::
+::::windows
+```powershell
+curl -X POST http://localhost:3001/notes `
+  -H "Content-Type: application/json" `
+  -d '{"title":"a","body":"b","owner":"x"}'
+```
+::::
+:::::
 
 ```json
 {"message":["Unrecognized key: \"owner\""],"error":"Bad Request","statusCode":400}
@@ -127,12 +162,24 @@ curl -X POST http://localhost:3001/notes \
 
 `<id>` を、作ったメモの `id` に置き換えて実行します。
 
+:::::platform
+::::macos-linux
 ```bash
 curl http://localhost:3001/notes/<id>
 curl -X PATCH http://localhost:3001/notes/<id> \
   -H "Content-Type: application/json" \
   -d '{"body":"牛乳とパン"}'
 ```
+::::
+::::windows
+```powershell
+curl http://localhost:3001/notes/<id>
+curl -X PATCH http://localhost:3001/notes/<id> `
+  -H "Content-Type: application/json" `
+  -d '{"body":"Milk and bread"}'
+```
+::::
+:::::
 
 ```json
 {"id":"c126ae93-...","title":"買い物","body":"牛乳とパン","createdAt":"2026-11-18T04:03:12.677Z","updatedAt":"2026-11-18T04:03:12.759Z"}
