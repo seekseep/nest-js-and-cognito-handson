@@ -54,7 +54,8 @@ sections/<sec>/<lec>/
   - `::tree` は前の節から追加・変更したファイルに印を付ける
 - コマンドの実行例は普通のコードブロックで書く
 - よくある質問は `:::faq`、注意は `:::warning` / `:::danger` / `:::notice`
-- 手順が OS で分かれるところは `:::::platform` で囲み、中を `::::macos` / `::::windows` / `::::linux`（`::::windows-linux` のように `-` でつなぐと両方に出す）に分ける
+- 手順が OS で分かれるところは `:::::platform` で囲み、中を `::::macos` / `::::windows` / `::::linux`（`::::macos-linux` のように `-` でつなぐと両方に出す）に分ける
+  - Windows は PowerShell 7 の手順を書く（WSL は Podman の仮想マシンに使うだけで、その中では作業しない）。bash のコマンドで PowerShell では動かないもの（`\` の改行・`/dev/null`・`export`・`rm -rf`・`VAR=値 コマンド` など）は、`::::macos-linux` と `::::windows` に分ける
   - 選んだ OS は localStorage（キー `handson-os`）に残り、ナビゲーションバーの選択欄と `::platform-choice`（01-01 に置いている）で変える
   - パネルの中に見出し（`##`・`###`）は書かない（目次に残って、隠れた所を指してしまう）
   - 実装は site/src/plugins/remark-platform.mjs・site/src/scripts/platform-client.js・site/src/styles/platform.css・site/src/components/ThemeSelect.astro（Cognito + Entra ID のハンズオンから移したもの）

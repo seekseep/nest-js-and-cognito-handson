@@ -80,8 +80,11 @@ npx playwright install chromium
 ::::macos
 入る場所は `~/Library/Caches/ms-playwright/` です。
 ::::
-::::windows-linux
-入る場所は `~/.cache/ms-playwright/` です（Windows では WSL2 の Ubuntu の中）。
+::::windows
+入る場所は `%USERPROFILE%\AppData\Local\ms-playwright\` です。
+::::
+::::linux
+入る場所は `~/.cache/ms-playwright/` です。
 
 Ubuntu では、ブラウザを動かすための部品が足りず、テストの起動でエラーになることがあります。そのときは `npx playwright install-deps chromium` で入れてください（中で `sudo` を使うので、パスワードを聞かれます）。
 ::::
@@ -183,7 +186,7 @@ Running 3 tests using 1 worker
 Playwright が、画面か API を起動できませんでした。すぐ上の `[UI]`・`[API]` の行に理由が出ています。
 
 - `Another next dev server is already running.` … 手元で `npm run dev` している UI があります。Next.js は、同じディレクトリで開発サーバーを 2 つは動かせません。止めてから動かし直してください（`podman compose up` の UI はコンテナの中で動いているので、ぶつかりません）
-- `EADDRINUSE: address already in use :::3100` … 3100 番（または 3101 番）を、ほかのプログラムが使っています。`lsof -i :3100` で探して止めてください
+- `EADDRINUSE: address already in use :::3100` … 3100 番（または 3101 番）を、ほかのプログラムが使っています。macOS・Linux なら `lsof -i :3100`、Windows の PowerShell なら `Get-Process -Id (Get-NetTCPConnection -LocalPort 3100).OwningProcess` で探して止めてください
 
 ### Firefox や Safari（WebKit）でも確かめたい
 

@@ -9,7 +9,7 @@ title: Podman の構築
 
 [01 章](../../01-setup/02-podman/LECTURE.md) で入れた Podman を、コンテナが動かせる状態にします。この章のゴールは、`podman compose up` の 1 つのコマンドで Next.js と NestJS の両方が起動し、ファイルを保存すると反映される開発環境です。この節では、その土台として次の 2 つを用意します。
 
-- **Podman マシン** … macOS でコンテナを動かすための Linux の仮想マシン
+- **Podman マシン** … macOS・Windows でコンテナを動かすための Linux の仮想マシン
 - **compose のプロバイダ** … `compose.yaml` を読んで、複数のコンテナをまとめて動かすプログラム
 
 この節ではプロジェクトのファイルは変えません。
@@ -17,8 +17,8 @@ title: Podman の構築
 ## Podman マシンを作る
 
 :::::platform
-::::macos
-コンテナは Linux の仕組みで動きます。macOS では、Podman が Linux の仮想マシン（**Podman マシン**）を作り、その中でコンテナを動かします。`podman` コマンドは Mac で打ちますが、実際の処理は仮想マシンの中で行われます。
+::::macos-windows
+コンテナは Linux の仕組みで動きます。macOS と Windows では、Podman が Linux の仮想マシン（**Podman マシン**）を作り、その中でコンテナを動かします。`podman` コマンドは手元のパソコンで打ちますが、実際の処理は仮想マシンの中で行われます。
 
 ![macOS では Podman マシンという Linux の仮想マシンの中でコンテナが動く。podman コマンドは Mac から仮想マシンに指示を送る](./images/01-machine.svg)
 
@@ -41,7 +41,7 @@ podman-machine-default*  libkrun     2 minutes ago  Currently running  5        
 
 `LAST UP` が `Currently running` なら起動しています。
 
-Mac を再起動すると、Podman マシンは止まります。コンテナを使う前に起動してください。
+パソコンを再起動すると、Podman マシンは止まります。コンテナを使う前に起動してください。
 
 ```bash
 podman machine start
@@ -49,8 +49,8 @@ podman machine start
 
 使い終わって止めたいときは `podman machine stop` です。
 ::::
-::::windows-linux
-コンテナは Linux の仕組みで動きます。Linux と Windows の WSL2（Ubuntu）では、コンテナがそのまま動くので、Podman マシンは要りません。次の「動くか確かめる」に進んでください。
+::::linux
+コンテナは Linux の仕組みで動きます。Linux では、コンテナがそのまま動くので、Podman マシンは要りません。次の「動くか確かめる」に進んでください。
 ::::
 :::::
 
@@ -88,7 +88,16 @@ This message shows that your installation appears to be working correctly.
 brew install docker-compose
 ```
 ::::
-::::windows-linux
+::::windows
+winget で入れます。
+
+```powershell
+winget install Docker.DockerCompose
+```
+
+入れたら、PowerShell 7 を開き直します。
+::::
+::::linux
 Docker Compose を入れ、Podman を Docker の API で呼び出せるようにします（Docker Compose はこの API を通して Podman を操作します）。
 
 ```bash
@@ -118,9 +127,17 @@ Docker Compose version 5.8.0
 echo 'export PODMAN_COMPOSE_WARNING_LOGS=false' >> ~/.zshrc
 ```
 ::::
-::::windows-linux
+::::linux
 ```bash
 echo 'export PODMAN_COMPOSE_WARNING_LOGS=false' >> ~/.bashrc
+```
+::::
+::::windows
+PowerShell の設定ファイル（`$PROFILE`）に書き足します。ファイルが無ければ作ります。
+
+```powershell
+if (-not (Test-Path $PROFILE)) { New-Item -ItemType File -Path $PROFILE -Force }
+Add-Content -Path $PROFILE -Value '$env:PODMAN_COMPOSE_WARNING_LOGS = "false"'
 ```
 ::::
 :::::

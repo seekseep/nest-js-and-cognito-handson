@@ -51,7 +51,7 @@ sections/
 
 ## 前提
 
-- macOS / Windows（WSL2）/ Linux のどれか
+- macOS / Windows 11（PowerShell 7）/ Linux のどれか。Windows に必要なスペックは [Node.js を入れる](./01-setup/01-nodejs/LECTURE.md) の節にあります
 - ターミナルの基本的な操作（`cd`・`ls`）ができる
 - JavaScript を書いたことがある。TypeScript は書きながら覚えれば大丈夫です
 - 05 章から AWS アカウントを使います（Cognito のユーザープールは無料枠の範囲で作れます）

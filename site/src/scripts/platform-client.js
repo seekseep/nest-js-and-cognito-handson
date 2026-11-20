@@ -6,7 +6,7 @@
   var KEY = 'handson-os';
   var OSES = ['macos', 'windows', 'linux'];
 
-  // まだ選んでいなければ、ブラウザの OS から推す（Windows のブラウザなら WSL2 の手順）
+  // まだ選んでいなければ、ブラウザの OS から推す（Windows のブラウザなら PowerShell の手順）
   function detect() {
     var ua = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent || '';
     if (/mac|iphone|ipad/i.test(ua)) return 'macos';

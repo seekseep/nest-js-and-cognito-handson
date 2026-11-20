@@ -8,8 +8,8 @@
  *   ::::macos
  *   macOS での手順
  *   ::::
- *   ::::windows-linux
- *   Windows（WSL2）と Linux で共通の手順（OS 名を - でつなぐと、どれを選んでいても出す）
+ *   ::::macos-linux
+ *   macOS と Linux で共通の手順（OS 名を - でつなぐと、どれを選んでいても出す）
  *   ::::
  *   :::::
  *
@@ -42,7 +42,7 @@ function el(hName, className, children, extraProps = {}) {
 const CHOICE = 'platform-choice';
 const CHOICES = [
   { key: 'macos', name: 'macOS', desc: 'Apple Silicon / Intel の Mac。ターミナルで進める' },
-  { key: 'windows', name: 'Windows', desc: 'Windows 10 / 11。WSL2 の Ubuntu の中で進める' },
+  { key: 'windows', name: 'Windows', desc: 'Windows 11。PowerShell 7 で進める' },
   { key: 'linux', name: 'Linux', desc: 'Ubuntu など。ふだんのシェルで進める（手順は apt で書いている）' },
 ];
 
@@ -58,7 +58,7 @@ function choiceNode(node) {
   node.children = options;
 }
 
-// `::::windows-linux` → ['windows', 'linux']。知らない名前は捨てる。
+// `::::macos-linux` → ['macos', 'linux']。知らない名前は捨てる。
 function osesOf(name) {
   return name.split('-').filter((n) => OSES.includes(n));
 }

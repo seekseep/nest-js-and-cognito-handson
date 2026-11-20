@@ -116,7 +116,7 @@ NestJS 12 のプロジェクトは ES Modules で書かれています。`import
 
 ### `npm run start:dev` で `EADDRINUSE: address already in use :::3001` と出る
 
-3001 番ポートを別のプログラムが使っています。前に起動した API が残っていないか確かめてください。`lsof -i :3001` で使っているプログラムが分かります。
+3001 番ポートを別のプログラムが使っています。前に起動した API が残っていないか確かめてください。使っているプログラムは、macOS・Linux なら `lsof -i :3001`、Windows の PowerShell なら `Get-Process -Id (Get-NetTCPConnection -LocalPort 3001).OwningProcess` で分かります。
 
 ### Next.js の開発サーバーと同時に動かしたい
 

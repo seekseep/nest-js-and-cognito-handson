@@ -93,9 +93,20 @@ compose では、UI と同じく `env_file` で渡します。
 :::notice
 Podman を使わずに手元で動かすときは、Nest CLI の `--env-file` で `.env` を読ませます。
 
+:::::platform
+::::macos-linux
 ```bash
 npm run start:dev -- --env-file .env
 ```
+::::
+::::windows
+PowerShell では、`npm run` に渡す `--` がうまく伝わらないことがあるので、`nest` を直接呼びます（`start:dev` の中身と同じです）。
+
+```powershell
+npx nest start --watch --env-file .env
+```
+::::
+:::::
 :::
 
 ## Guard を作る
@@ -188,10 +199,20 @@ curl http://localhost:3001/notes -H "Authorization: Bearer abc.def.ghi"
 
 ブラウザの開発者ツールの「ネットワーク」で、`notes` へのリクエストを選び、リクエストヘッダーの `Authorization` の値をコピーします。これを付ければ、curl からも呼べます。
 
+:::::platform
+::::macos-linux
 ```bash
 TOKEN="eyJraWQiOi...（コピーした Bearer の後ろ）"
 curl http://localhost:3001/me -H "Authorization: Bearer $TOKEN"
 ```
+::::
+::::windows
+```powershell
+$TOKEN = "eyJraWQiOi...（コピーした Bearer の後ろ）"
+curl http://localhost:3001/me -H "Authorization: Bearer $TOKEN"
+```
+::::
+:::::
 
 ```json
 {"sub":"7a1b2c3d-...","username":"7a1b2c3d-...","groups":[]}

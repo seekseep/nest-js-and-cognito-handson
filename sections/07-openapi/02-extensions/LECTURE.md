@@ -103,11 +103,22 @@ Next.js は `package-lock.json` のある場所をプロジェクトのルート
 
 ルートを変えたら、手元のビルドの結果（`.next/`）を一度消してください。前のルートで作った `.next/` が残っていると、次のビルドで `ui/ui/.next/` という入れ子のフォルダができ、`npm run lint` がその中のファイルまで調べてエラーになります。
 
+:::::platform
+::::macos-linux
 ```bash
 cd ui
 rm -rf .next ui
 npm run build
 ```
+::::
+::::windows
+```powershell
+cd ui
+Remove-Item -Recurse -Force .next, ui -ErrorAction SilentlyContinue
+npm run build
+```
+::::
+:::::
 
 ## この節を終えたときのディレクトリ
 
