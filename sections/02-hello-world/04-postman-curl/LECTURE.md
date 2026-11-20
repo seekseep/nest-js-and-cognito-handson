@@ -98,7 +98,20 @@ curl -s "http://localhost:3001/greeting?name=jq" | jq
 }
 ```
 
-`-s` は進み具合の表示を消すオプションです。`jq` は `brew install jq`（macOS）や `sudo apt install jq`（Ubuntu）で入れられます。
+`-s` は進み具合の表示を消すオプションです。`jq` は、次のコマンドで入れられます。
+
+:::::platform
+::::macos
+```bash
+brew install jq
+```
+::::
+::::windows-linux
+```bash
+sudo apt install -y jq
+```
+::::
+:::::
 
 ## Postman で呼ぶ
 

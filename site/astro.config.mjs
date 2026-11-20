@@ -11,6 +11,7 @@ import remarkEditor from './src/plugins/remark-editor.mjs';
 import remarkScript from './src/plugins/remark-script.mjs';
 import remarkCode from './src/plugins/remark-code.mjs';
 import remarkFaq from './src/plugins/remark-faq.mjs';
+import remarkPlatform from './src/plugins/remark-platform.mjs';
 import ecLineNumbers from './src/plugins/ec-line-numbers.mjs';
 import lectureSync from './src/integrations/lecture-sync.mjs';
 
@@ -35,6 +36,13 @@ const editorClient = readFileSync(
 // `:::script` の実行 client（<script type="text/plain" class="run-on-load"> を実行）。
 const runScripts = readFileSync(
   fileURLToPath(new URL('./src/scripts/run-scripts.js', import.meta.url)),
+  'utf8',
+);
+
+// `:::::platform`（OS ごとの出し分け）の client。全ページの <head> に inline で注入し、
+// 本文の描画前に <html data-os> を付けてちらつきを防ぐ。
+const platformClient = readFileSync(
+  fileURLToPath(new URL('./src/scripts/platform-client.js', import.meta.url)),
   'utf8',
 );
 
@@ -70,6 +78,8 @@ function calloutIntegration() {
         config.markdown.processor?.options.remarkPlugins.push(remarkCode);
         // `:::faq` を開いて読む「よくある質問」（<details>）に変換。名前衝突なし。
         config.markdown.processor?.options.remarkPlugins.push(remarkFaq);
+        // `:::::platform` を OS（macOS / Windows / Linux）ごとのパネルに変換。名前衝突なし。
+        config.markdown.processor?.options.remarkPlugins.push(remarkPlatform);
       },
     },
   };
@@ -109,6 +119,7 @@ export default defineConfig({
         './src/styles/editor.css',
         './src/styles/code.css',
         './src/styles/faq.css',
+        './src/styles/platform.css',
       ],
       // `:::code` が付けた startLineNumber / startNewLineNumber を読んで
       // ガターに行番号を出す自作プラグイン。それ以外のコードブロックには何もしない。
@@ -124,7 +135,13 @@ export default defineConfig({
         { tag: 'script', content: runScripts },
         // `::preview` の再読み込みボタン client。
         { tag: 'script', content: previewClient },
+        // OS の出し分けの client（選んだ OS を localStorage に残す）。
+        { tag: 'script', content: platformClient },
       ],
+      // ナビゲーションバーに OS（macOS / Windows / Linux）の選択欄を足す（src/components/ThemeSelect.astro）
+      components: {
+        ThemeSelect: './src/components/ThemeSelect.astro',
+      },
       defaultLocale: 'root',
       locales: {
         root: { label: '日本語', lang: 'ja' },

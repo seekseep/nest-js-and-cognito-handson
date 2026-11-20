@@ -54,6 +54,10 @@ sections/<sec>/<lec>/
   - `::tree` は前の節から追加・変更したファイルに印を付ける
 - コマンドの実行例は普通のコードブロックで書く
 - よくある質問は `:::faq`、注意は `:::warning` / `:::danger` / `:::notice`
+- 手順が OS で分かれるところは `:::::platform` で囲み、中を `::::macos` / `::::windows` / `::::linux`（`::::windows-linux` のように `-` でつなぐと両方に出す）に分ける
+  - 選んだ OS は localStorage（キー `handson-os`）に残り、ナビゲーションバーの選択欄と `::platform-choice`（01-01 に置いている）で変える
+  - パネルの中に見出し（`##`・`###`）は書かない（目次に残って、隠れた所を指してしまう）
+  - 実装は site/src/plugins/remark-platform.mjs・site/src/scripts/platform-client.js・site/src/styles/platform.css・site/src/components/ThemeSelect.astro（Cognito + Entra ID のハンズオンから移したもの）
 - 「次へ」の見出しやリンクは書かない（Starlight の前へ／次へと重複するため）
 
 ## サイト（site/）の開発
