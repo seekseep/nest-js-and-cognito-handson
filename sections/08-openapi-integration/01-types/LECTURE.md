@@ -7,11 +7,11 @@ title: 生成した型を使う
 
 ![08 章 生成した型を使う](./images/00-thumbnail.svg)
 
-07 章で、`openapi.yaml` から `bff/src/api/schema.d.ts` を作りました。この節では、BFF の型をこれに置き換えます。`openapi.yaml` の約束と BFF のコードがずれたら、**コンパイルのときに** 気づけるようにするのが目的です。
+07 章で、`openapi.yaml` から `api/src/api/schema.d.ts` を作りました。この節では、API の型をこれに置き換えます。`openapi.yaml` の約束と API のコードがずれたら、**コンパイルのときに** 気づけるようにするのが目的です。
 
 ## メモの型を置き換える
 
-::diff{file="bff/src/notes/note.ts"}
+::diff{file="api/src/notes/note.ts"}
 
 ### Note は生成した型にする
 
@@ -48,7 +48,7 @@ export const createNoteSchema = z.strictObject({
 
 見逃しを無くすため、「2 つの型がぴったり同じか」を確かめる型を用意します。
 
-::diff{file="bff/src/api/type-check.ts"}
+::diff{file="api/src/api/type-check.ts"}
 
 `Equal<A, B>` は、A と B が同じなら `true`、違えば `false` になる型です（TypeScript の型の比べ方を使った、よく知られた書き方です）。`Expect<T>` は `true` しか受け付けないので、`Expect<Equal<A, B>>` は、A と B が違うとコンパイルエラーになります。
 
@@ -66,7 +66,7 @@ export type CreateNoteInputMatchesApi = Expect<
 
 `GET /me` の戻り値にも、`openapi.yaml` の `Me` の型を付けます。
 
-::diff{file="bff/src/app.controller.ts"}
+::diff{file="api/src/app.controller.ts"}
 
 返すオブジェクトに項目が足りなかったり、余分な項目があったりすると、エラーになります。
 
@@ -83,11 +83,11 @@ export type CreateNoteInputMatchesApi = Expect<
           type: boolean
 ```
 
-型を作り直して、BFF をコンパイルします。
+型を作り直して、API をコンパイルします。
 
 ```bash
 npm run generate:api
-cd bff
+cd api
 npx tsc --noEmit -p tsconfig.json
 ```
 

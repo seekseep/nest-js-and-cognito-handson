@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-/** テストごとに違うタイトルにする。BFF のメモは、テストの間で共有されるため。 */
+/** テストごとに違うタイトルにする。API のメモは、テストの間で共有されるため。 */
 function uniqueTitle(name: string) {
   return `${name} ${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
 }
@@ -26,7 +26,7 @@ test('メモを追加すると一覧に出て、読み込み直しても残っ�
   // 入力欄は空に戻る
   await expect(page.getByPlaceholder('タイトル')).toHaveValue('');
 
-  // 画面の中だけでなく、BFF に保存されている
+  // 画面の中だけでなく、API に保存されている
   await page.reload();
   await expect(note).toBeVisible();
 });
@@ -41,7 +41,7 @@ test('削除すると一覧から消える', async ({ page }) => {
   await expect(note).toHaveCount(0);
 });
 
-test('タイトルが空だと、BFF の入力チェックのエラーが出る', async ({ page }) => {
+test('タイトルが空だと、API の入力チェックのエラーが出る', async ({ page }) => {
   await page.getByRole('button', { name: '追加' }).click();
   // Next.js も、画面の切り替えを読み上げるための空の alert を置いているので、文言で絞る
   await expect(

@@ -20,7 +20,7 @@ title: アプリケーション全体の認証認可
 
 「このメソッドはトークン無しで呼べる」という印を付けるデコレーターを作ります。
 
-::diff{file="bff/src/auth/public.decorator.ts"}
+::diff{file="api/src/auth/public.decorator.ts"}
 
 `SetMetadata(キー, 値)` は、メソッドやクラスに **メタデータ**（コードの動きとは別に付けておく情報）を付けるデコレーターです。ここでは `isPublic: true` を付けます。
 
@@ -28,7 +28,7 @@ title: アプリケーション全体の認証認可
 
 AuthGuard の最初で、メタデータを読みます。
 
-::diff{file="bff/src/auth/auth.guard.ts"}
+::diff{file="api/src/auth/auth.guard.ts"}
 
 - `Reflector` … NestJS が用意している、メタデータを読むための部品です。コンストラクターで受け取ります
 - `getAllAndOverride(IS_PUBLIC_KEY, [context.getHandler(), context.getClass()])` … 呼ばれるメソッドと、そのコントローラーの両方を見て、`isPublic` が付いていれば `true` を返します。メソッドに付けたものが優先されます
@@ -38,27 +38,27 @@ AuthGuard の最初で、メタデータを読みます。
 
 `APP_GUARD` という名前で Guard を登録すると、アプリのすべてのルートに掛かります。登録する場所として、`AuthModule` を作ります。
 
-::diff{file="bff/src/auth/auth.module.ts"}
+::diff{file="api/src/auth/auth.module.ts"}
 
 `AppModule` で読み込みます。
 
-::diff{file="bff/src/app.module.ts"}
+::diff{file="api/src/app.module.ts"}
 
 ## @UseGuards を外し、@Public() を付ける
 
 メモのコントローラーからは `@UseGuards(AuthGuard)` を外します。アプリ全体の Guard が掛かるので、要らなくなりました。
 
-::diff{file="bff/src/notes/notes.controller.ts"}
+::diff{file="api/src/notes/notes.controller.ts"}
 
 `AppController` では、`/me` の `@UseGuards` を外し、02 章の練習用の 3 つ（`GET /`・`GET /greeting`・`POST /echo`）に `@Public()` を付けます。
 
-::diff{file="bff/src/app.controller.ts"}
+::diff{file="api/src/app.controller.ts"}
 
 コントローラーが Guard を直接使わなくなったので、テストの `overrideGuard` も要らなくなります。テストのモジュールには `APP_GUARD` を登録していないので、Guard は作られません。
 
-::diff{file="bff/src/app.controller.spec.ts"}
+::diff{file="api/src/app.controller.spec.ts"}
 
-::diff{file="bff/src/notes/notes.controller.spec.ts"}
+::diff{file="api/src/notes/notes.controller.spec.ts"}
 
 ## 動かす
 

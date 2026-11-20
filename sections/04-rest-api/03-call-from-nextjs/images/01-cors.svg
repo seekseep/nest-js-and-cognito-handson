@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" role="img" aria-label="CORS。localhost:3000 の画面から localhost:3001 の BFF を呼ぶと、ブラウザは BFF の応答に Access-Control-Allow-Origin があるかを確かめ、許可されていれば画面に結果を渡す">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" width="960" height="400" role="img" aria-label="CORS。localhost:3000 の画面から localhost:3001 の API を呼ぶと、ブラウザは API の応答に Access-Control-Allow-Origin があるかを確かめ、許可されていれば画面に結果を渡す">
 <defs>
 <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker>
 <style>text{font-family:'Hiragino Sans','Noto Sans JP','Yu Gothic UI',system-ui,sans-serif}.t{font-size:22px;font-weight:700;fill:#0f172a}.s{font-size:15px;fill:#475569}.l{font-size:15px;fill:#1e293b;font-weight:600}.m{font-size:14px;fill:#1e293b;font-family:ui-monospace,Menlo,monospace}</style>
@@ -19,7 +19,7 @@
 <text x="485" y="262" text-anchor="middle" class="m">Access-Control-</text>
 <text x="485" y="310" text-anchor="middle" class="m">Allow-Origin: …:3000</text>
 <rect x="590" y="40" width="340" height="320" rx="16" fill="#fdf2f8" stroke="#e0234e" stroke-width="2"/>
-<text x="760" y="80" text-anchor="middle" class="t">BFF（NestJS）</text>
+<text x="760" y="80" text-anchor="middle" class="t">API（NestJS）</text>
 <text x="760" y="110" text-anchor="middle" class="m">http://localhost:3001</text>
 <text x="620" y="180" class="m">app.enableCors({</text>
 <text x="640" y="206" class="m">origin:</text>

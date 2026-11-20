@@ -2,7 +2,7 @@
 
 ## プロジェクト概要
 
-Next.js（SSG）＋ NestJS（BFF）＋ Amazon Cognito のアプリを、1 つのプロジェクトを節ごとに育てながら作るハンズオン教材。
+Next.js（SSG）＋ NestJS（API）＋ Amazon Cognito のアプリを、1 つのプロジェクトを節ごとに育てながら作るハンズオン教材。
 handson-builder スキルの骨格（`sections/` ＋ Starlight の `site/` ＋ GitHub Pages）を使っている。
 全体の計画と方針の正本は GitHub のイシュー #1。
 
@@ -13,7 +13,7 @@ handson-builder スキルの骨格（`sections/` ＋ Starlight の `site/` ＋ G
 | **章** | `sections/<NN-section>/`。章立ては固定（イシュー #1） | `04-rest-api/` |
 | **節** | `sections/<NN-section>/<NN-lecture>/`。増減してよい | `04-rest-api/01-notes-api/` |
 
-- 節のディレクトリは **その節を終えた時点のプロジェクト** を丸ごと持つ（`frontend/`・`bff/`・`compose.yaml` など）
+- 節のディレクトリは **その節を終えた時点のプロジェクト** を丸ごと持つ（`ui/`・`api/`・`compose.yaml` など）
 - 次の節は、前の節のディレクトリをコピーして差分を足して作る
 - 本文は `LECTURE.md`（`docs: true`）。節の直下の `README.md` は ZIP を展開した人向けの起動方法
 - 説明図は `images/` に SVG で置く（`00-thumbnail.svg` を先頭サムネに）
@@ -28,25 +28,25 @@ sections/<sec>/<lec>/
 ├── LECTURE.md        教材本文（ZIP に入らない）
 ├── images/           説明図（ZIP に入らない）
 ├── compose.yaml      03 章から
-├── frontend/         Next.js（App Router、next.config.ts で output: 'export'）
+├── ui/         Next.js（App Router、next.config.ts で output: 'export'）
 │   └── Containerfile 03 章から
-└── bff/              NestJS
+└── api/              NestJS
     └── Containerfile 03 章から
 ```
 
 - 言語は **TypeScript**（handson-builder 既定の「JS のみ」から外している。NestJS と OpenAPI からの型生成を扱うため）
-- パッケージマネージャはレクチャー側が **npm**（`frontend/` と `bff/` にそれぞれ `package-lock.json`）、サイトが pnpm
+- パッケージマネージャはレクチャー側が **npm**（`ui/` と `api/` にそれぞれ `package-lock.json`）、サイトが pnpm
 - `create-next-app` / `nest new` が生成したファイルは、教える必要がない限りそのまま残す（受講者の手元と一致させるため）
-- ポート: frontend 3000 / bff 3001
+- ポート: UI 3000 / API 3001
 - `.env` / `.env.local` は gitignore。`.env.example` にプレースホルダだけを書いて追跡する
 - **秘匿情報（ユーザープール ID・クライアント ID・AWS アカウント ID・キー）の実値は絶対にコミットしない**
 
 ## 本文の書き方（センチネル）
 
-- コードの変更は `::diff{file="bff/src/main.ts"}` で示す。前の節の同じファイルとの差分を実ファイルから生成する
+- コードの変更は `::diff{file="api/src/main.ts"}` で示す。前の節の同じファイルとの差分を実ファイルから生成する
   （`site/scripts/libs/project-diff.mjs`）。新規ファイルは全行 `+`。本文にコードを手で二重に書かない
   - `::diff[どこを書き換えるか]{file="..."}` で説明を付けられる
-  - `::diff` は先頭に「`bff/src/main.ts` を変更する」の見出しを自動で付ける（前の節に無ければ「作成する」、
+  - `::diff` は先頭に「`api/src/main.ts` を変更する」の見出しを自動で付ける（前の節に無ければ「作成する」、
     この節で消したなら「削除する」。漢字で書く）。見出しの深さは直前の見出しより 1 つ深い。
     本文に「`...` を作ります」のような、見出しと重なる文は書かない
   - 比べる相手を変えるときは `from="<sec>/<lec>"`、前の節でのファイル名が違うときは `fromFile="..."`

@@ -9,17 +9,17 @@ title: Cognito の設定
 
 ここまでのメモ API は、誰でも読み書きできます。この章と次の章で、**サインインした人だけが使える** ようにします。サインインの仕組みには **Amazon Cognito** を使います。
 
-この節では、AWS のコンソールで Cognito のユーザープールを作り、その ID を frontend から読めるように `.env.local` に書きます。
+この節では、AWS のコンソールで Cognito のユーザープールを作り、その ID を UI から読めるように `.env.local` に書きます。
 
 ## Cognito の役割
 
-![Cognito の役割。画面はメールアドレスとパスワードを Cognito のユーザープールに送り、トークンを受け取る。トークンを付けて BFF を呼び、BFF はトークンを検証する](./images/01-cognito.svg)
+![Cognito の役割。画面はメールアドレスとパスワードを Cognito のユーザープールに送り、トークンを受け取る。トークンを付けて API を呼び、API はトークンを検証する](./images/01-cognito.svg)
 
 | 用語 | 意味 |
 |---|---|
 | **ユーザープール** | ユーザー（メールアドレスとパスワード）を入れておく場所。サインアップ・サインイン・パスワードの再設定を引き受ける |
 | **アプリケーションクライアント** | ユーザープールを使うアプリの登録。画面はこの ID を使ってユーザープールにサインインを頼む |
-| **トークン** | サインインに成功すると受け取る、署名付きの「通行証」（JWT）。BFF はこれを見て、誰からの呼び出しかを確かめる |
+| **トークン** | サインインに成功すると受け取る、署名付きの「通行証」（JWT）。API はこれを見て、誰からの呼び出しかを確かめる |
 
 パスワードを確かめる処理や、パスワードを安全に保存する処理を自分で書かずに済むのが、Cognito を使う理由です。
 
@@ -64,18 +64,18 @@ SPA を選ぶと、**クライアントシークレットの無い** アプリ�
 
 ## ID を .env.local に書く
 
-ユーザープール ID とクライアント ID は、画面のコードに直接書かずに、環境変数で渡します。まず、どんな変数が要るかを書いた見本 `frontend/.env.example` を作ります。
+ユーザープール ID とクライアント ID は、画面のコードに直接書かずに、環境変数で渡します。まず、どんな変数が要るかを書いた見本 `ui/.env.example` を作ります。
 
-::diff{file="frontend/.env.example"}
+::diff{file="ui/.env.example"}
 
 `create-next-app` が作った `.gitignore` は、`.env` で始まるファイルをすべて Git に入れない設定です。見本の `.env.example` だけは Git に入れたいので、例外を足します。
 
-::diff{file="frontend/.gitignore"}
+::diff{file="ui/.gitignore"}
 
 見本をコピーして `.env.local` を作ります。
 
 ```bash
-cd frontend
+cd ui
 cp .env.example .env.local
 ```
 
@@ -110,7 +110,7 @@ podman compose up --build --watch
 渡せているかは、コンテナの中の環境変数で確かめられます。
 
 ```bash
-podman compose exec frontend printenv NEXT_PUBLIC_COGNITO_USER_POOL_ID
+podman compose exec ui printenv NEXT_PUBLIC_COGNITO_USER_POOL_ID
 ```
 
 画面はまだ変わりません。次の節で、この値を使ってサインインの画面を出します。
@@ -154,11 +154,11 @@ ZIP には `.env.local` は入っていません。展開したら `.env.example
 
 ### `git status` に `.env.example` が出てこない
 
-`frontend/.gitignore` に `!.env.example` を足していません。`.env*` の行より **後ろ** に書いてください（`.gitignore` は後ろの行が優先されます）。
+`ui/.gitignore` に `!.env.example` を足していません。`.env*` の行より **後ろ** に書いてください（`.gitignore` は後ろの行が優先されます）。
 
 ### `printenv` で何も表示されない
 
-`.env.local` の場所が `frontend/.env.local` になっているか、`compose.yaml` を変えたあとに起動し直したかを確かめてください。
+`.env.local` の場所が `ui/.env.local` になっているか、`compose.yaml` を変えたあとに起動し直したかを確かめてください。
 
 ### 使い終わったユーザープールを消したい
 

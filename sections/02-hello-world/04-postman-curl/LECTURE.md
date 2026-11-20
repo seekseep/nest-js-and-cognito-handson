@@ -7,9 +7,9 @@ title: Postman と curl で API を呼ぶ
 
 ![02 章 Postman と curl で API を呼ぶ](./images/00-thumbnail.svg)
 
-BFF を作っていると、画面を作る前に「API が正しく応答するか」を確かめたい場面がたくさんあります。この節では、ターミナルから HTTP リクエストを送る **curl** と、画面から送る **Postman** の使い方を覚えます。
+API を作っていると、画面を作る前に「API が正しく応答するか」を確かめたい場面がたくさんあります。この節では、ターミナルから HTTP リクエストを送る **curl** と、画面から送る **Postman** の使い方を覚えます。
 
-練習用に、BFF にエンドポイントを 2 つ足します。
+練習用に、API にエンドポイントを 2 つ足します。
 
 | メソッド | パス | 中身 |
 |---|---|---|
@@ -18,7 +18,7 @@ BFF を作っていると、画面を作る前に「API が正しく応答する
 
 ## エンドポイントを足す
 
-::diff{file="bff/src/app.controller.ts"}
+::diff{file="api/src/app.controller.ts"}
 
 - `@Query('name')` は、URL の `?name=...` の値を引数に入れます。無ければ `undefined` です
 - `@Body()` は、リクエストの本文を引数に入れます
@@ -81,7 +81,7 @@ curl -X POST http://localhost:3001/echo \
 | `-d '...'` | 本文を送る |
 
 :::warning
-`-H "Content-Type: application/json"` を付け忘れると、curl は本文を **フォームの形式**（`title=...&body=...`）として送ります。JSON を送ったつもりでも BFF は JSON として読んでくれないので、JSON を送るときは必ず付けます。
+`-H "Content-Type: application/json"` を付け忘れると、curl は本文を **フォームの形式**（`title=...&body=...`）として送ります。JSON を送ったつもりでも API は JSON として読んでくれないので、JSON を送るときは必ず付けます。
 :::
 
 ### 結果を見やすくする
@@ -150,7 +150,7 @@ sudo apt install -y jq
 
 ### `curl: (7) Failed to connect to localhost port 3001` と出る
 
-BFF が起動していません。`bff/` で `npm run start:dev` を実行してから試してください。
+API が起動していません。`api/` で `npm run start:dev` を実行してから試してください。
 
 ### Postman から `localhost` に届かない
 

@@ -7,7 +7,7 @@ title: エラーハンドリング
 
 ![09 章 エラーハンドリング](./images/00-thumbnail.svg)
 
-BFF のエラーの応答は、これまで NestJS の既定の形でした。
+API のエラーの応答は、これまで NestJS の既定の形でした。
 
 ```json
 {"message":["title: Too small: expected string to have >=1 characters"],"error":"Bad Request","statusCode":400}
@@ -44,7 +44,7 @@ BFF のエラーの応答は、これまで NestJS の既定の形でした。
 npm run generate:api
 ```
 
-この時点で frontend をビルドすると、`message` を使っていた場所がエラーになります。約束を変えると、直す場所をコンパイラが教えてくれます。
+この時点で UI をビルドすると、`message` を使っていた場所がエラーになります。約束を変えると、直す場所をコンパイラが教えてくれます。
 
 ```text
 lib/notes-api.ts(13,39): error TS2551: Property 'message' does not exist on type '{ statusCode: number; error: string; messages: string[]; path: string; timestamp: string; }'. Did you mean 'messages'?
@@ -52,13 +52,13 @@ lib/notes-api.ts(13,39): error TS2551: Property 'message' does not exist on type
 
 いつも配列になったので、`toError` は短くなります。
 
-::diff{file="frontend/lib/notes-api.ts"}
+::diff{file="ui/lib/notes-api.ts"}
 
 ## ExceptionFilter を作る
 
 NestJS では、処理の途中で投げられた例外を **ExceptionFilter** が受け取って、応答を作ります。`@Catch()` に何も渡さないと、すべての例外を受け取ります。
 
-::diff{file="bff/src/common/all-exceptions.filter.ts"}
+::diff{file="api/src/common/all-exceptions.filter.ts"}
 
 - `HttpException`（`BadRequestException`・`NotFoundException` など）なら、そのステータスを使います。それ以外の例外は `500` にします
 - `error` は、Node.js の `STATUS_CODES`（`400` なら `Bad Request`）から作ります
@@ -71,7 +71,7 @@ NestJS では、処理の途中で投げられた例外を **ExceptionFilter** �
 
 `APP_FILTER` で、アプリ全体に登録します。
 
-::diff{file="bff/src/app.module.ts"}
+::diff{file="api/src/app.module.ts"}
 
 前の節の `AdminMiddleware` のように、middleware で投げた例外を受け取れるのは、アプリ全体に登録した filter だけです。コントローラーに `@UseFilters()` で付けた filter は、middleware の例外には使われません。
 
@@ -79,12 +79,12 @@ NestJS では、処理の途中で投げられた例外を **ExceptionFilter** �
 
 filter の動きを、テストで確かめます。HTTP のアダプターをまねたものを渡し、`reply` に何が渡されたかを見ます。
 
-::diff{file="bff/src/common/all-exceptions.filter.spec.ts"}
+::diff{file="api/src/common/all-exceptions.filter.spec.ts"}
 
 `vi.fn()` は、呼ばれた引数を覚えておく「まねの関数」です。`vi.spyOn(Logger.prototype, 'error')` で、`500` のときにログが出たことも確かめています。
 
 ```bash
-cd bff
+cd api
 npm test
 ```
 
@@ -128,7 +128,7 @@ curl -s http://localhost:3001/notes
 
 ### 500 のエラーの中身を、開発中は画面で見たい
 
-ログ（`podman compose logs bff`）に、スタックトレースが出ています。応答に入れるのは、公開したときに中身が漏れる原因になるので避けます。
+ログ（`podman compose logs api`）に、スタックトレースが出ています。応答に入れるのは、公開したときに中身が漏れる原因になるので避けます。
 
 ### エラーに独自のコード（`NOTE_NOT_FOUND` など）を入れたい
 

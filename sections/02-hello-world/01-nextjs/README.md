@@ -5,7 +5,7 @@ Next.js のプロジェクトを作り、静的ファイル（SSG）に書き出
 ## 動かし方
 
 ```bash
-cd frontend
+cd ui
 npm install
 npm run dev     # http://localhost:3000
 npm run build   # out/ に静的ファイルを書き出す

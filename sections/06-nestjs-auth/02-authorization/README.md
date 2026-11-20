@@ -5,9 +5,9 @@
 ## 動かし方
 
 ```bash
-cp frontend/.env.example frontend/.env.local   # 自分のユーザープールの値に書き換える
-cp bff/.env.example bff/.env                   # 同じく
+cp ui/.env.example ui/.env.local   # 自分のユーザープールの値に書き換える
+cp api/.env.example api/.env                   # 同じく
 podman compose up --build --watch              # http://localhost:3000 と http://localhost:3001
 ```
 
-テスト（認可の判定）は `cd bff && npm test` です。
+テスト（認可の判定）は `cd api && npm test` です。

@@ -9,28 +9,28 @@ title: 単体テスト
 
 この章では、ここまで作ったアプリにテストを足します。テストには、確かめる範囲によって 3 つの種類があります。
 
-![3 種類のテストが確かめる範囲。単体テストは 1 つのクラスだけ、結合テストは BFF 全体を HTTP で、E2E テストはブラウザから画面と BFF をまとめて確かめる](./images/01-test-types.svg)
+![3 種類のテストが確かめる範囲。単体テストは 1 つのクラスだけ、結合テストは API 全体を HTTP で、E2E テストはブラウザから画面と API をまとめて確かめる](./images/01-test-types.svg)
 
 | 種類 | 確かめる範囲 | 道具 | 速さ | 節 |
 |---|---|---|---|---|
 | 単体テスト | 1 つのクラス・関数 | Vitest | とても速い | この節 |
-| 結合テスト | BFF 全体（HTTP で呼ぶ） | Vitest ＋ supertest | 速い | 10-02 |
-| E2E テスト | 画面から BFF まで | Playwright | 遅い | 10-03 |
+| 結合テスト | API 全体（HTTP で呼ぶ） | Vitest ＋ supertest | 速い | 10-02 |
+| E2E テスト | 画面から API まで | Playwright | 遅い | 10-03 |
 
 範囲が狭いテストほど、速く動き、こわれた場所をすぐ特定できます。範囲が広いテストほど、ユーザーが使うときに近い形で確かめられます。たくさんの単体テストと、要所を押さえた結合テスト・E2E テストを組み合わせるのが基本です。
 
-この節では、BFF の **単体テスト** を書きます。
+この節では、API の **単体テスト** を書きます。
 
 :::notice
-BFF のテストには **Vitest** を使います。`nest new`（NestJS 12）が最初から入れている道具で、04 章からの `*.spec.ts` もすでに Vitest で動いています。書き方（`describe`・`it`・`expect`）は Jest とほぼ同じです。違いはこの節の最後の「よくある質問」にまとめました。
+API のテストには **Vitest** を使います。`nest new`（NestJS 12）が最初から入れている道具で、04 章からの `*.spec.ts` もすでに Vitest で動いています。書き方（`describe`・`it`・`expect`）は Jest とほぼ同じです。違いはこの節の最後の「よくある質問」にまとめました。
 :::
 
 ## テストを動かす
 
-`bff/` で `npm test` を実行すると、`src/` の下の `*.spec.ts` がすべて動きます。
+`api/` で `npm test` を実行すると、`src/` の下の `*.spec.ts` がすべて動きます。
 
 ```bash
-cd bff
+cd api
 npm test
 ```
 
@@ -47,7 +47,7 @@ npm test
 
 まずは、いちばん簡単な「引数を渡すと値が返る」関数から始めます。06 章で作った `isAdmin()` です。
 
-::diff{file="bff/src/auth/user.spec.ts"}
+::diff{file="api/src/auth/user.spec.ts"}
 
 - `describe('isAdmin', ...)` … テストをまとめる箱です。何のテストかを書きます
 - `it('...', () => { ... })` … テスト 1 つです。名前には「どうなるべきか」を書きます。テストが落ちたとき、この名前が表示されます
@@ -63,7 +63,7 @@ npm test
 
 単体テストでは、確かめたいクラスの **相手を偽物（モック）に差し替えて** 切り離します。偽物は「こう呼ばれたら、こう返す」をテストの中で決められ、どう呼ばれたかも記録します。
 
-::diff{file="bff/src/auth/auth.guard.spec.ts"}
+::diff{file="api/src/auth/auth.guard.spec.ts"}
 
 - `vi.fn<TokenVerifier['verify']>()` … 偽物の関数を作ります。`vi` は Vitest の道具箱です。型を付けると、返す値の形を TypeScript が確かめてくれます
 - `new AuthGuard(new Reflector(), { verify } as unknown as TokenVerifier)` … NestJS の DI を使わず、`new` で直接作ります。コンストラクターに偽物を渡すだけで差し替えられるのは、DI で相手を受け取る作りにしておいたおかげです
@@ -76,7 +76,7 @@ npm test
 
 09 章の `AdminMiddleware` も、同じように `TokenVerifier` を偽物にして確かめます。
 
-::diff{file="bff/src/admin/admin.middleware.spec.ts"}
+::diff{file="api/src/admin/admin.middleware.spec.ts"}
 
 middleware は「次へ進める」ときに `next()` を呼びます。`next` も偽物にしておけば、進めたかどうかを `toHaveBeenCalledOnce()` / `not.toHaveBeenCalled()` で確かめられます。
 
@@ -109,7 +109,7 @@ File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
   notes.service.ts |   96.29 |    91.66 |     100 |     100 | 50
 ```
 
-`Uncovered Line #s` が、テストで一度も通らなかった行です。`bff/coverage/index.html` をブラウザで開くと、ファイルごとに色付きで見られます（`coverage/` は `.gitignore` 済みです）。
+`Uncovered Line #s` が、テストで一度も通らなかった行です。`api/coverage/index.html` をブラウザで開くと、ファイルごとに色付きで見られます（`coverage/` は `.gitignore` 済みです）。
 
 `notes.controller.ts` と `token-verifier.ts` は、ほとんど通っていません。
 
@@ -139,11 +139,11 @@ File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
 | `vi.mock('./x.js')` | `jest.mock('./x.js')` |
 | `vitest.config.ts` | `jest.config.ts` |
 
-NestJS 11 までの `nest new` は Jest を入れていました。このハンズオンの bff は ESM（`package.json` の `"type": "module"`）なので、Jest で動かすには ESM と TypeScript の変換の設定が別に要ります。Vitest はそのまま動きます。
+NestJS 11 までの `nest new` は Jest を入れていました。このハンズオンの API は ESM（`package.json` の `"type": "module"`）なので、Jest で動かすには ESM と TypeScript の変換の設定が別に要ります。Vitest はそのまま動きます。
 
 ### `describe` や `expect` を import していないのに使える
 
-`bff/vitest.config.ts` の `globals: true` で、どのテストのファイルからも使えるようにしています。`bff/tsconfig.json` の `"types": ["vitest/globals", "node"]` で、型も通っています。
+`api/vitest.config.ts` の `globals: true` で、どのテストのファイルからも使えるようにしています。`api/tsconfig.json` の `"types": ["vitest/globals", "node"]` で、型も通っています。
 
 ### `Test.createTestingModule()` で作るのと、`new` で作るのはどう違う？
 

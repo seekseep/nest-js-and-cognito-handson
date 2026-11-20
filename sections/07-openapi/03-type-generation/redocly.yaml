@@ -5,16 +5,16 @@ extends:
 rules:
   # 公開しない API なので、ライセンスは書かない
   info-license: off
-  # 手元で動かす BFF なので、servers の localhost を許す
+  # 手元で動かす API なので、servers の localhost を許す
   no-server-example.com: off
 
 # openapi-typescript で型を作るときの出力先（npm run generate:api）
 apis:
-  frontend:
+  ui:
     root: ./openapi.yaml
     x-openapi-ts:
-      output: ./frontend/lib/api/schema.d.ts
-  bff:
+      output: ./ui/lib/api/schema.d.ts
+  api:
     root: ./openapi.yaml
     x-openapi-ts:
-      output: ./bff/src/api/schema.d.ts
+      output: ./api/src/api/schema.d.ts

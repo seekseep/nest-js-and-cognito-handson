@@ -9,9 +9,9 @@ title: Next.js SSG の Hello World
 
 このハンズオンでは、次の構成のアプリを作ります。
 
-![アプリの構成。ブラウザは S3 から静的ファイルを読み込み、Cognito でサインインし、トークンを付けて NestJS の BFF を呼び出す](./images/01-architecture.svg)
+![アプリの構成。ブラウザは S3 から静的ファイルを読み込み、Cognito でサインインし、トークンを付けて NestJS の API を呼び出す](./images/01-architecture.svg)
 
-画面は Next.js で作り、**静的ファイル（HTML・JS・CSS）に書き出して** 配ります。これを SSG（Static Site Generation）と呼びます。画面がデータを必要とするときは、ブラウザから NestJS の BFF を呼び出します。
+画面は Next.js で作り、**静的ファイル（HTML・JS・CSS）に書き出して** 配ります。これを SSG（Static Site Generation）と呼びます。画面がデータを必要とするときは、ブラウザから NestJS の API を呼び出します。
 
 この節では、Next.js のプロジェクトを作って「Hello World」を表示し、静的ファイルに書き出すところまでを行います。
 
@@ -24,24 +24,24 @@ mkdir my-app
 cd my-app
 ```
 
-このフォルダの中に、フロントエンド（`frontend/`）と BFF（`bff/`、次の節）を並べていきます。
+このフォルダの中に、UI（`ui/`）と API（`api/`、次の節）を並べていきます。
 
 ## Next.js のプロジェクトを作る
 
 `create-next-app` で Next.js のプロジェクトを作ります。
 
 ```bash
-npx create-next-app@16 frontend --yes --use-npm --disable-git
+npx create-next-app@16 ui --yes --use-npm --disable-git
 ```
 
 | オプション | 意味 |
 |---|---|
-| `frontend` | 作るフォルダの名前 |
+| `ui` | 作るフォルダの名前 |
 | `--yes` | 質問にすべておすすめの答えで進む（TypeScript・ESLint・Tailwind CSS・App Router） |
 | `--use-npm` | パッケージマネージャーに npm を使う |
-| `--disable-git` | `frontend/` の中で `git init` しない（`my-app` 全体を 1 つのプロジェクトとして扱うため） |
+| `--disable-git` | `ui/` の中で `git init` しない（`my-app` 全体を 1 つのプロジェクトとして扱うため） |
 
-しばらく待つと `frontend/` ができます。主なファイルは次のとおりです。
+しばらく待つと `ui/` ができます。主なファイルは次のとおりです。
 
 | ファイル | 役割 |
 |---|---|
@@ -54,7 +54,7 @@ npx create-next-app@16 frontend --yes --use-npm --disable-git
 ## 開発サーバーで動かす
 
 ```bash
-cd frontend
+cd ui
 npm run dev
 ```
 
@@ -64,7 +64,7 @@ npm run dev
 
 `app/page.tsx` の中身を、すべて次のように置き換えます。
 
-:::code{filepath="frontend/app/page.tsx"}
+:::code{filepath="ui/app/page.tsx"}
 ```tsx
 export default function Home() {
   return (
@@ -83,7 +83,7 @@ export default function Home() {
 
 ページのタイトルと言語も変えておきます。`app/layout.tsx` の `metadata` と `<html>` の `lang` を書き換えます。
 
-:::code{filepath="frontend/app/layout.tsx" offset=15 newOffset=15}
+:::code{filepath="ui/app/layout.tsx" offset=15 newOffset=15}
 ```tsx
  export const metadata: Metadata = {
 -  title: "Create Next App",
@@ -108,7 +108,7 @@ export default function Home() {
 
 Next.js は、既定ではサーバー（`next start`）の上で動かす前提でビルドします。静的ファイルとして書き出すには、`next.config.ts` に `output: "export"` を足します。
 
-:::code[cacheComponents と partialPrefetching の 2 行は消す]{filepath="frontend/next.config.ts" offset=1 newOffset=1}
+:::code[cacheComponents と partialPrefetching の 2 行は消す]{filepath="ui/next.config.ts" offset=1 newOffset=1}
 ```ts
  import type { NextConfig } from "next";
  
@@ -141,7 +141,7 @@ Route (app)
 ○  (Static)  prerendered as static content
 ```
 
-`○ (Static)` は、そのページがビルドのときに HTML になったことを表します。`frontend/out/` に静的ファイルができています。
+`○ (Static)` は、そのページがビルドのときに HTML になったことを表します。`ui/out/` に静的ファイルができています。
 
 ```bash
 ls out
@@ -174,7 +174,7 @@ aws s3 sync out/ s3://<バケット名>/ --delete
 公開するときは、S3 のバケットを直接公開するのではなく、Amazon CloudFront を前に置いて配るのが一般的です（HTTPS で配れて、バケットを非公開のままにできる）。このハンズオンでは手元の開発サーバーで進めるので、S3 には置きません。
 
 :::notice
-静的書き出しでは、リクエストのたびにサーバーで動く機能（Route Handlers の動的な応答、`cookies()` を使うページ、画像の最適化など）は使えません。サーバーの仕事は NestJS の BFF に任せる、というのがこの構成の考え方です。
+静的書き出しでは、リクエストのたびにサーバーで動く機能（Route Handlers の動的な応答、`cookies()` を使うページ、画像の最適化など）は使えません。サーバーの仕事は NestJS の API に任せる、というのがこの構成の考え方です。
 :::
 
 ## この節を終えたときのディレクトリ

@@ -16,8 +16,8 @@
 <text x="670" y="110" text-anchor="middle" class="t">Podman マシン（Linux の仮想マシン）</text>
 <rect x="460" y="140" width="200" height="130" rx="14" fill="#fff" stroke="#892ca0" stroke-width="2"/>
 <text x="560" y="196" text-anchor="middle" class="l">コンテナ</text>
-<text x="560" y="222" text-anchor="middle" class="s">frontend（3000）</text>
+<text x="560" y="222" text-anchor="middle" class="s">ui（3000）</text>
 <rect x="680" y="140" width="200" height="130" rx="14" fill="#fff" stroke="#892ca0" stroke-width="2"/>
 <text x="780" y="196" text-anchor="middle" class="l">コンテナ</text>
-<text x="780" y="222" text-anchor="middle" class="s">bff（3001）</text>
+<text x="780" y="222" text-anchor="middle" class="s">api（3001）</text>
 </svg>

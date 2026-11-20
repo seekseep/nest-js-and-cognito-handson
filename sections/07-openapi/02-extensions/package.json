@@ -1,7 +1,7 @@
 {
   "name": "my-app",
   "private": true,
-  "description": "openapi.yaml を扱う道具（frontend と bff はそれぞれの package.json を使う）",
+  "description": "openapi.yaml を扱う道具（ui と api はそれぞれの package.json を使う）",
   "scripts": {
     "lint:api": "redocly lint openapi.yaml"
   },

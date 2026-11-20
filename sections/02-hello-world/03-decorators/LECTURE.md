@@ -17,7 +17,7 @@ title: NestJS のデコレーター
 
 ## デコレーターとは
 
-前の節の `bff/src/app.controller.ts` をもう一度見てみます。
+前の節の `api/src/app.controller.ts` をもう一度見てみます。
 
 ```ts
 import { Controller, Get } from '@nestjs/common';
@@ -50,7 +50,7 @@ Java の `@Override` や `@Autowired` のような **アノテーション** と
 
 ## ビルドしたコードで確かめる
 
-`npm run build` で作られた `bff/dist/app.controller.js` を開くと、デコレーターがふつうの関数の呼び出しに書き換えられています（一部を抜き出しています）。
+`npm run build` で作られた `api/dist/app.controller.js` を開くと、デコレーターがふつうの関数の呼び出しに書き換えられています（一部を抜き出しています）。
 
 ```js
 let AppController = class AppController {
@@ -82,7 +82,7 @@ AppController = __decorate([
 
 ## TypeScript の設定でオンにしている
 
-デコレーターと型の情報は、`bff/tsconfig.json` の次の 2 行でオンになっています。`nest new` が最初から書いてくれています。
+デコレーターと型の情報は、`api/tsconfig.json` の次の 2 行でオンになっています。`nest new` が最初から書いてくれています。
 
 ```json
 "emitDecoratorMetadata": true,
@@ -145,8 +145,8 @@ TypeScript 5.0 からは、この提案に合わせた **新しい方式** の�
 
 `tsx` などの道具は、型の情報（`emitDecoratorMetadata`）を残さないので、NestJS がコンストラクターに何を渡せばよいか分からず、`undefined` になります。NestJS は、`npm run start:dev`（Nest CLI）で動かしてください。
 
-### フロントエンド（Next.js）でもデコレーターを使う？
+### UI（Next.js）でもデコレーターを使う？
 
-使いません。frontend の `tsconfig.json` には `experimentalDecorators` が無く、React のコンポーネントはふつうの関数で書きます。デコレーターは、このハンズオンでは bff（NestJS）だけで使う書き方です。
+使いません。UI の `tsconfig.json` には `experimentalDecorators` が無く、React のコンポーネントはふつうの関数で書きます。デコレーターは、このハンズオンでは API（NestJS）だけで使う書き方です。
 
 :::

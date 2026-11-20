@@ -7,7 +7,7 @@ title: 認可 — グループと持ち主
 
 ![06 章 認可 — グループと持ち主](./images/00-thumbnail.svg)
 
-前の節で、BFF は「誰からの呼び出しか」が分かるようになりました（認証）。ただ、サインインしていれば、他の人のメモも読めて、消せてしまいます。この節では「**その人に、その操作をさせてよいか**」（認可）を確かめます。
+前の節で、API は「誰からの呼び出しか」が分かるようになりました（認証）。ただ、サインインしていれば、他の人のメモも読めて、消せてしまいます。この節では「**その人に、その操作をさせてよいか**」（認可）を確かめます。
 
 決まりは次のとおりです。
 
@@ -20,7 +20,7 @@ title: 認可 — グループと持ち主
 
 `401` と `403` の違いも押さえておきます。
 
-| ステータス | 意味 | この BFF で返すとき |
+| ステータス | 意味 | この API で返すとき |
 |---|---|---|
 | `401 Unauthorized` | 誰か分からない（認証の失敗） | トークンが無い・正しくない |
 | `403 Forbidden` | 誰かは分かったが、させられない（認可の失敗） | 他の人のメモを触ろうとした |
@@ -43,9 +43,9 @@ Cognito のコンソールで、グループを作ってユーザーを入れま
 
 ## ユーザーの型と admin の判定
 
-Guard が `request.user` に入れたトークンの中身を、BFF の中では「ユーザー」として扱います。`bff/src/auth/user.ts` に、型と admin の判定をまとめます。
+Guard が `request.user` に入れたトークンの中身を、API の中では「ユーザー」として扱います。`api/src/auth/user.ts` に、型と admin の判定をまとめます。
 
-::diff{file="bff/src/auth/user.ts"}
+::diff{file="api/src/auth/user.ts"}
 
 `cognito:groups` は、どのグループにも入っていなければトークンに含まれません。`?.` と `?? false` で、無いときは「admin ではない」にしています。
 
@@ -53,7 +53,7 @@ Guard が `request.user` に入れたトークンの中身を、BFF の中では
 
 `Note` に `ownerId` を足します。Cognito の `sub` を入れます。
 
-::diff{file="bff/src/notes/note.ts"}
+::diff{file="api/src/notes/note.ts"}
 
 `sub` は、ユーザーごとに決まり、変わらない ID です。メールアドレスは変えられることがあるので、持ち主には `sub` を使います。
 
@@ -61,7 +61,7 @@ Guard が `request.user` に入れたトークンの中身を、BFF の中では
 
 サービスのメソッドに、呼び出したユーザーを渡すようにして、決まりどおりに判定します。
 
-::diff{file="bff/src/notes/notes.service.ts"}
+::diff{file="api/src/notes/notes.service.ts"}
 
 - `create` … 持ち主を、呼び出したユーザーの `sub` にします。持ち主は本文からは受け取りません
 - `findAll` … admin なら全部、そうでなければ `ownerId` が自分の `sub` のものだけを返します
@@ -74,16 +74,16 @@ Guard が `request.user` に入れたトークンの中身を、BFF の中では
 
 前の節で作った `@CurrentUser()` で、ユーザーを受け取ってサービスに渡します。
 
-::diff{file="bff/src/notes/notes.controller.ts"}
+::diff{file="api/src/notes/notes.controller.ts"}
 
 ## 認可をテストで確かめる
 
 認可の判定はサービスの中にあるので、Cognito が無くてもテストで確かめられます。テスト用のユーザーを 3 人（alice・bob・admin）用意して、決まりどおりかを確かめます。
 
-::diff{file="bff/src/notes/notes.service.spec.ts"}
+::diff{file="api/src/notes/notes.service.spec.ts"}
 
 ```bash
-cd bff
+cd api
 npm test
 ```
 
@@ -98,9 +98,9 @@ npm test
 
 画面の型に `ownerId` を足し、メモの下に小さく表示します。admin でサインインしたときに、他の人のメモも並んでいることが分かります。
 
-::diff{file="frontend/lib/notes-api.ts"}
+::diff{file="ui/lib/notes-api.ts"}
 
-::diff{file="frontend/app/notes.tsx"}
+::diff{file="ui/app/notes.tsx"}
 
 ## 動かす
 

@@ -7,7 +7,7 @@ title: 認証 — トークンを検証する
 
 ![06 章 認証 — トークンを検証する](./images/00-thumbnail.svg)
 
-前の章で、画面にはサインインが必要になりました。しかし BFF の API は、curl から誰でも呼べるままです。この節では、BFF が **Cognito のアクセストークンを検証して、サインインした人の呼び出しだけを受け付ける** ようにします。
+前の章で、画面にはサインインが必要になりました。しかし API は、curl から誰でも呼べるままです。この節では、API が **Cognito のアクセストークンを検証して、サインインした人の呼び出しだけを受け付ける** ようにします。
 
 この章では 2 つの言葉を使い分けます。
 
@@ -62,31 +62,31 @@ eyJraWQiOi...（ヘッダー）.eyJzdWIiOi...（ペイロード）.Wd3h1c...（�
 署名と中身の確認には、AWS が公開している **aws-jwt-verify** を使います。公開鍵の取得とキャッシュまで引き受けてくれます。
 
 ```bash
-cd bff
+cd api
 npm install aws-jwt-verify
 ```
 
-::diff{file="bff/package.json"}
+::diff{file="api/package.json"}
 
-## BFF に Cognito の ID を渡す
+## API に Cognito の ID を渡す
 
-BFF も、どのユーザープールのトークンを受け付けるかを知る必要があります。frontend と同じように、見本の `bff/.env.example` を作ります。
+API も、どのユーザープールのトークンを受け付けるかを知る必要があります。UI と同じように、見本の `api/.env.example` を作ります。
 
-::diff{file="bff/.env.example"}
+::diff{file="api/.env.example"}
 
-コピーして `bff/.env` を作り、05 章で控えた値に書き換えます。
+コピーして `api/.env` を作り、05 章で控えた値に書き換えます。
 
 ```bash
 cp .env.example .env
 ```
 
-`nest new --skip-git` で作った `bff/` には `.gitignore` がありません。このままでは、`my-app` を Git で管理したときに `bff/.env` が入ってしまうので、`bff/.gitignore` を作ります。
+`nest new --skip-git` で作った `api/` には `.gitignore` がありません。このままでは、`my-app` を Git で管理したときに `api/.env` が入ってしまうので、`api/.gitignore` を作ります。
 
-::diff{file="bff/.gitignore"}
+::diff{file="api/.gitignore"}
 
-`.env` で始まるファイルを無視し、見本の `.env.example` だけを例外にしています。`git status` に `bff/.env` が出てこないことを確かめてください。
+`.env` で始まるファイルを無視し、見本の `.env.example` だけを例外にしています。`git status` に `api/.env` が出てこないことを確かめてください。
 
-compose では、frontend と同じく `env_file` で渡します。
+compose では、UI と同じく `env_file` で渡します。
 
 ::diff{file="compose.yaml"}
 
@@ -104,7 +104,7 @@ NestJS で「このリクエストを通すかどうか」を決める部品を 
 
 ![AuthGuard の流れ。リクエストの Authorization ヘッダーからトークンを取り出し、Cognito の公開鍵で署名と中身を確かめる。正しければコントローラーへ進み、そうでなければ 401 を返す](./images/01-guard.svg)
 
-::diff{file="bff/src/auth/auth.guard.ts"}
+::diff{file="api/src/auth/auth.guard.ts"}
 
 - `CognitoJwtVerifier.create(...)` … ユーザープール ID・`tokenUse: 'access'`・クライアント ID を渡すと、それに合うトークンだけを正しいとする検証器ができます。ID トークンや、別のアプリケーションクライアントのトークンは通りません
 - `requireEnv` … 環境変数が無ければ、起動のときにエラーで止めます。気づかずに動き続けるより、すぐ分かるほうが直しやすいからです
@@ -116,7 +116,7 @@ NestJS で「このリクエストを通すかどうか」を決める部品を 
 
 `request.user` に入れた中身を、コントローラーのメソッドの引数で受け取れるように、**カスタムデコレーター** を作ります。
 
-::diff{file="bff/src/auth/current-user.decorator.ts"}
+::diff{file="api/src/auth/current-user.decorator.ts"}
 
 `@CurrentUser() user` と書くと、`user` に `request.user` が入ります。
 
@@ -126,33 +126,33 @@ NestJS で「このリクエストを通すかどうか」を決める部品を 
 
 メモの API は、すべてサインインが必要なので、コントローラーに付けます。
 
-::diff{file="bff/src/notes/notes.controller.ts"}
+::diff{file="api/src/notes/notes.controller.ts"}
 
 `AppController` には、トークンの中身を返す `GET /me` を足して、メソッドだけに掛けます。02 章の `GET /` や `GET /greeting` は、これまでどおり誰でも呼べます。
 
-::diff{file="bff/src/app.controller.ts"}
+::diff{file="api/src/app.controller.ts"}
 
 ### テストでは Guard を差し替える
 
 `nest g` が作ったテストは、コントローラーを作るときに Guard も作ります。テストには Cognito の ID が無いので、`requireEnv` がエラーにします。テストでは `overrideGuard` で、Guard を「いつも通す」ものに差し替えます。
 
-::diff{file="bff/src/app.controller.spec.ts"}
+::diff{file="api/src/app.controller.spec.ts"}
 
-::diff{file="bff/src/notes/notes.controller.spec.ts"}
+::diff{file="api/src/notes/notes.controller.spec.ts"}
 
 ## 画面からトークンを送る
 
-frontend の API を呼ぶ関数で、アクセストークンを `Authorization: Bearer ...` ヘッダーに付けます。
+UI の API を呼ぶ関数で、アクセストークンを `Authorization: Bearer ...` ヘッダーに付けます。
 
-::diff{file="frontend/lib/notes-api.ts"}
+::diff{file="ui/lib/notes-api.ts"}
 
 `fetchAuthSession()` は、Amplify が保存しているトークンを返します。期限が切れていれば、リフレッシュトークンで自動で取り直してから返します。
 
-`Authorization` ヘッダーを付けると、ブラウザは GET でもプリフライト（`OPTIONS`）を送ります。04 章の `enableCors` は、プリフライトで聞かれたヘッダーを許可して返すので、BFF 側の変更は要りません。
+`Authorization` ヘッダーを付けると、ブラウザは GET でもプリフライト（`OPTIONS`）を送ります。04 章の `enableCors` は、プリフライトで聞かれたヘッダーを許可して返すので、API 側の変更は要りません。
 
 ## 動かす
 
-`bff/.env` を作ったら、`Ctrl+C` で止めて起動し直します（`env_file` はコンテナを作るときに読まれます）。
+`api/.env` を作ったら、`Ctrl+C` で止めて起動し直します（`env_file` はコンテナを作るときに読まれます）。
 
 ```bash
 podman compose up --build --watch
@@ -217,13 +217,13 @@ NestJS には、認証のための公式パッケージ `@nestjs/authentication`
 
 :::faq
 
-### BFF が `環境変数 COGNITO_USER_POOL_ID がありません` で止まる
+### API が `環境変数 COGNITO_USER_POOL_ID がありません` で止まる
 
-`bff/.env` が無いか、変数の名前が違います。作ったら、`Ctrl+C` で止めて `podman compose up --build --watch` で起動し直してください。
+`api/.env` が無いか、変数の名前が違います。作ったら、`Ctrl+C` で止めて `podman compose up --build --watch` で起動し直してください。
 
 ### 画面で `Invalid token` と出る
 
-`bff/.env` と `frontend/.env.local` の、ユーザープール ID とクライアント ID が同じか確かめてください。どちらかが違うと、画面が受け取ったトークンを BFF が受け付けません。
+`api/.env` と `ui/.env.local` の、ユーザープール ID とクライアント ID が同じか確かめてください。どちらかが違うと、画面が受け取ったトークンを API が受け付けません。
 
 ### ID トークンを送ってはいけないの？
 
@@ -231,6 +231,6 @@ ID トークンは「画面が、サインインした人の情報を知るた�
 
 ### サインアウトしたら、そのトークンは使えなくなる？
 
-既定では、期限（1 時間）までは署名も中身も正しいままなので、BFF は受け付けます。すぐに無効にしたいときは、Cognito の「トークンの取り消し」と、BFF での確認を組み合わせます（このハンズオンでは扱いません）。
+既定では、期限（1 時間）までは署名も中身も正しいままなので、API は受け付けます。すぐに無効にしたいときは、Cognito の「トークンの取り消し」と、API での確認を組み合わせます（このハンズオンでは扱いません）。
 
 :::

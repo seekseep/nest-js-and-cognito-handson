@@ -14,7 +14,7 @@ title: Next.js からサインインする
 ## Amplify を入れる
 
 ```bash
-cd frontend
+cd ui
 npm install aws-amplify @aws-amplify/ui-react
 ```
 
@@ -23,13 +23,13 @@ npm install aws-amplify @aws-amplify/ui-react
 | `aws-amplify` | Cognito とのやり取り（サインイン・トークンの取得と更新）を引き受けるライブラリ |
 | `@aws-amplify/ui-react` | Authenticator などの、React の部品 |
 
-::diff{file="frontend/package.json"}
+::diff{file="ui/package.json"}
 
 `podman compose up --watch` で動かしていれば、`package.json` が変わったのでイメージが作り直されます。
 
 ## サインインの部品を作る
 
-::diff{file="frontend/app/auth.tsx"}
+::diff{file="ui/app/auth.tsx"}
 
 上から順に見ていきます。
 
@@ -45,9 +45,9 @@ npm install aws-amplify @aws-amplify/ui-react
 
 `page.tsx` で、メモの部品を `Auth` で囲みます。
 
-::diff{file="frontend/app/page.tsx"}
+::diff{file="ui/app/page.tsx"}
 
-サインインするまで `Notes` は表示されないので、BFF の呼び出しもサインインしてから始まります。
+サインインするまで `Notes` は表示されないので、API の呼び出しもサインインしてから始まります。
 
 ## 動かす
 
@@ -73,13 +73,13 @@ npm install aws-amplify @aws-amplify/ui-react
 
 ## まだ守れていないもの
 
-画面にはサインインが必要になりましたが、BFF の API はこれまでどおり誰でも呼べます。
+画面にはサインインが必要になりましたが、API はこれまでどおり誰でも呼べます。
 
 ```bash
 curl http://localhost:3001/notes
 ```
 
-サインインの画面は「画面の入り口」を守っているだけで、API を直接呼ばれると防げません。次の章で、BFF がトークンを確かめて、サインインした人の呼び出しだけを受け付けるようにします。
+サインインの画面は「画面の入り口」を守っているだけで、API を直接呼ばれると防げません。次の章で、API がトークンを確かめて、サインインした人の呼び出しだけを受け付けるようにします。
 
 ## この節を終えたときのディレクトリ
 
@@ -93,7 +93,7 @@ curl http://localhost:3001/notes
 
 ### 「Cognito の設定がありません」と出る
 
-`frontend/.env.local` が無いか、変数の名前が違います。`.env.local` を作ったあとは、`Ctrl+C` で止めて `podman compose up --build --watch` で起動し直してください（`env_file` はコンテナを作るときに読まれます）。
+`ui/.env.local` が無いか、変数の名前が違います。`.env.local` を作ったあとは、`Ctrl+C` で止めて `podman compose up --build --watch` で起動し直してください（`env_file` はコンテナを作るときに読まれます）。
 
 ### サインインすると `User pool client ... does not exist.` と出る
 

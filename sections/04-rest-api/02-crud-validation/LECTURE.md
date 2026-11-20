@@ -17,7 +17,7 @@ title: 更新・削除と入力チェック
 
 ## 入力チェックの考え方
 
-前の節で見たとおり、TypeScript の型はコンパイルのときにしか働きません。BFF に届く JSON は、ブラウザや curl から送られてくる「何が入っているか分からない値」です。使う前に、決まりどおりかを確かめる必要があります。
+前の節で見たとおり、TypeScript の型はコンパイルのときにしか働きません。API に届く JSON は、ブラウザや curl から送られてくる「何が入っているか分からない値」です。使う前に、決まりどおりかを確かめる必要があります。
 
 NestJS 12 には、**Zod** のような **スキーマ**（値の決まりを書いたオブジェクト）で確かめる `StandardSchemaValidationPipe` が入っています。スキーマを 1 つ書けば、次の 2 つが手に入ります。
 
@@ -31,19 +31,19 @@ NestJS には、クラスにデコレーターで決まりを書く `ValidationP
 ## Zod を入れる
 
 ```bash
-cd bff
+cd api
 npm install zod
 ```
 
 `package.json` が変わるので、`podman compose up --watch` で動かしていれば、`rebuild` でイメージが作り直されます。
 
-::diff{file="bff/package.json"}
+::diff{file="api/package.json"}
 
 ## スキーマを書く
 
 `note.ts` の `CreateNoteInput` を、Zod のスキーマから作るように書き換えます。
 
-::diff{file="bff/src/notes/note.ts"}
+::diff{file="api/src/notes/note.ts"}
 
 | 書き方 | 意味 |
 |---|---|
@@ -61,13 +61,13 @@ Zod には、すべての項目を省略できるようにする `createNoteSche
 
 `main.ts` で、`StandardSchemaValidationPipe` をアプリ全体に登録します。
 
-::diff{file="bff/src/main.ts"}
+::diff{file="api/src/main.ts"}
 
 この pipe は、`schema` を指定した引数だけを確かめ、それ以外はそのまま通します。02 章の `GET /greeting` や `POST /echo` には影響しません。
 
 ## サービスに 1 件の取得・更新・削除を足す
 
-::diff{file="bff/src/notes/notes.service.ts"}
+::diff{file="api/src/notes/notes.service.ts"}
 
 - `findOne` は、見つからなければ `NotFoundException` を投げます。NestJS がこれを `404 Not Found` の応答に変えてくれます
 - `update` と `remove` は、最初に `findOne` を呼ぶので、無い ID なら同じく `404` になります
@@ -75,7 +75,7 @@ Zod には、すべての項目を省略できるようにする `createNoteSche
 
 ## コントローラーで schema を指定する
 
-::diff{file="bff/src/notes/notes.controller.ts"}
+::diff{file="api/src/notes/notes.controller.ts"}
 
 - `@Body({ schema: createNoteSchema })` のように、`schema` を渡した引数が確かめられます。`@Param('id', { schema: noteIdSchema })` は、URL の `:id` を確かめます
 - 引数には、スキーマを通した後の値が入ります。`title` は前後の空白が取れ、`body` を省いていれば `''` になっています

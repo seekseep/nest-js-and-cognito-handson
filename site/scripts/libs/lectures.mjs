@@ -14,7 +14,7 @@ import path from 'node:path';
 
 import { ROOT } from './paths.mjs';
 
-const PROJECT_MARKERS = ['frontend', 'bff', 'compose.yaml', 'package.json'];
+const PROJECT_MARKERS = ['ui', 'api', 'compose.yaml', 'package.json'];
 const NUMBERED = /^\d\d-/;
 
 function numberedDirs(abs) {
@@ -40,7 +40,7 @@ export function listLectures() {
   return out;
 }
 
-/** そのレクチャーがプロジェクト（frontend/ や bff/）を持つか。 */
+/** そのレクチャーがプロジェクト（ui/ や api/）を持つか。 */
 export function isProjectLecture(lectureRel) {
   return PROJECT_MARKERS.some((marker) => {
     try {

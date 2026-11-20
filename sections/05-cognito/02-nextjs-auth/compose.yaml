@@ -1,34 +1,34 @@
 services:
-  frontend:
+  ui:
     build:
-      context: ./frontend
+      context: ./ui
       dockerfile: Containerfile
     ports:
       - "3000:3000"
     # .env.local の値を、コンテナの環境変数として渡す。
     # .env.local はイメージには入れない（.containerignore で除いている）。
     env_file:
-      - path: ./frontend/.env.local
+      - path: ./ui/.env.local
         required: false
     develop:
       watch:
         # app/ と public/ の変更を、コンテナの中へコピーする
         - action: sync
-          path: ./frontend/app
+          path: ./ui/app
           target: /app/app
         - action: sync
-          path: ./frontend/public
+          path: ./ui/public
           target: /app/public
         - action: sync
-          path: ./frontend/lib
+          path: ./ui/lib
           target: /app/lib
         # 依存を変えたら、イメージを作り直す
         - action: rebuild
-          path: ./frontend/package.json
+          path: ./ui/package.json
 
-  bff:
+  api:
     build:
-      context: ./bff
+      context: ./api
       dockerfile: Containerfile
     ports:
       - "3001:3001"
@@ -36,7 +36,7 @@ services:
       watch:
         # src/ の変更をコンテナの中へコピーする。nest start --watch が拾って再起動する
         - action: sync
-          path: ./bff/src
+          path: ./api/src
           target: /app/src
         - action: rebuild
-          path: ./bff/package.json
+          path: ./api/package.json
