@@ -7,7 +7,7 @@ title: curl と Postman で API を呼ぶ
 
 ![02 章 curl と Postman で API を呼ぶ](./images/00-thumbnail.svg)
 
-API を作っていると、画面を作る前に「API が正しく応答するか」を確かめたい場面がたくさんあります。この節では、ターミナルから HTTP リクエストを送る **curl** と、画面から送る **Postman** の使い方を覚えます。
+画面を作る前に、API が正しく応答するかを確かめる道具として、ターミナルから HTTP リクエストを送る **curl** と、画面から送る **Postman** の使い方を覚えます。
 
 練習用に、API にエンドポイントを 2 つ足します。
 
@@ -28,7 +28,7 @@ API を作っていると、画面を作る前に「API が正しく応答する
 
 ## curl で呼ぶ
 
-curl は macOS・Linux・Windows に最初から入っているコマンドです。Windows では PowerShell 7 から `curl` と打つと、Windows に入っている `curl.exe` が動きます。
+curl は macOS・Linux・Windows に最初から入っているコマンドです。
 
 ### GET
 
@@ -60,7 +60,7 @@ Content-Length: 27
 {"message":"Hello, World!"}
 ```
 
-`Content-Type: application/json` から、本文が JSON だと分かります。リクエストの中身まで詳しく見たいときは `-v` を使います。
+`Content-Type: application/json` から、本文が JSON だと分かります。
 
 ### POST で JSON を送る
 
@@ -94,50 +94,14 @@ curl -X POST http://localhost:3000/echo `
 | `-d '...'` | 本文を送る |
 
 :::warning
-`-H "Content-Type: application/json"` を付け忘れると、curl は本文を **フォームの形式**（`title=...&body=...`）として送ります。JSON を送ったつもりでも API は JSON として読んでくれないので、JSON を送るときは必ず付けます。
+`-H "Content-Type: application/json"` を付け忘れると、curl は本文をフォームの形式として送り、API は JSON として読みません。JSON を送るときは必ず付けます。
 :::
-
-### 結果を見やすくする
-
-`jq` が入っていれば、JSON を整形して表示できます。
-
-```bash
-curl -s "http://localhost:3000/greeting?name=jq" | jq
-```
-
-```json
-{
-  "message": "Hello, jq!"
-}
-```
-
-`-s` は進み具合の表示を消すオプションです。`jq` は、次のコマンドで入れられます。
-
-:::::platform
-::::macos
-```bash
-brew install jq
-```
-::::
-::::linux
-```bash
-sudo apt install -y jq
-```
-::::
-::::windows
-```powershell
-winget install jqlang.jq
-```
-
-入れたら、PowerShell を開き直します。
-::::
-:::::
 
 ## Postman で呼ぶ
 
-[Postman](https://www.postman.com/downloads/) は、リクエストを画面で組み立てて送れるアプリです。送ったリクエストを保存しておけるので、同じ確認を何度も繰り返すときに便利です。
+[Postman](https://www.postman.com/downloads/) は、リクエストを画面で組み立てて送れるアプリです。
 
-1. Postman をインストールして起動する（アカウントを作らずに使う場合は、ログインを飛ばす）
+1. Postman のデスクトップアプリを入れて起動する
 2. **New** → **HTTP** で新しいリクエストを作る
 3. メソッドを `GET`、URL を `http://localhost:3000/greeting?name=Postman` にして **Send**
 
@@ -149,21 +113,14 @@ winget install jqlang.jq
 2. **Body** タブ → **raw** を選び、右の種類を **JSON** にする
 3. 本文に `{"title":"買い物","body":"牛乳を買う"}` を書いて **Send**
 
-**JSON** を選ぶと、Postman が `Content-Type: application/json` ヘッダーを自動で付けます。**Headers** タブで確かめられます。
-
-### curl と行き来する
-
-- curl のコマンドを Postman に取り込む … **Import** に curl のコマンドを貼り付ける
-- Postman のリクエストを curl にする … 右側の **</>**（Code）から **cURL** を選ぶ
-
-この先の章でも、作った API はこの 2 つの道具で確かめます。
+**JSON** を選ぶと、Postman が `Content-Type: application/json` ヘッダーを自動で付けます。
 
 ## 参考にした公式ドキュメント
 
 この節は、次の公式ドキュメントをもとに書いています。
 
 - [NestJS: Controllers](https://docs.nestjs.com/controllers) … `@Query()`・`@Body()`・`@Post()` の使い方
-- [curl: man page](https://curl.se/docs/manpage.html) … `-i`・`-X`・`-H`・`-d`・`-s` などのオプション
+- [curl: man page](https://curl.se/docs/manpage.html) … `-i`・`-X`・`-H`・`-d` などのオプション
 - [Postman Docs](https://learning.postman.com/docs/introduction/overview/) … Postman でのリクエストの送り方
 
 ## この節を終えたときのディレクトリ
@@ -179,13 +136,5 @@ winget install jqlang.jq
 ### `curl: (7) Failed to connect to localhost port 3000` と出る
 
 API が起動していません。`api/` で `npm run start:dev` を実行してから試してください。
-
-### Postman から `localhost` に届かない
-
-Web 版の Postman（ブラウザで開く Postman）からは、そのままでは手元の `localhost` に届きません。デスクトップアプリを使うか、Postman Agent を入れてください。
-
-### Windows で curl の例が動かない
-
-Windows に最初から入っている **Windows PowerShell 5.1** では、`curl` が `Invoke-WebRequest` の別名になっていて、オプションの書き方が違います。01 章で入れた **PowerShell 7**（`pwsh`）で実行してください。`$PSVersionTable.PSVersion` で、使っている PowerShell のバージョンが分かります。
 
 :::

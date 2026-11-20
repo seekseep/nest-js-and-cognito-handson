@@ -38,7 +38,9 @@ sections/<sec>/<lec>/
 - 言語は **TypeScript**（handson-builder 既定の「JS のみ」から外している。NestJS と OpenAPI からの型生成を扱うため）
 - Podman・compose・Next.js は使わない
 - パッケージマネージャはレクチャー側が **npm**（`api/package-lock.json`）、サイトが pnpm
-- `nest new` が生成したファイルは、教える必要がない限りそのまま残す（受講者の手元と一致させるため）
+- `api/` は、ビルドして動かすのに要るものだけにする（`src/`・`public/`・`package.json`・`package-lock.json`・`tsconfig.json`・`tsconfig.build.json`・`nest-cli.json`・`.gitignore`、06 章から `openapi.yaml`・`redocly.yaml`・`.vscode/extensions.json`）。
+  テスト（Vitest・`test/`・`*.spec.ts`）、lint・整形（oxlint・Prettier）、`AGENTS.md`・`README.md`・`.gitattributes` は持たない。
+  `nest new --skip-tests --no-observe` のあとに消す手順は 02-01 に 1 回だけ書く
 - ポート: `nest new` の既定の 3000
 - 秘密の実値は絶対にコミットしない
 
@@ -62,6 +64,14 @@ sections/<sec>/<lec>/
   - パネルの中に見出し（`##`・`###`）は書かない（目次に残って、隠れた所を指してしまう）
   - 実装は site/src/plugins/remark-platform.mjs・site/src/scripts/platform-client.js・site/src/styles/platform.css・site/src/components/ThemeSelect.astro（Cognito + Entra ID のハンズオンから移したもの）
 - 「次へ」の見出しやリンクは書かない（Starlight の前へ／次へと重複するため）
+
+## 本文の分量
+
+- 目標は、できるだけ少ない分量で重要な要素だけを理解させること。「あったら良い」説明は書かない
+- 手順は 1 通りに絞る。別のやり方・任意の道具・「〜でもかまいません」・豆知識・コラム・背景の長い説明・言い直しは書かない
+- `::diff` の下の箇条書きは、そのコードを読むのに欠かせない点だけにする
+- `:::faq` は、手順どおりに進めても本当につまずく問題だけにする
+- 「参考にした公式ドキュメント」は、本文に書いた話題のリンクだけにする
 
 ## サイト（site/）の開発
 

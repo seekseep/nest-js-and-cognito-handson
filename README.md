@@ -12,27 +12,21 @@ NestJS で、メモを読み書きする REST API を作るハンズオンです
 - **画面** — HTML 1 枚。NestJS から配り、`fetch` で API を呼びます
 - **API の約束** — OpenAPI。Redocly で確かめ、openapi-typescript で型を作ります
 
-必要なのは Node.js と VS Code だけです。コンテナや、クラウドのアカウントは使いません。
-
-## 進め方
-
-各節のページは「その節でやること → 手順（コードの差分）→ 動かして確かめる → この節を終えたときのディレクトリ」の順に並んでいます。ページの最後には、その節を終えた状態のプロジェクトを ZIP でダウンロードできるボタンがあります。途中の節から始めたいときや、手元のコードと見比べたいときに使ってください。
-
-詳しくは [進め方](./sections/README.md) を見てください。
+必要なのは Node.js と VS Code だけです。各節のページの最後で、その節を終えた状態のプロジェクトを ZIP でダウンロードできます。詳しくは [進め方](./sections/README.md) を見てください。
 
 ## このハンズオンで作るもの
 
 ### 01. 環境構築
 
-Node.js 26 と VS Code を入れます。Node.js は 26 が使えれば、公式サイトのインストーラーでもバージョン管理ツール（nvm など）でもかまいません。
+Node.js 26 と VS Code を入れます。
 
 ### 02. Hello World
 
-NestJS のプロジェクトを作り、「Hello World」を返します。NestJS で使う `@Controller()` のようなデコレーターが、TypeScript の標準ではなく NestJS が前提にしている書き方であることも押さえます。API は curl と Postman で呼び出します。
+NestJS のプロジェクトを作り、「Hello World」を返します。`@Controller()` のようなデコレーターの仕組みを押さえ、API を curl と Postman で呼び出します。
 
 ### 03. REST API
 
-メモの API（一覧・1 件の取得・作成・更新・削除）を作り、Zod で入力チェックを入れます。ファイルは NestJS の決まり（`dto/`・`entities/`）に合わせて置きます。
+メモの API（一覧・1 件の取得・作成・更新・削除）を作り、Zod で入力チェックを入れます。
 
 ### 04. エラーとログ
 
@@ -48,7 +42,7 @@ API の約束を OpenAPI（YAML）で書きます。VS Code の拡張機能と R
 
 ## 関連するハンズオン
 
-このハンズオンは、次の 2 つと合わせて 1 つのシリーズになっています。どれから始めても進められます。
+次の 2 つと合わせて 1 つのシリーズです。どれから始めても進められます。
 
 - [NestJS と Cognito で認証と認可](https://github.com/seekseep/nestjs-cognito-auth-handson)
 - [NestJS のテスト](https://github.com/seekseep/nestjs-testing-handson)

@@ -14,7 +14,7 @@ title: エラーの形をそろえる
 {"message":"Note c126ae93-... not found","error":"Not Found","statusCode":404}
 ```
 
-`message` が、入力チェックのときは配列、それ以外は文字列です。API を呼ぶ側は、どちらかを見分けて扱う必要があります。
+`message` が、入力チェックのときは配列、それ以外は文字列で、呼ぶ側が見分ける必要があります。
 
 この節では **ExceptionFilter** で、すべてのエラーを 1 つの形にそろえます。
 
@@ -38,12 +38,12 @@ NestJS では、処理の途中で投げられた例外を **ExceptionFilter** �
 
 ::diff{file="api/src/common/all-exceptions.filter.ts"}
 
-- `ErrorBody` … この API が返すエラーの形を、TypeScript の型で書いています。応答の本文（`body`）にこの型を付けているので、項目を入れ忘れたり、名前を間違えたりするとコンパイルエラーになります。API を呼ぶ人に見せる「約束」でもあるので、項目ごとに説明を書いておきます
+- `ErrorBody` … この API が返すエラーの形を TypeScript の型で書いています。項目を入れ忘れるとコンパイルエラーになります
 - `HttpException`（`BadRequestException`・`NotFoundException` など）なら、そのステータスを使います。それ以外の例外は `500` にします
 - `error` は、Node.js の `STATUS_CODES`（`400` なら `Bad Request`）から作ります
 - `toMessages` は、例外の中身から説明を取り出し、いつも配列にします。入力チェックの例外の中身は `{ message: string[] }`、`NotFoundException('...')` の中身は `{ message: string }` です
-- `500` のときは、利用者には `Internal server error` とだけ返し、例外の中身（スタックトレース）はログに出します。データベースのエラーの文言などには、見せてはいけない情報が入ることがあるからです
-- `httpAdapter.reply` で応答を返します。Express の `Response` を直接使わないので、HTTP のアダプターを Fastify などに変えても同じ filter が使えます
+- `500` のときは、利用者には `Internal server error` とだけ返し、例外の中身（スタックトレース）はログに出します。見せてはいけない情報が入ることがあるからです
+- `httpAdapter.reply` で応答を返します
 
 ## アプリ全体に登録する
 
@@ -51,24 +51,7 @@ NestJS では、処理の途中で投げられた例外を **ExceptionFilter** �
 
 ::diff{file="api/src/app.module.ts"}
 
-`APP_FILTER` で登録すると、filter も NestJS が作ってくれるので、コンストラクターで `HttpAdapterHost` を受け取れます。コントローラーごとに `@UseFilters()` で付ける方法もありますが、形をそろえたいのはすべてのエラーなので、アプリ全体に登録します。
-
-## テストで確かめる
-
-filter の動きを、テストで確かめます。HTTP のアダプターをまねたものを渡し、`reply` に何が渡されたかを見ます。
-
-::diff{file="api/src/common/all-exceptions.filter.spec.ts"}
-
-`vi.fn()` は、呼ばれた引数を覚えておく「まねの関数」です。`vi.spyOn(Logger.prototype, 'error')` で、`500` のときにログが出たことも確かめています。
-
-```bash
-npm test
-```
-
-```text
- Test Files  4 passed (4)
-      Tests  6 passed (6)
-```
+`APP_FILTER` で登録すると filter も NestJS が作るので、コンストラクターで `HttpAdapterHost` を受け取れます。
 
 ## 動かす
 
@@ -120,20 +103,4 @@ curl http://localhost:3000/nope
 
 :::download
 [この節を終えた状態をダウンロード](./project.zip)
-:::
-
-:::faq
-
-### `@Catch(HttpException)` と書くのと何が違う？
-
-`@Catch(HttpException)` は、`HttpException` とその仲間だけを受け取ります。思いがけない例外（コードの間違いや、つながらない外部のサービス）は受け取らず、NestJS の既定の `500` の応答になります。形をそろえるには、`@Catch()` ですべてを受け取ります。
-
-### 500 のエラーの中身を、開発中は画面で見たい
-
-`npm run start:dev` のターミナルに、スタックトレースが出ています。応答に入れるのは、公開したときに中身が漏れる原因になるので避けます。
-
-### エラーに独自のコード（`NOTE_NOT_FOUND` など）を入れたい
-
-`ErrorBody` に `code` を足し、例外を投げるときに渡して、filter で取り出します。
-
 :::
