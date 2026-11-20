@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-このリポジトリ（Next.js SSG + NestJS API + Cognito のハンズオン教材）で作業するときの決まり。
+このリポジトリ（NestJS で作る REST API のハンズオン教材）で作業するときの決まり。
 
 ## 必ず守ること
 

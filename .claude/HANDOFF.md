@@ -1,65 +1,48 @@
-# 引き継ぎメモ（2026-11-19 更新）
+# 引き継ぎメモ（2026-11-20 更新）
 
 ## 状況
 
-- 01〜10 章をすべてマージ済み（#2〜#4、#16〜#18、#20〜#23、10 章は #27）。GitHub Pages へのデプロイも成功している
-- 2026-11-20: OS の切り替え（#28）、nvm を必須にしない（#29）、frontend/bff → ui/api と過去のハンズオンの削除（#30）、Windows を PowerShell 7 の手順に（この PR）
-- 残りは #19「本物の Cognito での手元確認」だけ。AWS の認証情報が無い環境で作ったので、05・06・08・09 章の Cognito を使う部分は実物で試していない
-  - 代わりに、手元で作った RSA 鍵で Cognito と同じ形のアクセストークンに署名し、`aws-jwt-verify` の `cacheJwks` に公開鍵を入れて、Guard・認可・middleware を HTTP 越しに確かめた（各 PR の本文を参照）
+- 2026-11-20: 大きな 1 本（Next.js + NestJS + Cognito + Podman）を 3 本に分けた。このリポジトリは A「NestJS で作る REST API」（#34）
+  - B「Cognito で認証と認可」… seekseep/nestjs-cognito-auth-handson
+  - C「テスト」… seekseep/nestjs-testing-handson
+  - どれも他を前提にしない（知識としては関係する）
+- リポジトリ名を nest-js-and-cognito-handson から nestjs-rest-api-handson に変えた。サイトは https://seekseep.github.io/nestjs-rest-api-handson/
+- 分ける前の教材（Next.js・Podman・Cognito・テストの章）は、#34 より前の main の履歴にある
 
 ## 環境
 
-- Node.js 26（nvm。default を 26 にした）、pnpm は `site/package.json` の packageManager（11.21.0）に従う
-- Podman 6.2（macOS、libkrun の Podman マシン）、compose のプロバイダは docker-compose 5.8
-- `PODMAN_COMPOSE_WARNING_LOGS=false` で `podman compose` のお知らせを消せる
+- Node.js 26（nvm。シェルによっては 24 が先に出るので `nvm use 26`）、pnpm は `site/package.json` の packageManager に従う
 
-## 作っていて分かったこと（本文にも書いてある）
+## 章と節
 
-- compose の `build` は `dockerfile: Containerfile` を明示する（既定は Dockerfile）
-- ファイルの反映はバインドマウントではなく `develop.watch`（sync / rebuild）。`podman compose up --build --watch`。ファイルの削除は同期されない
-- `node:26-slim` には `ps` が無く、`nest start --watch` が古いプロセスを止められず EADDRINUSE になる。API の Containerfile で `procps` を入れる
-- `.env.local` / `api/.env` はイメージに入れず（`.containerignore`）、compose の `env_file`（`required: false`）で渡す
-- `nest new --skip-git` の API には `.gitignore` が無いので、06-01 から `api/.gitignore` を置いている
-- Zod の `createNoteSchema.partial()` は `default('')` が残るので、更新用のスキーマは別に書く
-- openapi-typescript 7.13 は `typescript ^5` 前提。API（TypeScript 6）には入れず、`my-app/` 直下の `package.json` にまとめた。`redocly.yaml` の `x-openapi-ts` は `output` しか読まれないので、`--default-non-nullable false` はコマンドに書く
-- `satisfies z.ZodType<unknown, Api>` は一方向なので、`Expect<Equal<z.input<...>, Api>>` も併用している
-- `my-app/package-lock.json` があると Next.js がルートを取り違えるので、`next.config.ts` に `turbopack.root`。ルートを変えたら `.next` を消す
-- middleware は Guard より先に動く。middleware の例外を拾えるのはグローバルの ExceptionFilter（`APP_FILTER`）だけ
+| 章 | 節 |
+|---|---|
+| 01-setup | 01-nodejs（本文だけ。Node.js 26 と VS Code。Windows は PowerShell 7） |
+| 02-hello-world | 01-nestjs・02-decorators（本文だけ）・03-curl-postman |
+| 03-rest-api | 01-notes-api・02-crud-validation |
+| 04-errors-and-logs | 01-error-handling・02-logging |
+| 05-html | 01-call-from-html |
+| 06-openapi | 01-writing・02-extensions・03-type-generation・04-use-types |
 
 ## 決まっている設計
 
-- 各節のディレクトリ = その節を終えた時点のプロジェクト（`ui/` = Next.js、`api/` = NestJS。
-  03 章から `compose.yaml` と各 `Containerfile`）
-- 次の節は `tools/copy-lecture.sh <前の節> <次の節>` でコピーしてから差分を足す。
-  サムネイルは `tools/thumbnail.mjs` の THUMBNAILS に足して `node tools/thumbnail.mjs`
-- 本文: 変更は `::diff{file="..."}`（前の節との差分を自動生成。新規ファイルは全行 `+`）。
-  前の節が無い・生成直後との差分を見せたいときだけ `:::code{filepath=... offset=... newOffset=...}` を手で書く。
-  末尾は「この節を終えたときのディレクトリ」→ `::tree` → `:::download` + `[...](./project.zip)`、最後に `:::faq`
-- Next.js 16: `output: "export"`。create-next-app が入れる `cacheComponents` / `partialPrefetching` は
-  export と両立しない（`PPR cannot be enabled in export mode`）ので外す。
-  `ui/.gitignore` は `.env*` を無視するので、05 章で `!.env.example` を足す
-- NestJS 12: ESM（import の末尾は `.js`）、Vitest、oxlint。`nest new api --package-manager npm --skip-git`。
-  ポートは API 3001・UI 3000。生成された `AppController` の `GET /` は残す（spec が通るように）
-- 03 章: Podman マシン（macOS）、compose プロバイダは docker-compose。node:26-slim。ファイル変更の反映（watch）を確かめる
-- 04 章: メモ API（メモリ上に保持）。入力チェックは Zod + NestJS 12 の `StandardSchemaValidationPipe`
-  （`@Body({ schema })`）。03 節で Next.js（クライアントコンポーネント）から fetch するので CORS を有効にする
-- 05 章: Cognito のユーザープールとアプリクライアントの作り方（コンソール）。aws-amplify v6 +
-  @aws-amplify/ui-react の Authenticator。ID は `.env.example` にプレースホルダだけ
-- 06 章: 自作の Guard + aws-jwt-verify でアクセストークンを検証（認証）。認可は `cognito:groups` の admin と、
-  メモの持ち主（`sub`）。`@nestjs/authentication`（JwtBearerProvider、jwks + `audience: false`）はコラムで紹介
-- 07 章: `openapi.yaml` を手で書く（設計が先）。VS Code の拡張機能、openapi-typescript で型を生成
-- 08 章: 生成した型を API（Zod スキーマに `satisfies`）と UI（openapi-fetch）で使う
-- 09 章: APP_GUARD + `@Public()` でアプリ全体、middleware の `forRoutes` でパス単位、ExceptionFilter で
-  エラーの形をそろえる、ロギング用 middleware
-- 10 章: テスト。単体（Vitest。nest new の既定なので Jest にしない）、結合（Vitest + supertest。
-  `test/*.integration-spec.ts`。nest new の `app.e2e-spec.ts` は改名）、E2E（Playwright。my-app/ 直下）。
-  テストでの認証は「トークンの直書き」（`alice-token` などを通す `FakeTokenVerifier`。E2E では
-  API の `USE_FAKE_AUTH=true` と UI の `NEXT_PUBLIC_FAKE_TOKEN`）。本来の方法（テスト用ユーザーで
-  サインイン・storageState など）には触れない、と本文に書く（ユーザーの指示）
-- 本物の Cognito で確認できない環境では、ビルドと「トークン無しなら 401」までを確かめ、
-  残りは PR に「手元で確認が必要」と書く
-- S3 は章を作らず、02-01 のコラムで `aws s3 sync out/` を紹介する（イシュー #1）
+- プロジェクトは NestJS 1 つだけ（`sections/<章>/<節>/api/`）。Podman・compose・Next.js は使わない
+- `npx @nestjs/cli@12 new api --package-manager npm`（`--skip-git` を付けないので `api/.gitignore` がある）。ポートは既定の 3000
+- 次の節は `tools/copy-lecture.sh <前の節> <次の節>` でコピーしてから差分を足す。サムネイルは `tools/thumbnail.mjs`
+- ファイル名は NestJS の標準: `notes/dto/create-note.dto.ts`・`update-note.dto.ts`、`notes/entities/note.entity.ts`。
+  型は `CreateNoteDto`・`UpdateNoteDto`・`Note`。`noteIdSchema` はコントローラーの中
+- 入力チェックは Zod + `StandardSchemaValidationPipe`（`@Body({ schema })`）。更新用のスキーマは `partial()` を使わず別に書く（`default('')` が残るため）
+- 04-01: `AllExceptionsFilter`（`APP_FILTER`）。エラーの形 `ErrorBody`（`statusCode, error, messages, path, timestamp`）は手で書き、06-04 で生成した型に置き換える
+- 04-02: `LoggingMiddleware`（`forRoutes({ path: '{*splat}', method: RequestMethod.ALL })`）。ユーザーは出さない
+- 05-01: `app.useStaticAssets(join(import.meta.dirname, '..', 'public'))`（`NestExpressApplication`）。`AppController` の `GET /` を消し、あいさつは `AppService.getGreeting()` に移した。spec と e2e-spec も `/greeting` に。同じオリジンなので CORS は不要（コラムだけ）
+- 06 章: `api/openapi.yaml`・`api/redocly.yaml`・`api/.vscode/extensions.json`。認証（security・/me・/admin）は載せない。
+  Redocly の `security-defined`・`operation-4xx-response` は切っている
+- openapi-typescript 7.13 は `typescript@^5` を peer に持つ。API は TypeScript 6 なので、`api/package.json` の
+  `overrides: { "openapi-typescript": { "typescript": "$typescript" } }` で入れる。出力は `src/api/schema.d.ts`（`--default-non-nullable false`）
+- 06-04: `Note`・`ErrorBody` を生成した型に。Zod のスキーマは `satisfies z.ZodType<unknown, ...>` と `Expect<Equal<z.input<...>, ...>>` で照らし合わせる
 
 ## 確かめ方のメモ
 
-- サイトの見た目: `site/dist` をベースパス付きで配って、Playwright（playwright-core + 手元の Chrome）で要素のスクリーンショットを撮った
+- 各節の `api/` で `npm install` → `npm run build`・`npm run lint`・`npm test`・`npm run test:e2e`。06 章は `npm run lint:api`・`npm run check:api`
+- 05 章の画面のスクリーンショットは Playwright（playwright-core + 手元の chromium）で撮った
+- サイトの見た目: `site/dist` をベースパス付きで配って、Playwright で要素のスクリーンショットを撮った

@@ -17,7 +17,7 @@ import lectureSync from './src/integrations/lecture-sync.mjs';
 
 // GitHub リポジトリ URL。sync-lectures.mjs / build-downloads.mjs が
 // libs/astro-config.mjs 経由でここ（repoUrl）を読む。リポジトリを変えたらここだけ直す。
-const repoUrl = 'https://github.com/seekseep/nest-js-and-cognito-handson';
+const repoUrl = 'https://github.com/seekseep/nestjs-rest-api-handson';
 
 // ◯✕クイズ（`:::questions`）の client スクリプト。全ページの <head> に inline で
 // 注入し、`.quiz` が無いページでは何もしない。別ファイル参照だと base の解決や
@@ -87,7 +87,7 @@ function calloutIntegration() {
 
 export default defineConfig({
   site: 'https://seekseep.github.io',
-  base: '/nest-js-and-cognito-handson',
+  base: '/nestjs-rest-api-handson',
   trailingSlash: 'always',
   markdown: {
     rehypePlugins: [
