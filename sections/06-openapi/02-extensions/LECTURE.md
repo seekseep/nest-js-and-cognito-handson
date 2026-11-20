@@ -17,18 +17,10 @@ title: VS Code 拡張機能と lint
 | Redocly OpenAPI | `Redocly.openapi-vs-code` | `redocly.yaml` の決まりで間違いを表示、参照先ののぞき見 |
 | YAML | `redhat.vscode-yaml` | YAML の字下げや書き方の間違いを表示 |
 
-### プロジェクトで勧める
-
-`.vscode/extensions.json` に拡張機能の ID を書いておくと、このフォルダを VS Code で開いた人に「入れておくとよい拡張機能」として表示されます。
-
-::diff{file="api/.vscode/extensions.json"}
-
-`nest new` が作った `.gitignore` は `.vscode/` の中を Git に入れない設定ですが、`extensions.json` だけは入れるように書かれています（`!.vscode/extensions.json`）。
-
-`api/` を VS Code で開くと、右下に「このワークスペースには拡張機能の推奨事項があります」と出るので、**インストール** を押します。
+VS Code の拡張機能のビューで ID を検索して、3 つとも入れます。
 
 :::warning
-VS Code では `api/` を開いてください（`handson/` や `api/src/` ではなく）。`.vscode/` と、後で作る `redocly.yaml` は、開いたフォルダの直下にあるときに読まれます。
+VS Code では `api/` を開いてください（`handson/` や `api/src/` ではなく）。後で作る `redocly.yaml` は、開いたフォルダの直下にあるときに読まれます。
 :::
 
 ## 拡張機能を使ってみる
@@ -100,7 +92,7 @@ Woohoo! Your API description is valid. 🎉
 
 この節は、次の公式ドキュメントをもとに書いています。
 
-- [VS Code: Extension Marketplace](https://code.visualstudio.com/docs/configure/extensions/extension-marketplace) … `.vscode/extensions.json` の推奨の拡張機能
+- [VS Code: Extension Marketplace](https://code.visualstudio.com/docs/configure/extensions/extension-marketplace) … 拡張機能の探し方と入れ方
 - [Redocly CLI: lint](https://redocly.com/docs/cli/commands/lint) … `redocly lint` で確かめる
 - [Redocly CLI: Configuration](https://redocly.com/docs/cli/configuration) … `redocly.yaml` の `extends` と `rules`
 - [Redocly CLI: Recommended ruleset](https://redocly.com/docs/cli/rules/recommended) … `recommended` に入っている決まり
