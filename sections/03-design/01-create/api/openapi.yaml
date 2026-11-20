@@ -1,0 +1,51 @@
+openapi: 3.0.3
+info:
+  title: メモ API
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+paths:
+  /notes:
+    post:
+      summary: メモを作る
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [title]
+              properties:
+                title:
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+                body:
+                  type: string
+                  maxLength: 1000
+                  default: ''
+      responses:
+        '201':
+          description: 作ったメモ
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [id, title, body, createdAt, updatedAt]
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  title:
+                    type: string
+                  body:
+                    type: string
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
+        '400':
+          description: 入力が決まりに合わない

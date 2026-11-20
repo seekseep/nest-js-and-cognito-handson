@@ -2,7 +2,7 @@
 
 ## プロジェクト概要
 
-NestJS でメモの REST API を、1 つのプロジェクトを節ごとに育てながら作るハンズオン教材（シリーズの A。
+メモの REST API を、OpenAPI で設計してから NestJS で実装し、NestJS の形に整理するハンズオン教材（シリーズの A。
 B「Cognito で認証と認可」は seekseep/nestjs-cognito-auth-handson、C「テスト」は seekseep/nestjs-testing-handson。
 どれも他を前提にしない）。
 handson-builder スキルの骨格（`sections/` ＋ Starlight の `site/` ＋ GitHub Pages）を使っている。
@@ -12,8 +12,8 @@ handson-builder スキルの骨格（`sections/` ＋ Starlight の `site/` ＋ G
 
 | 用語 | 指すもの | 例 |
 |---|---|---|
-| **章** | `sections/<NN-section>/`。章立ては固定（イシュー #1） | `03-rest-api/` |
-| **節** | `sections/<NN-section>/<NN-lecture>/`。増減してよい | `03-rest-api/01-notes-api/` |
+| **章** | `sections/<NN-section>/`。章立ては固定（イシュー #1） | `03-design/` |
+| **節** | `sections/<NN-section>/<NN-lecture>/`。増減してよい | `03-design/01-create/` |
 
 - 節のディレクトリは **その節を終えた時点のプロジェクト** を丸ごと持つ（`api/` だけ）
 - 次の節は、前の節のディレクトリをコピーして差分を足して作る
@@ -29,16 +29,21 @@ sections/<sec>/<lec>/
 ├── README.md         起動方法（ZIP に入る。::tree には出さない）
 ├── LECTURE.md        教材本文（ZIP に入らない）
 ├── images/           説明図（ZIP に入らない）
-└── api/              NestJS（nest new api --package-manager npm で作ったもの。.gitignore を持つ）
-    ├── public/       05 章から。NestJS が配る HTML
-    ├── openapi.yaml  06 章から
-    └── redocly.yaml  06 章から
+└── api/              NestJS（nest new で作ったもの。.gitignore を持つ）
+    ├── openapi.yaml  03 章から。API の設計（OpenAPI 3.0.3）
+    └── notes.db      04 章から。SQLite のデータ（.gitignore 済み）
 ```
 
+- 章立て: 01 準備 / 02 Hello World / 03 設計する（1 節 1 操作で `openapi.yaml` に書き足し、最後に `components` にまとめる）/
+  04 実装する（`node:sqlite` の `DatabaseSync`。1 節 1 操作でコントローラーに直接書く）/ 05 整理する（1 節で 1 つだけ分け、動きは変えない）
+- 動作確認は、42Crunch の OpenAPI (Swagger) Editor の **Try it**（`openapi.yaml` の各操作の下に出る）で行う。
+  Try it は拡張機能の中（Node.js）から送るので CORS は要らない。Try it は OpenAPI 2.0 / 3.0.x だけに出るので、`openapi: 3.0.3` で書く
+- curl・Postman・Redocly CLI などの、この流れに要らない道具は使わない
+
 - 言語は **TypeScript**（handson-builder 既定の「JS のみ」から外している。NestJS と OpenAPI からの型生成を扱うため）
-- Podman・compose・Next.js は使わない
+- Podman・compose・コンテナ・Next.js は使わない。Node.js と VS Code だけで進める
 - パッケージマネージャはレクチャー側が **npm**（`api/package-lock.json`）、サイトが pnpm
-- `api/` は、ビルドして動かすのに要るものだけにする（`src/`・`public/`・`package.json`・`package-lock.json`・`tsconfig.json`・`tsconfig.build.json`・`nest-cli.json`・`.gitignore`、06 章から `openapi.yaml`・`redocly.yaml`）。
+- `api/` は、ビルドして動かすのに要るものだけにする（`src/`・`package.json`・`package-lock.json`・`tsconfig.json`・`tsconfig.build.json`・`nest-cli.json`・`.gitignore`、03 章から `openapi.yaml`）。
   テスト（Vitest・`test/`・`*.spec.ts`）、lint・整形（oxlint・Prettier）、`AGENTS.md`・`README.md`・`.gitattributes` は持たない。
   `nest new --skip-tests --no-observe` のあとに消す手順は 02-01 に 1 回だけ書く
 - ポート: `nest new` の既定の 3000

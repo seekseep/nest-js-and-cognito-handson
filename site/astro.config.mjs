@@ -109,7 +109,7 @@ export default defineConfig({
     calloutIntegration(),
     starlight({
       title: 'NestJS で作る REST API ハンズオン',
-      description: 'NestJS でメモの REST API を作り、入力チェック・エラー・ログ・HTML からの呼び出し・OpenAPI までを、1 つのプロジェクトを育てながら学ぶ',
+      description: 'OpenAPI で設計してから NestJS と SQLite でメモの REST API を実装し、NestJS の形に整理する。Node.js と VS Code だけで進める',
       customCss: [
         './src/styles/readability.css',
         './src/styles/external-links.css',
@@ -155,12 +155,11 @@ export default defineConfig({
         { label: '開発ツール', link: '/tools/' },
         // 章を足したらここに足す（章は固定。節は autogenerate が拾う）。
         // Starlight v0.39+ では autogenerate を items 配列に入れる（label と autogenerate を同階層に書けない）。
-        { label: '01. 環境構築', items: [{ autogenerate: { directory: '01-setup' } }] },
+        { label: '01. 準備', items: [{ autogenerate: { directory: '01-setup' } }] },
         { label: '02. Hello World', items: [{ autogenerate: { directory: '02-hello-world' } }] },
-        { label: '03. REST API', items: [{ autogenerate: { directory: '03-rest-api' } }] },
-        { label: '04. エラーとログ', items: [{ autogenerate: { directory: '04-errors-and-logs' } }] },
-        { label: '05. HTML から呼ぶ', items: [{ autogenerate: { directory: '05-html' } }] },
-        { label: '06. OpenAPI', items: [{ autogenerate: { directory: '06-openapi' } }] },
+        { label: '03. 設計する', items: [{ autogenerate: { directory: '03-design' } }] },
+        { label: '04. 実装する', items: [{ autogenerate: { directory: '04-implementation' } }] },
+        { label: '05. 整理する', items: [{ autogenerate: { directory: '05-refactor' } }] },
       ],
       editLink: {
         baseUrl: `${repoUrl}/edit/main/`,

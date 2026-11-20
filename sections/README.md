@@ -15,11 +15,13 @@ sidebar:
 ```text
 sections/
 ├── 02-hello-world/
-│   ├── 01-nestjs/
-│   │   └── api/        ← 02 章 01 節を終えた時点
-│   └── 03-curl-postman/
-│       └── api/        ← 02 章 03 節を終えた時点
-├── 03-rest-api/
+│   └── 01-nestjs/
+│       └── api/        ← 02 章 01 節を終えた時点
+├── 03-design/
+│   ├── 01-create/
+│   │   └── api/        ← 03 章 01 節を終えた時点
+│   └── ...
+├── 04-implementation/
 │   └── ...
 ```
 
@@ -57,7 +59,10 @@ sections/
 
 | 道具 | 役割 | 入れる節 |
 |---|---|---|
-| Node.js 26（LTS） | NestJS を動かす | 01 章 |
-| VS Code | エディタ。OpenAPI の拡張機能も使う | 01 章 |
-| curl / Postman | API を呼び出して確かめる | 02 章 |
-| ブラウザ | HTML の画面から API を呼ぶ | 05 章 |
+| Node.js 26（LTS） | NestJS を動かす。SQLite（`node:sqlite`）も入っている | 01 章 |
+| VS Code | エディタ | 01 章 |
+| OpenAPI (Swagger) Editor | `openapi.yaml` のプレビューと、そこからの動作確認（Try it） | 01 章 |
+
+## 動作確認のしかた
+
+04 章からは、API を `npm run start:dev` で起動したまま、VS Code で `api/openapi.yaml` を開き、各操作（`get:`・`post:` など）の下の行に出る **Try it** からリクエストを送って確かめます。
