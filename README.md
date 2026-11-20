@@ -5,40 +5,35 @@ title: NestJS で作る REST API ハンズオン
 
 # NestJS で作る REST API ハンズオン
 
-NestJS で、メモを読み書きする REST API を作るハンズオンです。**1 つのプロジェクトを少しずつ育てながら**、入力チェック・エラーの形・ログ・HTML の画面からの呼び出し・OpenAPI までを進めます。
+メモを読み書きする REST API を、**OpenAPI で設計してから** NestJS で実装するハンズオンです。1 つのプロジェクト（`api/`）を、節ごとに少しずつ育てます。
 
-- **API** — NestJS 12（TypeScript）。メモはメモリ上に持つので、データベースは要りません
-- **入力チェック** — Zod と NestJS の `StandardSchemaValidationPipe`
-- **画面** — HTML 1 枚。NestJS から配り、`fetch` で API を呼びます
-- **API の約束** — OpenAPI。Redocly で確かめ、openapi-typescript で型を作ります
+- **設計** — OpenAPI（`openapi.yaml`）。VS Code の拡張機能でプレビューし、そこからリクエストを送って動作確認します
+- **API** — NestJS 12（TypeScript）。`openapi.yaml` から作った型と Zod の入力チェックを使います
+- **データベース** — Node.js に入っている SQLite（`node:sqlite`）
 
 必要なのは Node.js と VS Code だけです。各節のページの最後で、その節を終えた状態のプロジェクトを ZIP でダウンロードできます。詳しくは [進め方](./sections/README.md) を見てください。
 
 ## このハンズオンで作るもの
 
-### 01. 環境構築
+### 01. 準備
 
-Node.js 26 と VS Code を入れます。
+Node.js 26 と VS Code、OpenAPI の拡張機能を入れます。
 
 ### 02. Hello World
 
-NestJS のプロジェクトを作り、「Hello World」を返します。`@Controller()` のようなデコレーターの仕組みを押さえ、API を curl と Postman で呼び出します。
+NestJS のプロジェクトを作り、`GET /` で「Hello World!」を返します。
 
-### 03. REST API
+### 03. 設計する
 
-メモの API（一覧・1 件の取得・作成・更新・削除）を作り、Zod で入力チェックを入れます。
+メモの API の約束を `openapi.yaml` に書きます。Create・Get・List・Update・Delete を 1 節に 1 つずつ書き足し、最後に共通部分を `components` にまとめます。
 
-### 04. エラーとログ
+### 04. 実装する
 
-ExceptionFilter で、すべてのエラーを 1 つの形にそろえます。middleware で、リクエストごとにログを出します。
+SQLite を用意し、`openapi.yaml` のとおりに 5 つの操作を 1 節に 1 つずつ実装します。まずはコントローラーに直接書き、VS Code で `openapi.yaml` からリクエストを送って動作確認します。
 
-### 05. HTML から呼ぶ
+### 05. 整理する
 
-HTML 1 枚の画面を NestJS から配り、`fetch` でメモの一覧・追加・削除をします。
-
-### 06. OpenAPI
-
-API の約束を OpenAPI（YAML）で書きます。VS Code の拡張機能と Redocly で確かめ、openapi-typescript で型を作り、その型を API のコードで使います。
+動きを変えずに、データベースのプロバイダー・`dto/`・`entities/`・サービス・モジュールの順に、NestJS の標準の形に分けます。
 
 ## 関連するハンズオン
 

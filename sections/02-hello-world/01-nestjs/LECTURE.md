@@ -7,7 +7,7 @@ title: NestJS の Hello World
 
 ![02 章 NestJS の Hello World](./images/00-thumbnail.svg)
 
-この節では、**NestJS** のプロジェクトを作り、「Hello World!」を返す API を動かします。このプロジェクトに節ごとに機能を足し、最後にはメモを読み書きする REST API にします。
+この節では、**NestJS** のプロジェクトを作り、「Hello World!」を返す API を動かします。このプロジェクト（`api/`）に、03 章で API の設計（`openapi.yaml`）を書き、04 章でメモを読み書きする REST API を実装します。
 
 NestJS は、Node.js で API を作るためのフレームワークです。URL ごとの処理（コントローラー）と処理の中身（サービス）を分けて書き、それらをモジュールにまとめます。
 

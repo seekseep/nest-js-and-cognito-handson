@@ -7,7 +7,7 @@ title: Node.js と VS Code を入れる
 
 ![01 章 Node.js と VS Code を入れる](./images/00-thumbnail.svg)
 
-NestJS は Node.js の上で動きます。この節では、**Node.js 26（LTS）** と、エディタの **VS Code** を入れます。
+このハンズオンで使うのは、**Node.js 26（LTS）** と、エディタの **VS Code** だけです。この節では、この 2 つと、OpenAPI を扱う VS Code の拡張機能を入れます。
 
 ## お使いの OS を選ぶ
 
@@ -101,6 +101,16 @@ code --version
 
 番号が出れば大丈夫です。フォルダを VS Code で開くときは、そのフォルダで `code .` を実行します。VS Code の中では、`` Ctrl + ` ``（バッククォート）でターミナルが開きます。
 
+## OpenAPI の拡張機能を入れる
+
+03 章から書く `openapi.yaml`（API の設計）を、VS Code で見て、そこから API にリクエストを送るために、42Crunch の [OpenAPI (Swagger) Editor](https://marketplace.visualstudio.com/items?itemName=42Crunch.vscode-openapi) を入れます。編集・プレビュー・リクエストを送る機能（Try it）は、登録なしで使えます。
+
+```bash
+code --install-extension 42Crunch.vscode-openapi
+```
+
+`was successfully installed` と出れば大丈夫です。VS Code の左の拡張機能のビューで、`OpenAPI (Swagger) Editor` が入っていることも確かめられます。
+
 ## 参考にした公式ドキュメント
 
 この節は、次の公式ドキュメントをもとに書いています。
@@ -111,6 +121,8 @@ code --version
 - [VS Code: Visual Studio Code on macOS](https://code.visualstudio.com/docs/setup/mac) … macOS での入れ方と、`code` コマンドを `PATH` に足す方法
 - [VS Code: Visual Studio Code on Windows](https://code.visualstudio.com/docs/setup/windows) … Windows のインストーラーと `PATH`
 - [VS Code: Visual Studio Code on Linux](https://code.visualstudio.com/docs/setup/linux) … `.deb` パッケージでの入れ方
+- [VS Code: Command Line Interface](https://code.visualstudio.com/docs/configure/command-line) … `code --install-extension`
+- [42Crunch: OpenAPI (Swagger) Editor（README）](https://github.com/42Crunch/vscode-openapi#readme) … 拡張機能でできること（プレビュー・Try it）と、登録なしで使えること
 
 :::faq
 
