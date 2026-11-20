@@ -16,7 +16,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 // 道具ごとの色。チップの左の丸に使う。
 const TOOL_COLORS = {
   'Node.js': '#5FA04E',
-  nvm: '#5FA04E',
+  npm: '#CB3837',
   Podman: '#892CA0',
   compose: '#892CA0',
   'Next.js': '#111111',
@@ -40,7 +40,7 @@ const TOOL_COLORS = {
 };
 
 const THUMBNAILS = [
-  ['01-setup/01-nodejs', '01', 'Node.js を入れる', ['Node.js', 'nvm']],
+  ['01-setup/01-nodejs', '01', 'Node.js を入れる', ['Node.js', 'npm']],
   ['01-setup/02-podman', '01', 'Podman を入れる', ['Podman']],
   ['02-hello-world/01-nextjs', '02', 'Next.js SSG の Hello World', ['Next.js', 'S3']],
   ['02-hello-world/02-nestjs', '02', 'NestJS の Hello World', ['NestJS']],
