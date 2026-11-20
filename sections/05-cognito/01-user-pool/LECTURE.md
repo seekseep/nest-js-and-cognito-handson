@@ -162,6 +162,15 @@ aws cognito-idp create-user-pool-client `
 1 つ目がユーザープール ID、2 つ目がクライアント ID を表示します。
 :::
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [Amazon Cognito: User pools](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools.html) … ユーザープールの役割
+- [Amazon Cognito: App clients](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-client-apps.html) … アプリケーションクライアントと、クライアントシークレットを使わない設定
+- [Next.js: Environment Variables](https://nextjs.org/docs/app/guides/environment-variables) … `.env.local` と `NEXT_PUBLIC_`
+- [Compose file reference: services](https://docs.docker.com/reference/compose-file/services/) … `env_file`
+
 ## この節を終えたときのディレクトリ
 
 ::tree

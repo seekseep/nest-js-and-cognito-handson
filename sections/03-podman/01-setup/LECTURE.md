@@ -142,6 +142,14 @@ Add-Content -Path $PROFILE -Value '$env:PODMAN_COMPOSE_WARNING_LOGS = "false"'
 ::::
 :::::
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [Podman: podman-machine-init](https://docs.podman.io/en/latest/markdown/podman-machine-init.1.html) … Podman マシンの作り方
+- [Podman: podman-compose](https://docs.podman.io/en/latest/markdown/podman-compose.1.html) … `podman compose` が compose のプロバイダを呼ぶ仕組み
+- [Podman for Windows](https://github.com/containers/podman/blob/main/docs/tutorials/podman-for-windows.md) … Windows での Podman マシン
+
 :::faq
 
 ### `Cannot connect to Podman` と出る

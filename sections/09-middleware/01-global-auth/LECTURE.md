@@ -93,6 +93,14 @@ curl -s -o NUL -w "%{http_code}\n" -X DELETE http://localhost:3001/notes/abc
 
 画面からは、これまでどおりサインインすればメモを読み書きできます。
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [NestJS: Guards](https://docs.nestjs.com/guards) … `APP_GUARD` でアプリ全体に掛ける方法
+- [NestJS: Authentication](https://docs.nestjs.com/security/authentication) … アプリ全体に Guard を掛け、開けておくルートに `@Public()` を付ける考え方（公式パッケージ版。この節では自分で作っています）
+- [NestJS: Execution context](https://docs.nestjs.com/fundamentals/execution-context) … `Reflector` でメタデータを読む
+
 ## この節を終えたときのディレクトリ
 
 ::tree

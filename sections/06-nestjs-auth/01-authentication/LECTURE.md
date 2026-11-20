@@ -228,6 +228,16 @@ NestJS には、認証のための公式パッケージ `@nestjs/authentication`
 このハンズオンでは、Guard の中で何が起きているかが見えるように、Guard を自分で書きました。詳しくは [NestJS の Authentication の章](https://docs.nestjs.com/security/authentication) を見てください。
 :::
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [NestJS: Guards](https://docs.nestjs.com/guards) … Guard の役割と `@UseGuards()`
+- [NestJS: Authentication](https://docs.nestjs.com/security/authentication) … 公式パッケージ `@nestjs/authentication` での認証（このハンズオンでは使わず、Guard を自分で書いています）
+- [Amazon Cognito: Verifying a JSON Web Token](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html) … アクセストークンの検証で確かめること
+- [aws-jwt-verify（README）](https://github.com/awslabs/aws-jwt-verify) … `CognitoJwtVerifier` の使い方
+- [Node.js: --env-file](https://nodejs.org/api/cli.html#--env-fileconfig) … `.env` を読んで起動する
+
 ## この節を終えたときのディレクトリ
 
 ::tree

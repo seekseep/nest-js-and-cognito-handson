@@ -119,6 +119,15 @@ curl http://localhost:3001/notes/<他の人のメモの id> -H "Authorization: B
 {"message":"Note 30be86ed-af27-4a7d-93a7-9e691fe9f303 is not yours","error":"Forbidden","statusCode":403}
 ```
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [Amazon Cognito: Adding groups to a user pool](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-user-groups.html) … グループと、トークンの `cognito:groups`
+- [Amazon Cognito: Understanding the access token](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-access-token.html) … アクセストークンに入っている項目（`sub` など）
+- [NestJS: Custom decorators](https://docs.nestjs.com/custom-decorators) … `@CurrentUser()` のような引数のデコレーター
+- [NestJS: Exception filters](https://docs.nestjs.com/exception-filters) … `ForbiddenException`・`NotFoundException` などの組み込みの例外
+
 ## この節を終えたときのディレクトリ
 
 ::tree

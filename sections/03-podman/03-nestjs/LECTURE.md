@@ -98,6 +98,14 @@ api-1       | Found 0 errors. Watching for file changes.
 | `podman compose up --build api` | API だけを作り直して起動する |
 | `podman compose down` | コンテナとネットワークを片付ける |
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [Dockerfile reference](https://docs.docker.com/reference/dockerfile/) … `Containerfile` の書き方
+- [Compose file reference: services](https://docs.docker.com/reference/compose-file/services/) … サービスを 2 つにした `compose.yaml`
+- [Docker Compose: Use Compose Watch](https://docs.docker.com/compose/how-tos/file-watch/) … `develop.watch` の `sync+restart`
+
 ## この節を終えたときのディレクトリ
 
 ::tree

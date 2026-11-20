@@ -87,6 +87,14 @@ Homebrew（macOS）や Windows のインストーラーで入れると 6 系が�
 
 Docker を使ったことがある人は、`docker` を `podman` に読み替えればほとんどそのまま使えます。
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [Podman: Installation](https://podman.io/docs/installation) … macOS・Linux への入れ方
+- [Podman for Windows](https://github.com/containers/podman/blob/main/docs/tutorials/podman-for-windows.md) … Windows で必要なもの（Windows 11・WSL 2.5.1 以上・仮想化）と、インストーラーでの入れ方
+- [Microsoft Learn: WSL のインストール](https://learn.microsoft.com/ja-jp/windows/wsl/install) … `wsl --install`
+
 :::faq
 
 ### Docker Desktop が入っていても大丈夫？

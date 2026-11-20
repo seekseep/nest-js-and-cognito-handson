@@ -120,6 +120,14 @@ npm run build
 ::::
 :::::
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [Redocly CLI](https://redocly.com/docs/cli) … `redocly lint` で確かめる
+- [Redocly CLI: Configuration](https://redocly.com/docs/cli/configuration) … `redocly.yaml` の書き方
+- [Next.js: turbopack](https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack) … `turbopack.root`
+
 ## この節を終えたときのディレクトリ
 
 ::tree
