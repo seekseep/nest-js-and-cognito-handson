@@ -167,57 +167,110 @@ function sortedEntries(node) {
   });
 }
 
-/** ::tree を展開した Markdown を返す。 */
+/** 連続する行番号を `{1-3,7}` の形にまとめる（Expressive Code の ins 用）。 */
+function ranges(lines) {
+  const parts = [];
+  for (let i = 0; i < lines.length; i++) {
+    let j = i;
+    while (j + 1 < lines.length && lines[j + 1] === lines[j] + 1) j++;
+    parts.push(i === j ? `${lines[i]}` : `${lines[i]}-${lines[j]}`);
+    i = j;
+  }
+  return `{${parts.join(',')}}`;
+}
+
+/** 前の内容から、今の内容で足した行（1 始まり）を返す。 */
+function addedLines(before, after) {
+  const patch = structuredPatch('a', 'b', before, after, '', '', { context: 0 });
+  const out = [];
+  for (const hunk of patch.hunks) {
+    let line = hunk.newStart;
+    for (const l of hunk.lines) {
+      if (l.startsWith('+')) out.push(line++);
+      else if (!l.startsWith('-')) line++;
+    }
+  }
+  return out;
+}
+
+// コードの中に ``` があってもフェンスが閉じないよう、中身より長いフェンスを使う
+function fenceForText(text) {
+  const longest = Math.max(2, ...[...text.matchAll(/`+/g)].map((m) => m[0].length));
+  return '`'.repeat(longest + 1);
+}
+
+// 中身をエディタに出さないファイル（長すぎる・文字ではない）
+const PLACEHOLDER_NAMES = new Set(['package-lock.json', 'pnpm-lock.yaml']);
+const BINARY_EXT = new Set(['.ico', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.zip', '.woff', '.woff2']);
+
+function displayText(rel, buf) {
+  const base = path.posix.basename(rel);
+  if (PLACEHOLDER_NAMES.has(base)) return { text: '（npm install が書き出すファイルです。長いので、ここでは中身を省いています。ZIP には入っています）', lang: 'text' };
+  if (BINARY_EXT.has(path.posix.extname(rel).toLowerCase()) || buf.includes(0)) {
+    return { text: '（画像などの、文字ではないファイルです。ZIP には入っています）', lang: 'text' };
+  }
+  return { text: buf.toString('utf8').replace(/\n+$/, ''), lang: langOf(rel) };
+}
+
+/**
+ * ::tree を展開した Markdown を返す。
+ * この節を終えたときのプロジェクトを、エディタ（`::::editor{tree="true"}`、remark-editor.mjs）で見せる。
+ * 左のツリーでファイルを選ぶと、右に中身が出る。前の節と比べて足したファイルには「作成」、
+ * 変えたファイルには「変更」の印が付き、変えたファイルでは足した行に色が付く。
+ */
 export async function buildTreeBlock({ lectureRel, sec, lec, attrs }) {
   const files = await projectFiles(lectureRel);
   if (files.length === 0) return null;
   const baseRel = baseLectureOf(lectureRel, attrs.from);
   const baseFiles = baseRel ? new Set(await projectFiles(baseRel)) : new Set();
+  const read = (lecRel, rel) => readFile(path.join(ROOT, ...lecRel.split('/'), ...rel.split('/')));
 
+  // エディタのファイル一覧と同じ並び（フォルダが先、同じフォルダの中は名前順）
+  const sortKey = (rel) => rel.split('/').map((seg, i, all) => (i < all.length - 1 ? `0${seg}` : `1${seg}`)).join('/');
+  const rels = files.slice().sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
+
+  const blocks = [];
   const status = new Map();
-  for (const rel of files) {
+  for (const rel of rels) {
+    const cur = await read(lectureRel, rel);
+    const { text, lang } = displayText(rel, cur);
+    const meta = [`data-file="${rel}"`];
     if (!baseFiles.has(rel)) {
       status.set(rel, 'added');
-      continue;
+      if (baseRel) meta.push('data-status="added"');
+    } else {
+      const prev = await read(baseRel, rel);
+      if (!cur.equals(prev)) {
+        status.set(rel, 'changed');
+        meta.push('data-status="changed"');
+        // 中身を省いたファイル（ロックファイル・画像）には行の印を付けない
+        const omitted = PLACEHOLDER_NAMES.has(path.posix.basename(rel)) || BINARY_EXT.has(path.posix.extname(rel).toLowerCase());
+        if (!omitted) {
+          const marks = addedLines(prev.toString('utf8'), cur.toString('utf8'));
+          // 全部の行が新しいときは印を付けない（全体が緑になって読みにくい）
+          if (marks.length && marks.length < text.split('\n').length) meta.push(`ins=${ranges(marks)}`);
+        }
+      }
     }
-    const [a, b] = await Promise.all([
-      readFile(path.join(ROOT, ...lectureRel.split('/'), ...rel.split('/'))),
-      readFile(path.join(ROOT, ...baseRel.split('/'), ...rel.split('/'))),
-    ]);
-    if (!a.equals(b)) status.set(rel, 'modified');
+    const fence = fenceForText(text);
+    blocks.push(`${fence}${lang} ${meta.join(' ')}`, text, fence);
   }
+
+  // 最初に開くのは、この節で足した（なければ変えた）ファイル。設定ファイル（. で始まる）とロックファイルは後回し
+  const order = (rel) => (status.get(rel) === 'added' ? 0 : status.get(rel) === 'changed' ? 1 : 2);
+  const minor = (rel) => {
+    const base = path.posix.basename(rel);
+    return base.startsWith('.') || PLACEHOLDER_NAMES.has(base) || rel.endsWith('.d.ts') ? 1 : 0;
+  };
+  const open = baseRel ? rels.filter((rel) => order(rel) < 2).sort((a, b) => minor(a) - minor(b) || order(a) - order(b))[0] : undefined;
+
+  const title = zipRootFor(sec, lec);
+  const out = [`::::editor{title="${title}" tree="true"${open ? ` open="${open}"` : ''}}`, ...blocks, '::::'];
+
   const currentSet = new Set(files);
   const removed = [...baseFiles].filter((rel) => !currentSet.has(rel)).sort();
-
-  const lines = [`${zipRootFor(sec, lec)}/`];
-  const ins = [];
-  const mark = [];
-  const walk = (node, prefix, parentRel) => {
-    const entries = sortedEntries(node);
-    entries.forEach(([name, child], i) => {
-      const last = i === entries.length - 1;
-      const rel = parentRel ? `${parentRel}/${name}` : name;
-      const isDir = child.size > 0;
-      let suffix = '';
-      const st = status.get(rel);
-      if (st === 'added') suffix = '  ← 追加';
-      if (st === 'modified') suffix = '  ← 変更';
-      lines.push(`${prefix}${last ? '└── ' : '├── '}${name}${isDir ? '/' : ''}${suffix}`);
-      if (st === 'added') ins.push(lines.length);
-      if (st === 'modified') mark.push(lines.length);
-      if (isDir) walk(child, `${prefix}${last ? '    ' : '│   '}`, rel);
-    });
-  };
-  walk(toTree(files), '', '');
   if (removed.length > 0) {
-    lines.push('', '# この節で削除したファイル');
-    for (const rel of removed) {
-      lines.push(`- ${rel}`);
-    }
+    out.push('', 'この節で削除したファイル: ' + removed.map((rel) => `\`${rel}\``).join('、'));
   }
-
-  const meta = [`title="${zipRootFor(sec, lec)}"`];
-  if (ins.length > 0) meta.push(`ins={${ins.join(',')}}`);
-  if (mark.length > 0) meta.push(`mark={${mark.join(',')}}`);
-  return ['```text ' + meta.join(' '), ...lines, '```'].join('\n');
+  return out.join('\n');
 }
