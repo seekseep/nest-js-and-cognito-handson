@@ -109,7 +109,7 @@ export default defineConfig({
     calloutIntegration(),
     starlight({
       title: 'Next.js × NestJS × Cognito ハンズオン',
-      description: 'Next.js（SSG）と NestJS（BFF）と Amazon Cognito で、1 つのアプリを育てながら認証・認可・OpenAPI を学ぶ',
+      description: 'Next.js（SSG）と NestJS（API）と Amazon Cognito で、1 つのアプリを育てながら認証・認可・OpenAPI を学ぶ',
       customCss: [
         './src/styles/readability.css',
         './src/styles/external-links.css',
@@ -165,8 +165,6 @@ export default defineConfig({
         { label: '08. OpenAPI とアプリケーションの連携', items: [{ autogenerate: { directory: '08-openapi-integration' } }] },
         { label: '09. ミドルウェアを使った最適化', items: [{ autogenerate: { directory: '09-middleware' } }] },
         { label: '10. テスト', items: [{ autogenerate: { directory: '10-testing' } }] },
-        // 過去のハンズオンの一覧（sections/PAST-HANDSON.md）。章を足したら、この上に足す。
-        { label: '過去のハンズオン', link: '/past-handson/' },
       ],
       editLink: {
         baseUrl: `${repoUrl}/edit/main/`,

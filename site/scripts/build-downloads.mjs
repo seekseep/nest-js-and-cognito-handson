@@ -2,7 +2,7 @@
 /**
  * 各レクチャーのプロジェクトを ZIP 化し、site/public/downloads/<sec>-<lec>.zip に出力する。
  *
- * このハンズオンのレクチャーは「その節を終えた時点のプロジェクト」（frontend/・bff/・compose.yaml など）を
+ * このハンズオンのレクチャーは「その節を終えた時点のプロジェクト」（ui/・api/・compose.yaml など）を
  * そのまま持っている（project 方式）。プロジェクトを持つかどうかは libs/lectures.mjs が判定する。
  *
  * 中身: git の追跡ファイル＋未追跡だが .gitignore されていないファイル（libs/git.mjs の lsProjectFiles）。

@@ -1,6 +1,6 @@
 # 03-03 Podman で NestJS を動かす
 
-frontend（Next.js）と BFF（NestJS）の両方をコンテナで動かす節を終えた状態です。教材: `LECTURE.md`
+UI（Next.js）と API（NestJS）の両方をコンテナで動かす節を終えた状態です。教材: `LECTURE.md`
 
 ## 動かし方
 

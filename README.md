@@ -5,12 +5,12 @@ title: Next.js × NestJS × Cognito ハンズオン
 
 # Next.js × NestJS × Cognito ハンズオン
 
-Next.js（SSG）で作った画面から、NestJS で作った BFF（Backend for Frontend）を呼び出し、Amazon Cognito でサインインしたユーザーだけが使えるアプリを、**1 つのプロジェクトを少しずつ育てながら** 作るハンズオンです。
+Next.js（SSG）で作った画面から、NestJS で作った API を呼び出し、Amazon Cognito でサインインしたユーザーだけが使えるアプリを、**1 つのプロジェクトを少しずつ育てながら** 作るハンズオンです。
 
-- **フロントエンド** — Next.js の静的書き出し（SSG）。ビルドすると HTML・JS・CSS だけになるので、Amazon S3 のような静的ファイルの置き場にそのまま置けます
-- **BFF** — NestJS。フロントエンド専用の API で、Cognito が発行したトークンを検証してから応答します
+- **UI** — Next.js の静的書き出し（SSG）。ビルドすると HTML・JS・CSS だけになるので、Amazon S3 のような静的ファイルの置き場にそのまま置けます
+- **API** — NestJS。UI 専用の API で、Cognito が発行したトークンを検証してから応答します
 - **認証** — Amazon Cognito のユーザープール。サインインの画面は Amplify の部品を使います
-- **開発環境** — Podman。フロントエンドと BFF をコンテナで動かします
+- **開発環境** — Podman。UI と API をコンテナで動かします
 
 ## 進め方
 
@@ -20,7 +20,7 @@ Next.js（SSG）で作った画面から、NestJS で作った BFF（Backend for
 
 ## このハンズオンで作るもの
 
-![アプリの構成。ブラウザは S3 から静的ファイルを読み込み、Cognito でサインインし、トークンを付けて NestJS の BFF を呼び出す](./sections/02-hello-world/01-nextjs/images/01-architecture.svg)
+![アプリの構成。ブラウザは S3 から静的ファイルを読み込み、Cognito でサインインし、トークンを付けて NestJS の API を呼び出す](./sections/02-hello-world/01-nextjs/images/01-architecture.svg)
 
 ### 01. 基本的な環境構築
 
@@ -28,15 +28,15 @@ Node.js と Podman を入れます。Node.js は 26 が使えれば、公式サ�
 
 ### 02. Hello World
 
-Next.js と NestJS のプロジェクトを作り、それぞれ「Hello World」を表示します。Next.js は静的ファイルに書き出す設定にし、`out/` にできたファイルがそのまま S3 に置けることを確かめます。NestJS で使う `@Controller()` のようなデコレーターが、TypeScript の標準ではなく NestJS が前提にしている書き方であることも押さえます。BFF は curl と Postman で呼び出します。
+Next.js と NestJS のプロジェクトを作り、それぞれ「Hello World」を表示します。Next.js は静的ファイルに書き出す設定にし、`out/` にできたファイルがそのまま S3 に置けることを確かめます。NestJS で使う `@Controller()` のようなデコレーターが、TypeScript の標準ではなく NestJS が前提にしている書き方であることも押さえます。API は curl と Postman で呼び出します。
 
 ### 03. Podman
 
-フロントエンドと BFF をコンテナで動かします。`compose.yaml` を書いて、`podman compose up` 1 つで両方が起動し、ファイルを保存すると反映される開発環境を作ります。
+UI と API をコンテナで動かします。`compose.yaml` を書いて、`podman compose up` 1 つで両方が起動し、ファイルを保存すると反映される開発環境を作ります。
 
 ### 04. 簡単な REST API
 
-BFF にメモの API（一覧・作成・更新・削除）を作り、入力チェックを入れます。Next.js の画面からメモを読み書きできるようにします。
+API にメモの API（一覧・作成・更新・削除）を作り、入力チェックを入れます。Next.js の画面からメモを読み書きできるようにします。
 
 ### 05. Next.js と Cognito の連携
 
@@ -44,15 +44,15 @@ Cognito のユーザープールを作り、Next.js の画面にサインイン�
 
 ### 06. NestJS で認証と認可
 
-BFF がトークンを検証し、サインインしていないリクエストを断るようにします（認証）。さらに、自分のメモしか触れない・管理者グループだけが全員のメモを見られる、という決まりを入れます（認可）。
+API がトークンを検証し、サインインしていないリクエストを断るようにします（認証）。さらに、自分のメモしか触れない・管理者グループだけが全員のメモを見られる、という決まりを入れます（認可）。
 
 ### 07. OpenAPI
 
-BFF の API を OpenAPI（YAML）で書きます。VS Code の拡張機能でプレビューと検証をしながら書き、OpenAPI から TypeScript の型を生成する設定を入れます。
+API を OpenAPI（YAML）で書きます。VS Code の拡張機能でプレビューと検証をしながら書き、OpenAPI から TypeScript の型を生成する設定を入れます。
 
 ### 08. OpenAPI とアプリケーションの連携
 
-生成した型を BFF とフロントエンドの両方で使い、API の形が食い違ったらビルドで気づけるようにします。フロントエンドは型付きのクライアントで BFF を呼び出します。
+生成した型を API と UI の両方で使い、API の形が食い違ったらビルドで気づけるようにします。UI は型付きのクライアントで API を呼び出します。
 
 ### 09. ミドルウェアを使った最適化
 
@@ -60,15 +60,11 @@ BFF の API を OpenAPI（YAML）で書きます。VS Code の拡張機能でプ
 
 ### 10. テスト
 
-BFF の単体テスト（Vitest）、BFF を丸ごと HTTP で呼ぶ結合テスト（Vitest と supertest）、ブラウザで画面を操作する E2E テスト（Playwright）を書きます。テストでの認証は、決め打ちのトークンで行います（本来の方法には触れません）。
+API の単体テスト（Vitest）、API を丸ごと HTTP で呼ぶ結合テスト（Vitest と supertest）、ブラウザで画面を操作する E2E テスト（Playwright）を書きます。テストでの認証は、決め打ちのトークンで行います（本来の方法には触れません）。
 
 ## ドキュメントサイト
 
 各節の解説は GitHub Pages で読めます: <https://seekseep.github.io/nest-js-and-cognito-handson/>
-
-## 過去のハンズオン
-
-これまでに作ったハンズオンの一覧は [過去のハンズオン](./sections/PAST-HANDSON.md) にあります。
 
 ## ライセンス・注意事項
 

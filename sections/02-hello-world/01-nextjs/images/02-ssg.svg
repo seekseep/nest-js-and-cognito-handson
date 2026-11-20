@@ -5,14 +5,14 @@
 </defs>
 <rect width="960" height="300" rx="20" fill="#f8fafc"/>
 <rect x="30" y="60" width="250" height="180" rx="16" fill="#fff" stroke="#94a3b8" stroke-width="2"/>
-<text x="155" y="100" text-anchor="middle" class="t">frontend/app/</text>
+<text x="155" y="100" text-anchor="middle" class="t">ui/app/</text>
 <text x="60" y="140" class="m">page.tsx</text>
 <text x="60" y="168" class="m">layout.tsx</text>
 <text x="60" y="196" class="m">globals.css</text>
 <path d="M290 150 L 380 150" stroke="#334155" stroke-width="2.5" marker-end="url(#a)"/>
 <text x="335" y="132" text-anchor="middle" class="m">next build</text>
 <rect x="390" y="60" width="250" height="180" rx="16" fill="#fff" stroke="#111" stroke-width="2"/>
-<text x="515" y="100" text-anchor="middle" class="t">frontend/out/</text>
+<text x="515" y="100" text-anchor="middle" class="t">ui/out/</text>
 <text x="420" y="140" class="m">index.html</text>
 <text x="420" y="168" class="m">404.html</text>
 <text x="420" y="196" class="m">_next/static/…</text>

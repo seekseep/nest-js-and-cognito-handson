@@ -7,7 +7,7 @@ title: 型生成の設定
 
 ![07 章 型生成の設定](./images/00-thumbnail.svg)
 
-`openapi.yaml` に書いた API の約束から、TypeScript の型を作ります。使うのは **openapi-typescript** です。`openapi.yaml` を変えたらコマンド 1 つで型を作り直せるようにしておけば、frontend と bff の型が約束とずれなくなります。
+`openapi.yaml` に書いた API の約束から、TypeScript の型を作ります。使うのは **openapi-typescript** です。`openapi.yaml` を変えたらコマンド 1 つで型を作り直せるようにしておけば、UI と API の型が約束とずれなくなります。
 
 この節では型を作るところまでを行い、実際にコードで使うのは 08 章です。
 
@@ -19,15 +19,15 @@ title: 型生成の設定
 npm install -D openapi-typescript typescript@5
 ```
 
-openapi-typescript は TypeScript 5 で動くように作られています。bff は TypeScript 6 を使っているので、bff に入れると依存がぶつかります（`ERESOLVE unable to resolve dependency tree`）。型を作る道具は `my-app/` 直下にまとめ、TypeScript 5 といっしょに入れます。
+openapi-typescript は TypeScript 5 で動くように作られています。API は TypeScript 6 を使っているので、API に入れると依存がぶつかります（`ERESOLVE unable to resolve dependency tree`）。型を作る道具は `my-app/` 直下にまとめ、TypeScript 5 といっしょに入れます。
 
 ## 出力先を redocly.yaml に書く
 
-openapi-typescript は、`redocly.yaml` の `apis` に書いた API ごとに型を作れます。frontend 用と bff 用の 2 つを書き、それぞれの出力先を `x-openapi-ts.output` で指定します。
+openapi-typescript は、`redocly.yaml` の `apis` に書いた API ごとに型を作れます。UI 用と API 用の 2 つを書き、それぞれの出力先を `x-openapi-ts.output` で指定します。
 
 ::diff{file="redocly.yaml"}
 
-2 つとも同じ `openapi.yaml` から作ります。frontend と bff は別々にビルドする（コンテナのイメージも別）ので、それぞれのフォルダの中に型のファイルを置きます。
+2 つとも同じ `openapi.yaml` から作ります。UI と API は別々にビルドする（コンテナのイメージも別）ので、それぞれのフォルダの中に型のファイルを置きます。
 
 ## コマンドを用意する
 
@@ -59,13 +59,13 @@ npm run generate:api
 ```
 
 ```text
-🚀 frontend → ./frontend/lib/api/schema.d.ts [44.8ms]
-🚀 bff → ./bff/src/api/schema.d.ts [53ms]
+🚀 ui → ./ui/lib/api/schema.d.ts [44.8ms]
+🚀 api → ./api/src/api/schema.d.ts [53ms]
 ```
 
-作られた `bff/src/api/schema.d.ts` を開くと、`openapi.yaml` の中身が型になっています（`frontend/lib/api/schema.d.ts` も同じ中身です）。
+作られた `api/src/api/schema.d.ts` を開くと、`openapi.yaml` の中身が型になっています（`ui/lib/api/schema.d.ts` も同じ中身です）。
 
-::diff{file="bff/src/api/schema.d.ts"}
+::diff{file="api/src/api/schema.d.ts"}
 
 大きく 3 つの型があります。
 
@@ -97,9 +97,9 @@ npm run check:api
 ✘  Generated types are not up-to-date!
 ```
 
-bff の `npm run format`（Prettier）が型のファイルを書き換えると、`check:api` が失敗するようになります。Prettier の対象から外しておきます。
+API の `npm run format`（Prettier）が型のファイルを書き換えると、`check:api` が失敗するようになります。Prettier の対象から外しておきます。
 
-::diff{file="bff/.prettierignore"}
+::diff{file="api/.prettierignore"}
 
 ## この節を終えたときのディレクトリ
 
@@ -111,13 +111,13 @@ bff の `npm run format`（Prettier）が型のファイルを書き換えると
 
 :::faq
 
-### `npm run generate:api` で ``API frontend is missing an `x-openapi-ts.output` key.`` と出る
+### `npm run generate:api` で ``API ui is missing an `x-openapi-ts.output` key.`` と出る
 
 `redocly.yaml` の `apis` の下で、`x-openapi-ts:` と `output:` の字下げがずれています。`x-openapi-ts` は `root` と同じ深さ、`output` はそれより 2 つ深くします。
 
-### bff に openapi-typescript を入れたい
+### API に openapi-typescript を入れたい
 
-bff の TypeScript を 5 系に下げるか、`--legacy-peer-deps` で無理に入れることになります。どちらもおすすめしません。型を作る道具と、型を使うアプリは分けておくと、ぶつかりにくくなります。
+API の TypeScript を 5 系に下げるか、`--legacy-peer-deps` で無理に入れることになります。どちらもおすすめしません。型を作る道具と、型を使うアプリは分けておくと、ぶつかりにくくなります。
 
 ### `schema.d.ts` を手で直してしまった
 

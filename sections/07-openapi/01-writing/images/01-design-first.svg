@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 340" width="960" height="340" role="img" aria-label="設計が先。openapi.yaml に API の約束を書き、そこから frontend と bff の型を作る。どちらも同じ約束に合わせて書く">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 340" width="960" height="340" role="img" aria-label="設計が先。openapi.yaml に API の約束を書き、そこから ui と api の型を作る。どちらも同じ約束に合わせて書く">
 <defs>
 <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker>
 <style>text{font-family:'Hiragino Sans','Noto Sans JP','Yu Gothic UI',system-ui,sans-serif}.t{font-size:22px;font-weight:700;fill:#0f172a}.s{font-size:15px;fill:#475569}.l{font-size:15px;fill:#1e293b;font-weight:600}.m{font-size:14px;fill:#1e293b;font-family:ui-monospace,Menlo,monospace}</style>
@@ -12,11 +12,11 @@
 <path d="M326 200 L 554 250" stroke="#334155" stroke-width="2.5" marker-end="url(#a)"/>
 <text x="440" y="100" text-anchor="middle" class="l">型を作る（07 章 03）</text>
 <rect x="560" y="30" width="360" height="120" rx="16" fill="#fff" stroke="#111" stroke-width="2"/>
-<text x="740" y="74" text-anchor="middle" class="t">frontend</text>
+<text x="740" y="74" text-anchor="middle" class="t">ui</text>
 <text x="740" y="104" text-anchor="middle" class="m">lib/api/schema.d.ts</text>
 <text x="740" y="128" text-anchor="middle" class="s">型付きで API を呼ぶ（08 章）</text>
 <rect x="560" y="190" width="360" height="120" rx="16" fill="#fdf2f8" stroke="#e0234e" stroke-width="2"/>
-<text x="740" y="234" text-anchor="middle" class="t">bff</text>
+<text x="740" y="234" text-anchor="middle" class="t">api</text>
 <text x="740" y="264" text-anchor="middle" class="m">src/api/schema.d.ts</text>
 <text x="740" y="288" text-anchor="middle" class="s">約束どおりに作る（08 章）</text>
 </svg>

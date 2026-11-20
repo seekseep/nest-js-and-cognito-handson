@@ -7,24 +7,24 @@ title: 型付きで API を呼ぶ
 
 ![08 章 型付きで API を呼ぶ](./images/00-thumbnail.svg)
 
-frontend の `lib/notes-api.ts` は、04 章から `fetch` で BFF を呼んでいます。URL を文字列で組み立て、`Note` の型も手で書いているので、パスや送る項目を間違えても気づけません。
+UI の `lib/notes-api.ts` は、04 章から `fetch` で API を呼んでいます。URL を文字列で組み立て、`Note` の型も手で書いているので、パスや送る項目を間違えても気づけません。
 
-この節では、**openapi-fetch** を使って、07 章で作った `frontend/lib/api/schema.d.ts` の型どおりに API を呼ぶようにします。
+この節では、**openapi-fetch** を使って、07 章で作った `ui/lib/api/schema.d.ts` の型どおりに API を呼ぶようにします。
 
 ## openapi-fetch を入れる
 
 ```bash
-cd frontend
+cd ui
 npm install openapi-fetch
 ```
 
-::diff{file="frontend/package.json"}
+::diff{file="ui/package.json"}
 
 openapi-fetch は、`fetch` を薄く包んだ小さなライブラリです。openapi-typescript が作った `paths` の型を渡すと、パス・パラメーター・本文・応答に型が付きます。
 
 ## クライアントを作る
 
-::diff{file="frontend/lib/api/client.ts"}
+::diff{file="ui/lib/api/client.ts"}
 
 - `createClient<paths>({ baseUrl })` … `paths` の型を持つクライアントを作ります。`client.GET("/notes")` のように、メソッド名とパスで呼びます
 - `authMiddleware` … openapi-fetch の **ミドルウェア** です。`onRequest` は、リクエストを送る前に毎回呼ばれます。ここで、06 章と同じくアクセストークンを `Authorization` ヘッダーに付けます
@@ -34,13 +34,13 @@ openapi-fetch は、`fetch` を薄く包んだ小さなライブラリです。o
 
 `lib/notes-api.ts` を、クライアントを使う形に書き換えます。関数の名前と引数は変えないので、画面（`app/notes.tsx`）は変えずに済みます。
 
-::diff{file="frontend/lib/notes-api.ts"}
+::diff{file="ui/lib/notes-api.ts"}
 
 - `Note` と `CreateNoteInput` は、手で書かずに `components["schemas"]` から取ります
 - `client.GET("/notes")` は `{ data, error }` を返します。`2xx` なら `data` に、それ以外なら `error` に、`openapi.yaml` に書いた型の値が入ります
 - `if (error) throw ...` のあとでは、TypeScript は `data` があると分かるので、そのまま返せます
 - `client.DELETE("/notes/{id}", { params: { path: { id } } })` … パスの `{id}` は文字列をつなげずに、`params.path` で渡します。openapi-fetch が URL に埋めてくれます
-- `toError` … BFF のエラーの形（`openapi.yaml` の `Error`）が型で分かっているので、`message` が配列か文字列かで分けて、1 つの文字列にします
+- `toError` … API のエラーの形（`openapi.yaml` の `Error`）が型で分かっているので、`message` が配列か文字列かで分けて、1 つの文字列にします
 
 `fetch` で書いていたころの `ensureOk` や `authHeaders` は、要らなくなりました。
 
@@ -70,9 +70,9 @@ VS Code では、`client.GET("` と打った時点で、`openapi.yaml` にある
 
 ## 動かす
 
-画面の見た目と動きは、前の節と同じです。サインインして、メモの追加・削除ができることを確かめてください。タイトルを空にして追加すると、これまでどおり BFF の入力チェックの結果が表示されます。
+画面の見た目と動きは、前の節と同じです。サインインして、メモの追加・削除ができることを確かめてください。タイトルを空にして追加すると、これまでどおり API の入力チェックの結果が表示されます。
 
-これで、`openapi.yaml` の約束から作った型を、frontend（呼ぶ側）と bff（受ける側）の両方で使うようになりました。約束を変えたら `npm run generate:api` を実行すれば、合わなくなった場所を、両方でコンパイラが教えてくれます。
+これで、`openapi.yaml` の約束から作った型を、UI（呼ぶ側）と API（受ける側）の両方で使うようになりました。約束を変えたら `npm run generate:api` を実行すれば、合わなくなった場所を、両方でコンパイラが教えてくれます。
 
 ## この節を終えたときのディレクトリ
 

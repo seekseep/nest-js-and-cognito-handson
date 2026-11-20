@@ -1,7 +1,7 @@
 services:
-  frontend:
+  ui:
     build:
-      context: ./frontend
+      context: ./ui
       dockerfile: Containerfile
     ports:
       - "3000:3000"
@@ -9,11 +9,11 @@ services:
       watch:
         # app/ と public/ の変更を、コンテナの中へコピーする
         - action: sync
-          path: ./frontend/app
+          path: ./ui/app
           target: /app/app
         - action: sync
-          path: ./frontend/public
+          path: ./ui/public
           target: /app/public
         # 依存を変えたら、イメージを作り直す
         - action: rebuild
-          path: ./frontend/package.json
+          path: ./ui/package.json

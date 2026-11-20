@@ -46,7 +46,7 @@ sections/
 その下のボタンから、その節を終えた状態のプロジェクトを ZIP でダウンロードできます。
 
 - 途中の節から始めたいときは、ひとつ前の節の ZIP をダウンロードして展開してください
-- 展開したら、`frontend/` と `bff/` でそれぞれ `npm install` を実行します（`node_modules/` は ZIP に入っていません）
+- 展開したら、`ui/` と `api/` でそれぞれ `npm install` を実行します（`node_modules/` は ZIP に入っていません）
 - `.env` / `.env.local` は ZIP に入っていません。`.env.example` をコピーして作ってください（05 章から）
 
 ## 前提
@@ -63,5 +63,5 @@ sections/
 | Node.js 26（LTS） | Next.js と NestJS を動かす | 01 章 |
 | Podman 6 | コンテナで開発環境を動かす | 01 章・03 章 |
 | VS Code | エディタ。OpenAPI の拡張機能も使う | [開発ツール](./TOOLS.md) |
-| curl / Postman | BFF を呼び出して確かめる | 02 章 |
+| curl / Postman | API を呼び出して確かめる | 02 章 |
 | AWS アカウント | Cognito のユーザープールを作る | 05 章 |

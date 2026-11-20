@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-このリポジトリ（Next.js SSG + NestJS BFF + Cognito のハンズオン教材）で作業するときの決まり。
+このリポジトリ（Next.js SSG + NestJS API + Cognito のハンズオン教材）で作業するときの決まり。
 
 ## 必ず守ること
 
@@ -21,5 +21,5 @@
 
 記憶で書かず、同梱・公式のドキュメントを読む。
 
-- Next.js: `frontend/node_modules/next/dist/docs/`
+- Next.js: `ui/node_modules/next/dist/docs/`
 - NestJS: `https://docs.nestjs.com/<章>.md`（索引は `https://docs.nestjs.com/llms.txt`）

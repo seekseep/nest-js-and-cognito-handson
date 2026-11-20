@@ -7,21 +7,21 @@ title: Podman で Next.js を動かす
 
 ![03 章 Podman で Next.js を動かす](./images/00-thumbnail.svg)
 
-この節では、frontend（Next.js）の開発サーバーをコンテナの中で動かします。作るファイルは 3 つです。
+この節では、UI（Next.js）の開発サーバーをコンテナの中で動かします。作るファイルは 3 つです。
 
 | ファイル | 役割 |
 |---|---|
-| `frontend/Containerfile` | コンテナのイメージの作り方 |
-| `frontend/.containerignore` | イメージに入れないファイル |
+| `ui/Containerfile` | コンテナのイメージの作り方 |
+| `ui/.containerignore` | イメージに入れないファイル |
 | `compose.yaml` | どのコンテナを、どのポートで、どう動かすか |
 
-BFF は、次の節でコンテナにします。この節の間は、これまでどおり手元の Node.js（`npm run start:dev`）で動かしてください。
+API は、次の節でコンテナにします。この節の間は、これまでどおり手元の Node.js（`npm run start:dev`）で動かしてください。
 
 ## Containerfile を書く
 
 **Containerfile** は、イメージ（コンテナのもとになるファイル一式）の作り方を書いたファイルです。Docker の `Dockerfile` と同じ書き方で、Podman はどちらの名前でも読めます。
 
-::diff{file="frontend/Containerfile"}
+::diff{file="ui/Containerfile"}
 
 | 命令 | 意味 |
 |---|---|
@@ -50,26 +50,26 @@ BFF は、次の節でコンテナにします。この節の間は、これま�
 
 `COPY . .` は、フォルダの中身をすべてイメージにコピーします。手元の `node_modules/` や `.next/` まで入ると、イメージが大きくなるうえ、Mac 用に入れた依存が Linux のコンテナに混ざってしまいます。`.containerignore` に書いたものはコピーされません（`.gitignore` と同じ書き方です）。
 
-::diff{file="frontend/.containerignore"}
+::diff{file="ui/.containerignore"}
 
 `.env*` も入れないようにしています。05 章で作る `.env.local` には Cognito の ID を書くので、イメージに入らないようにしておきます。
 
 ## compose.yaml を書く
 
-`my-app/` の直下（`frontend/` と `bff/` と同じ階層）に `compose.yaml` を作ります。
+`my-app/` の直下（`ui/` と `api/` と同じ階層）に `compose.yaml` を作ります。
 
 ::diff{file="compose.yaml"}
 
 | キー | 意味 |
 |---|---|
-| `services` | 動かすコンテナの一覧。ここでは `frontend` の 1 つ |
+| `services` | 動かすコンテナの一覧。ここでは `ui` の 1 つ |
 | `build.context` | イメージを作るときのフォルダ |
 | `build.dockerfile` | 使う定義ファイルの名前。既定は `Dockerfile` なので、`Containerfile` を指定する |
 | `ports` | `"手元のポート:コンテナのポート"`。Mac の 3000 番をコンテナの 3000 番につなぐ |
 | `develop.watch` | ファイルの変更をコンテナに反映する設定（次で説明） |
 
 :::warning
-`build: ./frontend` のように短く書くと、Docker Compose は `Dockerfile` を探して `no such file or directory` で止まります。`dockerfile: Containerfile` を忘れずに書いてください。
+`build: ./ui` のように短く書くと、Docker Compose は `Dockerfile` を探して `no such file or directory` で止まります。`dockerfile: Containerfile` を忘れずに書いてください。
 :::
 
 ### ファイルの変更をコンテナに反映する（watch）
@@ -86,15 +86,15 @@ BFF は、次の節でコンテナにします。この節の間は、これま�
 | `rebuild` | `path` が変わったら、イメージを作り直してコンテナを入れ替える。依存を足したときのため |
 
 :::notice
-手元のフォルダをコンテナにそのまま見せる **バインドマウント**（`volumes: - ./frontend:/app`）という方法もあります。ただ macOS では、ファイルが仮想マシンをまたぐため、保存したことがコンテナに伝わるのが遅れたり、伝わらなかったりします（Next.js のドキュメントにも注意があります）。`watch` はファイルをコンテナの中にコピーするので、コンテナの中で普通に変更として見つかります。
+手元のフォルダをコンテナにそのまま見せる **バインドマウント**（`volumes: - ./ui:/app`）という方法もあります。ただ macOS では、ファイルが仮想マシンをまたぐため、保存したことがコンテナに伝わるのが遅れたり、伝わらなかったりします（Next.js のドキュメントにも注意があります）。`watch` はファイルをコンテナの中にコピーするので、コンテナの中で普通に変更として見つかります。
 :::
 
 ## 動かす
 
-BFF を手元で動かしていなければ、別のターミナルで起動しておきます。
+API を手元で動かしていなければ、別のターミナルで起動しておきます。
 
 ```bash
-cd bff
+cd api
 npm run start:dev
 ```
 
@@ -112,22 +112,22 @@ podman compose up --build --watch
 初回は `node:26-slim` のダウンロードと `npm ci` で数分かかります。次のように出たら起動しています。
 
 ```text
- Container my-app-frontend-1 Started
+ Container my-app-ui-1 Started
         ⦿ Watch enabled
-frontend-1  | ▲ Next.js 16.4.6 (Turbopack)
-frontend-1  | - Local:         http://localhost:3000
-frontend-1  | - Network:       http://0.0.0.0:3000
-frontend-1  | ✓ Ready in 150ms
+ui-1  | ▲ Next.js 16.4.6 (Turbopack)
+ui-1  | - Local:         http://localhost:3000
+ui-1  | - Network:       http://0.0.0.0:3000
+ui-1  | ✓ Ready in 150ms
 ```
 
 ブラウザで <http://localhost:3000> を開くと、02 章と同じページが表示されます。
 
 ### 保存すると反映されることを確かめる
 
-`frontend/app/page.tsx` の `Hello World` を `Hello Podman` に変えて保存します。ターミナルに次のように出て、ブラウザの表示が変わります。
+`ui/app/page.tsx` の `Hello World` を `Hello Podman` に変えて保存します。ターミナルに次のように出て、ブラウザの表示が変わります。
 
 ```text
-        ⦿ Syncing service "frontend" after 1 changes were detected
+        ⦿ Syncing service "ui" after 1 changes were detected
 ```
 
 確かめたら `Hello World` に戻しておきます。
@@ -164,6 +164,6 @@ Podman と Docker Compose の組み合わせでは、`watch` が消したファ�
 
 ### 依存（パッケージ）を足したい
 
-`frontend/` で手元の `npm install <パッケージ名>` を実行します。`package.json` が変わるので、`watch` の `rebuild` がイメージを作り直してくれます。
+`ui/` で手元の `npm install <パッケージ名>` を実行します。`package.json` が変わるので、`watch` の `rebuild` がイメージを作り直してくれます。
 
 :::

@@ -1,8 +1,8 @@
 /**
  * 「前の節と比べて何が変わったか」を本文に出すセンチネル。sentinels.mjs から呼ばれる。
  *
- *   ::diff{file="bff/src/main.ts"}
- *     … 先頭に「`bff/src/main.ts` を変更する」の見出し（前の節に無ければ「作成する」、
+ *   ::diff{file="api/src/main.ts"}
+ *     … 先頭に「`api/src/main.ts` を変更する」の見出し（前の節に無ければ「作成する」、
  *       この節で消していれば「削除する」）を付け、直前の見出しより 1 つ深くする。
  *       続けて、前の節（libs/lectures.mjs の previousProjectLecture）の同じファイルと比べた差分を、
  *       `:::code{filepath=... offset=... newOffset=...}` ＋ 差分のコードブロックに展開する。

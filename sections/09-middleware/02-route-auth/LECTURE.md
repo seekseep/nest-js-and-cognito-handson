@@ -27,23 +27,23 @@ title: パス単位の認証認可
 
 middleware でもトークンを確かめる必要があるので、Guard の中にあった検証を、`TokenVerifier` として切り出します。Guard と middleware の両方から使います。
 
-::diff{file="bff/src/auth/token-verifier.ts"}
+::diff{file="api/src/auth/token-verifier.ts"}
 
 Guard は `TokenVerifier` を使う形に書き換えます。
 
-::diff{file="bff/src/auth/auth.guard.ts"}
+::diff{file="api/src/auth/auth.guard.ts"}
 
 `if (request.user) return true;` は、「middleware がもう検証していれば、もう一度は確かめない」という意味です。`/admin` の下では middleware と Guard の両方が動くので、同じトークンを 2 回確かめずに済みます。
 
 `AuthModule` で `TokenVerifier` を登録し、ほかのモジュールからも使えるように `exports` に入れます。
 
-::diff{file="bff/src/auth/auth.module.ts"}
+::diff{file="api/src/auth/auth.module.ts"}
 
 ## admin 専用の middleware を作る
 
 `/admin` の下を守る middleware を作ります。
 
-::diff{file="bff/src/admin/admin.middleware.ts"}
+::diff{file="api/src/admin/admin.middleware.ts"}
 
 - `NestMiddleware` の `use(req, res, next)` が、リクエストごとに呼ばれます。`next()` を呼ぶと次の段（Guard）へ進みます
 - トークンを確かめ、admin グループでなければ `ForbiddenException`（`403`）を投げます
@@ -53,22 +53,22 @@ Guard は `TokenVerifier` を使う形に書き換えます。
 
 全員のメモを返す `GET /admin/notes` を作ります。
 
-::diff{file="bff/src/admin/admin.controller.ts"}
+::diff{file="api/src/admin/admin.controller.ts"}
 
 `NotesService` を `AdminModule` からも使うので、`NotesModule` で公開します。
 
-::diff{file="bff/src/notes/notes.module.ts"}
+::diff{file="api/src/notes/notes.module.ts"}
 
 `AdminModule` で、middleware をパスに掛けます。
 
-::diff{file="bff/src/admin/admin.module.ts"}
+::diff{file="api/src/admin/admin.module.ts"}
 
 - middleware は `@Module()` には書かず、`configure()` の中で `consumer.apply(...).forRoutes(...)` と書きます。そのため `NestModule` を実装します
 - `'admin{/*splat}'` は「`/admin` と、その下のすべて」です。`*splat` は何文字でも合う部分で、`{}` で囲むと「無くてもよい」になります
 
 `AppModule` で読み込みます。
 
-::diff{file="bff/src/app.module.ts"}
+::diff{file="api/src/app.module.ts"}
 
 ## openapi.yaml に足す
 

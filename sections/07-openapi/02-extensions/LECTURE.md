@@ -26,7 +26,7 @@ title: VS Code 拡張機能の紹介
 `my-app/` を VS Code で開くと、右下に「このワークスペースには拡張機能の推奨事項があります」と出るので、**インストール** を押します。拡張機能のビューで `@recommended` と検索しても一覧が出ます。
 
 :::warning
-VS Code では `my-app/` を開いてください（`frontend/` や `bff/` ではなく）。`.vscode/` と、後で作る `redocly.yaml` は、開いたフォルダの直下にあるときに読まれます。
+VS Code では `my-app/` を開いてください（`ui/` や `api/` ではなく）。`.vscode/` と、後で作る `redocly.yaml` は、開いたフォルダの直下にあるときに読まれます。
 :::
 
 ## 拡張機能を使ってみる
@@ -55,7 +55,7 @@ Redocly は、OpenAPI として正しいかに加えて、「`operationId` を�
 
 エディタで見るだけでなく、コマンドでも確かめられるようにしておきます。コマンドなら、レビューの前や CI で、決まりどおりかを機械的に確かめられます。
 
-`my-app/` の直下に、`openapi.yaml` を扱う道具のための `package.json` を作ります。frontend と bff は、これまでどおりそれぞれの `package.json` を使います。
+`my-app/` の直下に、`openapi.yaml` を扱う道具のための `package.json` を作ります。UI と API は、これまでどおりそれぞれの `package.json` を使います。
 
 ::diff{file="package.json"}
 
@@ -88,24 +88,24 @@ You have 2 warnings.
 
 ### Next.js にルートを教える
 
-`my-app/` の直下に `package-lock.json` ができたので、手元で frontend をビルドすると、Next.js が次の警告を出すようになります。
+`my-app/` の直下に `package-lock.json` ができたので、手元で UI をビルドすると、Next.js が次の警告を出すようになります。
 
 ```text
 We detected multiple lockfiles and selected the directory of .../my-app/package-lock.json as the root directory.
  To silence this warning, set `turbopack.root` in your Next.js config, ...
 ```
 
-Next.js は `package-lock.json` のある場所をプロジェクトのルートとみなします。2 つ見つかると、上のほう（`my-app/`）を選んでしまいます。frontend のルートは `frontend/` なので、`next.config.ts` の `turbopack.root` で明示します。
+Next.js は `package-lock.json` のある場所をプロジェクトのルートとみなします。2 つ見つかると、上のほう（`my-app/`）を選んでしまいます。UI のルートは `ui/` なので、`next.config.ts` の `turbopack.root` で明示します。
 
-::diff{file="frontend/next.config.ts"}
+::diff{file="ui/next.config.ts"}
 
-`__dirname` は、`next.config.ts` のあるフォルダ（`frontend/`）です。
+`__dirname` は、`next.config.ts` のあるフォルダ（`ui/`）です。
 
-ルートを変えたら、手元のビルドの結果（`.next/`）を一度消してください。前のルートで作った `.next/` が残っていると、次のビルドで `frontend/frontend/.next/` という入れ子のフォルダができ、`npm run lint` がその中のファイルまで調べてエラーになります。
+ルートを変えたら、手元のビルドの結果（`.next/`）を一度消してください。前のルートで作った `.next/` が残っていると、次のビルドで `ui/ui/.next/` という入れ子のフォルダができ、`npm run lint` がその中のファイルまで調べてエラーになります。
 
 ```bash
-cd frontend
-rm -rf .next frontend
+cd ui
+rm -rf .next ui
 npm run build
 ```
 
@@ -121,7 +121,7 @@ npm run build
 
 ### 推奨の拡張機能の表示が出てこない
 
-`my-app/` ではなく、`frontend/` などを開いていないか確かめてください。表示を一度閉じた場合は、拡張機能のビューで `@recommended` と検索すると出てきます。
+`my-app/` ではなく、`ui/` などを開いていないか確かめてください。表示を一度閉じた場合は、拡張機能のビューで `@recommended` と検索すると出てきます。
 
 ### 42Crunch の拡張機能で「Audit」や「Scan」を勧められる
 

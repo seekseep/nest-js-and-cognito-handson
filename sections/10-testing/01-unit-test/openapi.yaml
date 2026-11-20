@@ -2,10 +2,10 @@ openapi: 3.1.0
 info:
   title: メモ API
   version: 1.0.0
-  description: Next.js × NestJS × Cognito ハンズオンで作る BFF の API。
+  description: Next.js × NestJS × Cognito ハンズオンで作る API。
 servers:
   - url: http://localhost:3001
-    description: 手元の BFF
+    description: 手元の API
 # すべての API で、Cognito のアクセストークンが必要
 security:
   - bearerAuth: []
