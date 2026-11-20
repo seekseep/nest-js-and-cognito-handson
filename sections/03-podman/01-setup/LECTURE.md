@@ -16,13 +16,11 @@ title: Podman の構築
 
 ## Podman マシンを作る
 
+:::::platform
+::::macos
 コンテナは Linux の仕組みで動きます。macOS では、Podman が Linux の仮想マシン（**Podman マシン**）を作り、その中でコンテナを動かします。`podman` コマンドは Mac で打ちますが、実際の処理は仮想マシンの中で行われます。
 
 ![macOS では Podman マシンという Linux の仮想マシンの中でコンテナが動く。podman コマンドは Mac から仮想マシンに指示を送る](./images/01-machine.svg)
-
-:::notice
-Linux と Windows の WSL2（Ubuntu）では、コンテナがそのまま動くので Podman マシンは要りません。「[動くか確かめる](#動くか確かめる)」に進んでください。
-:::
 
 仮想マシンを作って起動します。初回は Linux のイメージをダウンロードするので、数分かかります。
 
@@ -43,15 +41,18 @@ podman-machine-default*  libkrun     2 minutes ago  Currently running  5        
 
 `LAST UP` が `Currently running` なら起動しています。
 
-### Mac を再起動したら
-
-Podman マシンは Mac を再起動すると止まります。コンテナを使う前に起動してください。
+Mac を再起動すると、Podman マシンは止まります。コンテナを使う前に起動してください。
 
 ```bash
 podman machine start
 ```
 
 使い終わって止めたいときは `podman machine stop` です。
+::::
+::::windows-linux
+コンテナは Linux の仕組みで動きます。Linux と Windows の WSL2（Ubuntu）では、コンテナがそのまま動くので、Podman マシンは要りません。次の「動くか確かめる」に進んでください。
+::::
+:::::
 
 ## 動くか確かめる
 
@@ -81,20 +82,21 @@ This message shows that your installation appears to be working correctly.
 
 `podman compose` は、それ自身では `compose.yaml` を読みません。**compose のプロバイダ**（実際に `compose.yaml` を読んで動かすプログラム）を呼び出します。このハンズオンでは、ファイルの変更をコンテナに反映する機能（`watch`）が使える **Docker Compose**（`docker-compose`）をプロバイダにします。
 
-### macOS
-
+:::::platform
+::::macos
 ```bash
 brew install docker-compose
 ```
-
-### Linux（Ubuntu）・Windows（WSL2 の Ubuntu）
-
+::::
+::::windows-linux
 Docker Compose を入れ、Podman を Docker の API で呼び出せるようにします（Docker Compose はこの API を通して Podman を操作します）。
 
 ```bash
 sudo apt install -y docker-compose-v2
 systemctl --user enable --now podman.socket
 ```
+::::
+:::::
 
 ### 確かめる
 
@@ -110,9 +112,18 @@ Docker Compose version 5.8.0
 
 1 行目は「外部のプロバイダ（`docker-compose`）を呼び出しています」というお知らせです。毎回出てうるさいときは、環境変数で消せます。
 
+:::::platform
+::::macos
 ```bash
-echo 'export PODMAN_COMPOSE_WARNING_LOGS=false' >> ~/.zshrc   # bash なら ~/.bashrc
+echo 'export PODMAN_COMPOSE_WARNING_LOGS=false' >> ~/.zshrc
 ```
+::::
+::::windows-linux
+```bash
+echo 'export PODMAN_COMPOSE_WARNING_LOGS=false' >> ~/.bashrc
+```
+::::
+:::::
 
 :::faq
 

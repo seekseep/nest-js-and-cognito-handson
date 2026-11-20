@@ -15,15 +15,29 @@ Node.js を公式サイトのインストーラーで直接入れることもで
 LTS（Long Term Support）は長期サポート版のことです。偶数番号のバージョンが毎年 10 月ごろに LTS になり、約 3 年間セキュリティ修正が届きます。仕事で使うなら LTS を選びます。
 :::
 
-## Windows の人は WSL2 を使う
+## お使いの OS を選ぶ
 
-このハンズオンのコマンドは macOS と Linux のターミナルを前提にしています。Windows の人は WSL2（Windows Subsystem for Linux）で Ubuntu を入れ、その中で進めてください。PowerShell を **管理者として実行** し、次のコマンドを実行して再起動します。
+手順が OS で分かれるところでは、選んだ OS の手順だけを表示します。最初に、お使いの OS を選んでください。あとから、ページの上のナビゲーションバーの選択欄でも変えられます。
+
+::platform-choice
+
+:::::platform
+::::macos
+macOS では、ターミナル（「アプリケーション」→「ユーティリティ」→「ターミナル」）で進めます。
+::::
+::::windows
+このハンズオンのコマンドは、macOS と Linux のターミナルを前提にしています。Windows の人は、WSL2（Windows Subsystem for Linux）で Ubuntu を入れ、その中で進めてください。PowerShell を **管理者として実行** し、次のコマンドを実行して再起動します。
 
 ```powershell
 wsl --install
 ```
 
-再起動後に Ubuntu が起動し、ユーザー名とパスワードを決めると Linux のターミナルが使えるようになります。以降の手順は Ubuntu のターミナルで進めます。
+再起動すると Ubuntu が起動します。ユーザー名とパスワードを決めると、Linux のターミナルが使えるようになります。以降の手順は、Ubuntu のターミナルで進めます。
+::::
+::::linux
+Linux では、ふだんのターミナルで進めます。パッケージを入れる手順は、Ubuntu のコマンド（`apt`）で書いています。
+::::
+:::::
 
 ## nvm を入れる
 
@@ -33,7 +47,18 @@ wsl --install
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.41.0/install.sh | bash
 ```
 
-スクリプトは `~/.zshrc`（macOS）や `~/.bashrc`（Linux）に nvm を読み込む設定を書き足します。設定を反映するため、**ターミナルを開き直して** から確かめます。
+スクリプトは、nvm を読み込む設定を、シェルの設定ファイルに書き足します。
+
+:::::platform
+::::macos
+書き足す先は `~/.zshrc` です。
+::::
+::::windows-linux
+書き足す先は `~/.bashrc` です。
+::::
+:::::
+
+設定を反映するため、**ターミナルを開き直して** から確かめます。
 
 ```bash
 nvm --version

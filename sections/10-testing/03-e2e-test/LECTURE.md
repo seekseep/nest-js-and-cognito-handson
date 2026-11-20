@@ -74,7 +74,18 @@ npm install -D @playwright/test
 npx playwright install chromium
 ```
 
-2 つ目のコマンドで、テストに使うブラウザ（Chromium）をダウンロードします。ブラウザは `node_modules/` ではなく、パソコンの共通の場所（macOS なら `~/Library/Caches/ms-playwright/`）に入ります。
+2 つ目のコマンドで、テストに使うブラウザ（Chromium）をダウンロードします。ブラウザは `node_modules/` ではなく、パソコンの共通の場所に入ります。
+
+:::::platform
+::::macos
+入る場所は `~/Library/Caches/ms-playwright/` です。
+::::
+::::windows-linux
+入る場所は `~/.cache/ms-playwright/` です（Windows では WSL2 の Ubuntu の中）。
+
+Ubuntu では、ブラウザを動かすための部品が足りず、テストの起動でエラーになることがあります。そのときは `npx playwright install-deps chromium` で入れてください（中で `sudo` を使うので、パスワードを聞かれます）。
+::::
+:::::
 
 `devDependencies` には `npm install` で `@playwright/test` が入ります。`scripts` の `test:e2e` は手で足します。
 

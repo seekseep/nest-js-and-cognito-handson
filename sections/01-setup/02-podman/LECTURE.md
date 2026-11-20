@@ -17,11 +17,9 @@ title: Podman を入れる
 
 ## インストール
 
-:::notice
-macOS では、コンテナは Linux の仮想マシン（**Podman マシン**）の中で動きます。仮想マシンは 03 章で作ります。Linux と Windows の WSL2 では、そのまま動きます。
-:::
-
-### macOS
+:::::platform
+::::macos
+macOS では、コンテナは Linux の仮想マシン（**Podman マシン**）の中で動きます。仮想マシンは 03 章で作ります。
 
 Homebrew で入れます。
 
@@ -30,15 +28,24 @@ brew install podman
 ```
 
 画面で操作したい人は [Podman Desktop](https://podman-desktop.io/) を入れてもかまいません。Podman Desktop は Podman 本体もいっしょに入れてくれます。
-
-### Linux（Ubuntu）・Windows（WSL2 の Ubuntu）
-
-WSL2 の Ubuntu は Linux そのものなので、Linux と同じ手順です。
+::::
+::::windows
+WSL2 の Ubuntu は Linux そのものなので、Linux と同じ手順で入れます。コンテナは、仮想マシンを作らずにそのまま動きます。
 
 ```bash
 sudo apt update
 sudo apt install -y podman
 ```
+::::
+::::linux
+apt で入れます。コンテナは、仮想マシンを作らずにそのまま動きます。
+
+```bash
+sudo apt update
+sudo apt install -y podman
+```
+::::
+:::::
 
 ## 確かめる
 
@@ -50,7 +57,7 @@ podman --version
 podman version 6.2.0
 ```
 
-macOS の Homebrew で入れると 6 系が入ります。Ubuntu の apt で入れると、Ubuntu のバージョンによっては 4 系や 5 系になりますが、このハンズオンの範囲ではどれでも動きます。
+Homebrew（macOS）で入れると 6 系が入ります。Ubuntu の apt で入れると、Ubuntu のバージョンによっては 4 系や 5 系になりますが、このハンズオンの範囲ではどれでも動きます。
 
 ## Docker との違い
 
