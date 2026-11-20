@@ -7,41 +7,25 @@ title: OpenAPI の書き方
 
 ![06 章 OpenAPI の書き方](./images/00-thumbnail.svg)
 
-ここまでで、メモ API の形（URL・メソッド・送る JSON・返る JSON）は、API のコードの中にしか書かれていません。API を呼ぶ人（前の章の HTML の画面を作る人や、ほかのチーム）は、コードを読まないと、何を送れば何が返るのかが分かりません。
+ここまでで、メモ API の形（URL・メソッド・送る JSON・返る JSON）は、API のコードの中にしか書かれていません。API を呼ぶ人は、コードを読まないと何を送れば何が返るのかが分かりません。
 
-この章では、API の形を **OpenAPI** という決まった書き方で 1 つのファイルにまとめ、そこから API のコードで使う型を作ります。この節では、そのファイル `openapi.yaml` を書きます。
+この章では、API の形を **OpenAPI** で 1 つのファイルにまとめ、そこから API のコードで使う型を作ります。この節では、そのファイル `openapi.yaml` を書きます。
 
 ## OpenAPI とは
 
-**OpenAPI** は、HTTP の API を YAML（または JSON）で書くための決まりです。どんなパスがあり、何を送ると何が返るかを、人にも道具にも読める形で書けます。書いたものからは、ドキュメントの画面・型・テスト・モックサーバーなどを作れます。
+**OpenAPI** は、HTTP の API を YAML（または JSON）で書くための決まりです。どんなパスがあり、何を送ると何が返るかを、人にも道具にも読める形で書けます。
 
-### 設計が先、コードが後
-
-OpenAPI のファイルの作り方は 2 通りあります。
-
-| 作り方 | 流れ |
-|---|---|
-| コードから作る | API のコードにデコレーターを付けて、OpenAPI を書き出す（NestJS なら `@nestjs/swagger`） |
-| **設計が先**（このハンズオン） | 先に OpenAPI を手で書き、それに合わせて API と、API を呼ぶ側を作る |
-
-設計を先にすると、画面を作る人と API を作る人が、同じ約束を見ながら同時に作業できます。`openapi.yaml` が「API の約束」の正本になります。このハンズオンでは API がもうできているので、今あるコードの形を `openapi.yaml` に書き起こし、この先は `openapi.yaml` を先に直してからコードを直す、という順で進めます。
+このハンズオンでは、`openapi.yaml` を「API の約束」の正本にします。今あるコードの形を `openapi.yaml` に書き起こし、この先は `openapi.yaml` を先に直してからコードを直します。
 
 ## openapi.yaml を書く
 
-`api/` の直下（`package.json` と同じ階層）に置きます。長いので、まず全体を載せてから、部分ごとに説明します。
+`api/` の直下（`package.json` と同じ階層）に置きます。
 
 ::diff{file="api/openapi.yaml"}
 
-メモの API（`/notes`）だけを書いています。02 章で練習に作った `/greeting` と `/echo` は、載せていません。
+メモの API（`/notes`）だけを書いています（練習用の `/greeting` と `/echo` は載せません）。
 
-### 全体の情報
-
-| キー | 意味 |
-|---|---|
-| `openapi: 3.1.0` | OpenAPI の版。3.1 は JSON Schema と同じ書き方で型を書ける |
-| `info` | API の名前・版・説明 |
-| `servers` | API の URL |
-| `tags` | 操作をまとめるための見出し |
+先頭の `openapi` は OpenAPI の版、`info` は API の名前と説明、`servers` は API の URL です。
 
 ### paths — パスと操作
 
@@ -67,24 +51,13 @@ OpenAPI のファイルの作り方は 2 通りあります。
 | キー | 意味 |
 |---|---|
 | `operationId` | 操作の名前。型やドキュメントで、この名前が使われる |
-| `summary` / `description` | 操作の説明 |
 | `requestBody` | 送る本文（`POST`・`PATCH`） |
 | `responses` | ステータスコードごとの応答。`'200'` のように文字列で書く |
-| `$ref` | 別の場所に書いた定義を参照する。`#/components/schemas/Note` は「このファイルの `components.schemas.Note`」 |
-
-`/notes/{id}` の `{id}` はパスの中の値です。`parameters` で、`id` がパスの値で、UUID の形の文字列であることを書いています。
+| `$ref` | 別の場所の定義を参照する。`#/components/schemas/Note` は「このファイルの `components.schemas.Note`」 |
 
 ### components — 使い回す部品
 
-同じ形を何度も書かずに済むよう、`components` にまとめておき、`$ref` で参照します。
-
-| 場所 | 中身 |
-|---|---|
-| `parameters` | パスやクエリの値。`NoteId` |
-| `schemas` | JSON の形。`Note`・`CreateNoteInput`・`UpdateNoteInput`・`Error` |
-| `responses` | よく使う応答。`400`（`BadRequest`）・`404`（`NotFound`） |
-
-`schemas` は、03 章で書いた型と Zod のスキーマと同じ決まりを書いています。コードとの対応は次のとおりです。
+使い回す形を `components` にまとめ、`$ref` で参照します。`parameters` に `{id}`（`NoteId`）、`responses` に `400`・`404` の応答、`schemas` に JSON の形を書いています。`schemas` とコードの対応は次のとおりです。
 
 | `openapi.yaml` | コード |
 |---|---|
@@ -103,10 +76,8 @@ Zod の書き方は、次のように書き換えます。
 | `.default('')` | `default: ''` |
 | `z.uuid()` | `type: string`・`format: uuid` |
 
-`Error` は、04 章で ExceptionFilter を使ってそろえたエラーの形です。
-
 :::notice
-`openapi.yaml` は約束を書いただけなので、ここで API の動きは何も変わりません。約束とコードを結び付けるのは、この章の 04 節です。それまでの間、約束とコードがずれないように気を付けてください。
+`openapi.yaml` は約束を書いただけなので、ここで API の動きは何も変わりません。約束とコードを結び付けるのは、この章の 04 節です。
 :::
 
 ## 参考にした公式ドキュメント
@@ -114,7 +85,6 @@ Zod の書き方は、次のように書き換えます。
 この節は、次の公式ドキュメントをもとに書いています。
 
 - [OpenAPI Specification v3.1.1](https://spec.openapis.org/oas/v3.1.1.html) … `openapi.yaml` に書ける項目
-- [OpenAPI Documentation](https://learn.openapis.org/) … OpenAPI の考え方と書き方の入門
 
 ## この節を終えたときのディレクトリ
 
@@ -128,14 +98,10 @@ Zod の書き方は、次のように書き換えます。
 
 ### `'200'` を `200` と書いてはいけない？
 
-YAML では `200` は数値になります。OpenAPI の決まりでは、応答のキーは文字列なので、`'200'` と引用符で囲みます。
-
-### `@nestjs/swagger` で作るのと、どちらがよい？
-
-コードから作ると、約束とコードがずれにくいのが利点です。設計を先にすると、コードを書く前に約束を相談でき、画面と API を並べて作れます。どちらも広く使われています。このハンズオンでは、約束を先に決める流れを体験するために、手で書きます。
+YAML では `200` は数値になります。OpenAPI では応答のキーは文字列なので、`'200'` と引用符で囲みます。
 
 ### YAML の字下げを間違えた
 
-YAML は字下げで入れ子を表します。スペース 2 つでそろえ、タブは使いません。次の節で入れる VS Code の拡張機能が、間違いを教えてくれます。
+スペース 2 つでそろえ、タブは使いません。次の節で入れる VS Code の拡張機能が、間違いを教えてくれます。
 
 :::

@@ -7,29 +7,61 @@ title: NestJS の Hello World
 
 ![02 章 NestJS の Hello World](./images/00-thumbnail.svg)
 
-この節では、**NestJS** のプロジェクトを作り、「Hello World!」を返す API を動かします。このハンズオンでは、このプロジェクトに節ごとに機能を足していき、最後にはメモを読み書きする REST API にします。
+この節では、**NestJS** のプロジェクトを作り、「Hello World!」を返す API を動かします。このプロジェクトに節ごとに機能を足し、最後にはメモを読み書きする REST API にします。
 
-NestJS は、Node.js で API を作るためのフレームワークです。URL ごとの処理（コントローラー）と、処理の中身（サービス）を分けて書き、それらをモジュールにまとめる、という決まった形で書きます。決まった形があるので、API が大きくなっても、どこに何を書けばよいか迷いにくくなります。
+NestJS は、Node.js で API を作るためのフレームワークです。URL ごとの処理（コントローラー）と処理の中身（サービス）を分けて書き、それらをモジュールにまとめます。
 
 ## NestJS のプロジェクトを作る
 
-作業用のフォルダ（たとえば `~/handson/`）を作り、その中で Nest CLI を使ってプロジェクトを作ります。
+作業用のフォルダを作り、その中で Nest CLI を使ってプロジェクトを作ります。
 
 ```bash
 mkdir handson
 cd handson
-npx @nestjs/cli@12 new api --package-manager npm
+npx @nestjs/cli@12 new api --package-manager npm --skip-tests --no-observe
 ```
 
-| 指定 | 意味 |
-|---|---|
-| `@nestjs/cli@12` | Nest CLI の 12 系を、インストールせずに 1 回だけ使う |
-| `api` | 作るフォルダの名前 |
-| `--package-manager npm` | パッケージマネージャーに npm を使う（聞かれずに済む） |
+Nest CLI の 12 系で `api/` を作り、ライブラリのインストールまで行います。モジュールの方式（module system）を聞かれたら **ESM** を選びます。`--skip-tests` でテストのファイルを作らず、`--no-observe` で監視サービス（NestJS Observe）の設定を飛ばします。
 
-`api/` ができ、必要なライブラリのインストールまで行われます。`api/` の中では `git init` も済んでいて、`.gitignore` も入っています。
+以降のコマンドは、`api/` の中で実行します。VS Code で `api/` を開いておきます。
 
-主なファイルは次のとおりです。
+```bash
+cd api
+code .
+```
+
+## 使わないものを消す
+
+`nest new` は、lint（oxlint）・整形（Prettier）・テスト（Vitest）の道具も入れます。このハンズオンでは使わないので消し、ビルドして動かすのに要るものだけにします。
+
+:::::platform
+::::macos-linux
+```bash
+rm .oxlintrc.json .prettierrc .gitattributes AGENTS.md README.md vitest.config.ts vitest.config.e2e.ts
+```
+::::
+::::windows
+```powershell
+Remove-Item .oxlintrc.json, .prettierrc, .gitattributes, AGENTS.md, README.md, vitest.config.ts, vitest.config.e2e.ts
+```
+::::
+:::::
+
+使わないライブラリと、`package.json` の `scripts` も消します。
+
+```bash
+npm uninstall @nestjs/mau @nestjs/testing @types/supertest supertest @vitest/coverage-v8 vitest vite oxlint oxlint-tsgolint prettier source-map-support
+npm pkg delete scripts.deploy scripts.format scripts.start:debug scripts.lint scripts.test scripts.test:watch scripts.test:cov scripts.test:debug scripts.test:e2e
+```
+
+`tsconfig.json` の `types` から、Vitest の型を外します。
+
+```diff lang="json"
+-    "types": ["vitest/globals", "node"]
++    "types": ["node"]
+```
+
+残ったファイルは次のとおりです。
 
 | ファイル | 役割 |
 |---|---|
@@ -37,14 +69,8 @@ npx @nestjs/cli@12 new api --package-manager npm
 | `src/app.module.ts` | モジュール。コントローラーとサービスをまとめる |
 | `src/app.controller.ts` | コントローラー。URL とメソッドに応じて処理を呼ぶ |
 | `src/app.service.ts` | サービス。実際の処理（ここでは文字列を返すだけ） |
-| `src/*.spec.ts`・`test/` | テスト（Vitest）。`npm test` で動く |
-
-以降のコマンドは、`api/` の中で実行します。VS Code で `api/` を開いておくと便利です。
-
-```bash
-cd api
-code .
-```
+| `package.json`・`package-lock.json` | 使うライブラリとコマンド（`scripts`） |
+| `tsconfig.json`・`tsconfig.build.json`・`nest-cli.json` | TypeScript と Nest CLI の設定 |
 
 ## 動かす
 
@@ -62,9 +88,7 @@ npm run start:dev
 
 `Mapped {/, GET} route` は「`GET /` を受け付ける」という意味です。ブラウザで <http://localhost:3000> を開くと `Hello World!` と表示されます。
 
-`start:dev` はファイルの変更を見張っていて、保存すると自動で再起動します。止めるときは、ターミナルで Ctrl + C を押します。
-
-ポート番号は `src/main.ts` で決まっています。
+`start:dev` は、ファイルを保存すると自動で再起動します。止めるときは Ctrl + C を押します。ポート番号は `src/main.ts` で決まっています。
 
 :::code{filepath="api/src/main.ts"}
 ```ts
@@ -103,32 +127,26 @@ export class AppController {
 ```
 :::
 
-`constructor(private readonly appService: AppService)` と書くだけで、NestJS が `AppService` のインスタンスを作って渡してくれます。これを **依存性の注入（DI）** と呼びます。コントローラーは「URL とメソッドの受け付け」、サービスは「処理の中身」と役割を分けておくと、あとで処理を差し替えたりテストしたりしやすくなります。
+`constructor(private readonly appService: AppService)` と書くだけで、NestJS が `AppService` のインスタンスを作って渡してくれます。これを **依存性の注入（DI）** と呼びます。
 
 :::notice
 NestJS 12 のプロジェクトは ES Modules で書かれています。`import { AppService } from './app.service.js'` のように、TypeScript のファイルでも import の末尾は `.js` にします（ビルド後のファイル名に合わせるため）。
 :::
 
-## ビルド・lint・テスト
-
-`nest new` は、よく使うコマンドを `package.json` の `scripts` に用意しています。このハンズオンでは、節の終わりに次の 3 つが通ることを確かめています。
+## ビルドする
 
 ```bash
-npm run build   # TypeScript をコンパイルして dist/ に書き出す
-npm run lint    # oxlint でコードを調べる
-npm test        # Vitest でテストを動かす
+npm run build
 ```
 
-```text
- Test Files  1 passed (1)
-      Tests  1 passed (1)
-```
+TypeScript をコンパイルして `dist/` に書き出します。このハンズオンでは、節の終わりにビルドが通ることを確かめています。
 
 ## 参考にした公式ドキュメント
 
 この節は、次の公式ドキュメントをもとに書いています。
 
 - [NestJS: First steps](https://docs.nestjs.com/first-steps) … `nest new` で作るプロジェクトのファイルと `main.ts`、`npm run start:dev`
+- [NestJS: CLI command reference](https://docs.nestjs.com/cli/usages) … `nest new` の `--skip-tests`・`--no-observe`
 - [NestJS: Controllers](https://docs.nestjs.com/controllers) … `@Controller()`・`@Get()` とルートの決まり方
 - [NestJS: Providers](https://docs.nestjs.com/providers) … サービスとコンストラクターでの依存性の注入
 
@@ -144,7 +162,7 @@ npm test        # Vitest でテストを動かす
 
 ### `npm run start:dev` で `EADDRINUSE: address already in use :::3000` と出る
 
-3000 番ポートを別のプログラムが使っています。前に起動した API が残っていないか確かめてください。使っているプログラムは、macOS・Linux なら `lsof -i :3000`、Windows の PowerShell なら `Get-Process -Id (Get-NetTCPConnection -LocalPort 3000).OwningProcess` で分かります。別のポートで動かしたいときは、環境変数 `PORT` を指定します（macOS・Linux は `PORT=3001 npm run start:dev`、PowerShell は `$env:PORT=3001; npm run start:dev`）。
+3000 番ポートを別のプログラムが使っています。前に起動した API が別のターミナルに残っていないか確かめ、Ctrl + C で止めてください。
 
 ### ZIP をダウンロードして始めたら動かない
 
