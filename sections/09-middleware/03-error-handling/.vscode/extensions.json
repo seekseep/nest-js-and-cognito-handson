@@ -1,8 +1,0 @@
-{
-  // このフォルダを VS Code で開くと、入れておくとよい拡張機能として表示される
-  "recommendations": [
-    "42Crunch.vscode-openapi",
-    "Redocly.openapi-vs-code",
-    "redhat.vscode-yaml"
-  ]
-}

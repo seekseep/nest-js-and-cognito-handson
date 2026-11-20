@@ -1,0 +1,189 @@
+openapi: 3.1.0
+info:
+  title: メモ API
+  version: 1.0.0
+  description: NestJS で作る REST API ハンズオンのメモ API。
+servers:
+  - url: http://localhost:3000
+    description: 手元の API
+tags:
+  - name: notes
+    description: メモ
+paths:
+  /notes:
+    get:
+      tags: [notes]
+      operationId: listNotes
+      summary: メモの一覧を返す
+      responses:
+        '200':
+          description: メモの一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Note'
+    post:
+      tags: [notes]
+      operationId: createNote
+      summary: メモを作る
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNoteInput'
+      responses:
+        '201':
+          description: 作ったメモ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /notes/{id}:
+    parameters:
+      - $ref: '#/components/parameters/NoteId'
+    get:
+      tags: [notes]
+      operationId: getNote
+      summary: メモを 1 件返す
+      responses:
+        '200':
+          description: メモ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags: [notes]
+      operationId: updateNote
+      summary: メモを書き換える
+      description: 送った項目だけを書き換える。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNoteInput'
+      responses:
+        '200':
+          description: 書き換えたメモ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [notes]
+      operationId: deleteNote
+      summary: メモを消す
+      responses:
+        '204':
+          description: 消した
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    NoteId:
+      name: id
+      in: path
+      required: true
+      description: メモの ID
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    Note:
+      type: object
+      additionalProperties: false
+      required: [id, title, body, createdAt, updatedAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+        body:
+          type: string
+          maxLength: 1000
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    CreateNoteInput:
+      type: object
+      additionalProperties: false
+      required: [title]
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: 前後の空白は取り除かれる
+        body:
+          type: string
+          maxLength: 1000
+          default: ''
+    UpdateNoteInput:
+      type: object
+      additionalProperties: false
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+        body:
+          type: string
+          maxLength: 1000
+    Error:
+      type: object
+      additionalProperties: false
+      required: [statusCode, error, messages, path, timestamp]
+      properties:
+        statusCode:
+          type: integer
+          description: HTTP のステータスコード
+        error:
+          type: string
+          description: ステータスの名前（Bad Request・Not Found など）
+        messages:
+          type: array
+          description: エラーの説明。入力チェックのエラーでは、項目ごとに 1 つずつ入る
+          items:
+            type: string
+        path:
+          type: string
+          description: リクエストのパス
+        timestamp:
+          type: string
+          format: date-time
+          description: エラーが起きた日時
+  responses:
+    BadRequest:
+      description: 入力が決まりに合わない
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: メモが無い
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

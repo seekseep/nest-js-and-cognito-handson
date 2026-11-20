@@ -1,16 +1,18 @@
 ---
 docs: true
-title: Next.js × NestJS × Cognito ハンズオン
+title: NestJS で作る REST API ハンズオン
 ---
 
-# Next.js × NestJS × Cognito ハンズオン
+# NestJS で作る REST API ハンズオン
 
-Next.js（SSG）で作った画面から、NestJS で作った API を呼び出し、Amazon Cognito でサインインしたユーザーだけが使えるアプリを、**1 つのプロジェクトを少しずつ育てながら** 作るハンズオンです。
+NestJS で、メモを読み書きする REST API を作るハンズオンです。**1 つのプロジェクトを少しずつ育てながら**、入力チェック・エラーの形・ログ・HTML の画面からの呼び出し・OpenAPI までを進めます。
 
-- **UI** — Next.js の静的書き出し（SSG）。ビルドすると HTML・JS・CSS だけになるので、Amazon S3 のような静的ファイルの置き場にそのまま置けます
-- **API** — NestJS。UI 専用の API で、Cognito が発行したトークンを検証してから応答します
-- **認証** — Amazon Cognito のユーザープール。サインインの画面は Amplify の部品を使います
-- **開発環境** — Podman。UI と API をコンテナで動かします
+- **API** — NestJS 12（TypeScript）。メモはメモリ上に持つので、データベースは要りません
+- **入力チェック** — Zod と NestJS の `StandardSchemaValidationPipe`
+- **画面** — HTML 1 枚。NestJS から配り、`fetch` で API を呼びます
+- **API の約束** — OpenAPI。Redocly で確かめ、openapi-typescript で型を作ります
+
+必要なのは Node.js と VS Code だけです。コンテナや、クラウドのアカウントは使いません。
 
 ## 進め方
 
@@ -20,47 +22,36 @@ Next.js（SSG）で作った画面から、NestJS で作った API を呼び出�
 
 ## このハンズオンで作るもの
 
-![アプリの構成。ブラウザは S3 から静的ファイルを読み込み、Cognito でサインインし、トークンを付けて NestJS の API を呼び出す](./sections/02-hello-world/01-nextjs/images/01-architecture.svg)
+### 01. 環境構築
 
-### 01. 基本的な環境構築
-
-Node.js と Podman を入れます。Node.js は 26 が使えれば、公式サイトのインストーラーでもバージョン管理ツール（nvm など）でもかまいません。
+Node.js 26 と VS Code を入れます。Node.js は 26 が使えれば、公式サイトのインストーラーでもバージョン管理ツール（nvm など）でもかまいません。
 
 ### 02. Hello World
 
-Next.js と NestJS のプロジェクトを作り、それぞれ「Hello World」を表示します。Next.js は静的ファイルに書き出す設定にし、`out/` にできたファイルがそのまま S3 に置けることを確かめます。NestJS で使う `@Controller()` のようなデコレーターが、TypeScript の標準ではなく NestJS が前提にしている書き方であることも押さえます。API は curl と Postman で呼び出します。
+NestJS のプロジェクトを作り、「Hello World」を返します。NestJS で使う `@Controller()` のようなデコレーターが、TypeScript の標準ではなく NestJS が前提にしている書き方であることも押さえます。API は curl と Postman で呼び出します。
 
-### 03. Podman
+### 03. REST API
 
-UI と API をコンテナで動かします。`compose.yaml` を書いて、`podman compose up` 1 つで両方が起動し、ファイルを保存すると反映される開発環境を作ります。
+メモの API（一覧・1 件の取得・作成・更新・削除）を作り、Zod で入力チェックを入れます。ファイルは NestJS の決まり（`dto/`・`entities/`）に合わせて置きます。
 
-### 04. 簡単な REST API
+### 04. エラーとログ
 
-API にメモの API（一覧・作成・更新・削除）を作り、入力チェックを入れます。Next.js の画面からメモを読み書きできるようにします。
+ExceptionFilter で、すべてのエラーを 1 つの形にそろえます。middleware で、リクエストごとにログを出します。
 
-### 05. Next.js と Cognito の連携
+### 05. HTML から呼ぶ
 
-Cognito のユーザープールを作り、Next.js の画面にサインインとサインアップを付けます。サインインすると、ユーザーの情報とトークンを取り出せるようになります。
+HTML 1 枚の画面を NestJS から配り、`fetch` でメモの一覧・追加・削除をします。
 
-### 06. NestJS で認証と認可
+### 06. OpenAPI
 
-API がトークンを検証し、サインインしていないリクエストを断るようにします（認証）。さらに、自分のメモしか触れない・管理者グループだけが全員のメモを見られる、という決まりを入れます（認可）。
+API の約束を OpenAPI（YAML）で書きます。VS Code の拡張機能と Redocly で確かめ、openapi-typescript で型を作り、その型を API のコードで使います。
 
-### 07. OpenAPI
+## 関連するハンズオン
 
-API を OpenAPI（YAML）で書きます。VS Code の拡張機能でプレビューと検証をしながら書き、OpenAPI から TypeScript の型を生成する設定を入れます。
+このハンズオンは、次の 2 つと合わせて 1 つのシリーズになっています。どれから始めても進められます。
 
-### 08. OpenAPI とアプリケーションの連携
-
-生成した型を API と UI の両方で使い、API の形が食い違ったらビルドで気づけるようにします。UI は型付きのクライアントで API を呼び出します。
-
-### 09. ミドルウェアを使った最適化
-
-コントローラーごとに書いていた認証・認可を、アプリケーション全体・パス単位の仕組みに寄せます。エラーの形をそろえ、リクエストごとのログを出します。
-
-### 10. テスト
-
-API の単体テスト（Vitest）、API を丸ごと HTTP で呼ぶ結合テスト（Vitest と supertest）、ブラウザで画面を操作する E2E テスト（Playwright）を書きます。テストでの認証は、決め打ちのトークンで行います（本来の方法には触れません）。
+- [NestJS と Cognito で認証と認可](https://github.com/seekseep/nestjs-cognito-auth-handson)
+- [NestJS のテスト](https://github.com/seekseep/nestjs-testing-handson)
 
 ## ドキュメントサイト
 
@@ -69,4 +60,3 @@ API の単体テスト（Vitest）、API を丸ごと HTTP で呼ぶ結合テス
 ## ライセンス・注意事項
 
 - 学習用リポジトリです
-- Cognito のユーザープール ID などの実値はリポジトリに含めていません。各自の AWS アカウントで作り、`.env` / `.env.local` に書いてください
