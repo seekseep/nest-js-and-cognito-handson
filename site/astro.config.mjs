@@ -108,8 +108,8 @@ export default defineConfig({
     // starlight より前に登録して、callout 変換を asides より先に走らせる。
     calloutIntegration(),
     starlight({
-      title: 'Next.js × NestJS × Cognito ハンズオン',
-      description: 'Next.js（SSG）と NestJS（API）と Amazon Cognito で、1 つのアプリを育てながら認証・認可・OpenAPI を学ぶ',
+      title: 'NestJS で作る REST API ハンズオン',
+      description: 'NestJS でメモの REST API を作り、入力チェック・エラー・ログ・HTML からの呼び出し・OpenAPI までを、1 つのプロジェクトを育てながら学ぶ',
       customCss: [
         './src/styles/readability.css',
         './src/styles/external-links.css',
@@ -155,16 +155,12 @@ export default defineConfig({
         { label: '開発ツール', link: '/tools/' },
         // 章を足したらここに足す（章は固定。節は autogenerate が拾う）。
         // Starlight v0.39+ では autogenerate を items 配列に入れる（label と autogenerate を同階層に書けない）。
-        { label: '01. 基本的な環境構築', items: [{ autogenerate: { directory: '01-setup' } }] },
+        { label: '01. 環境構築', items: [{ autogenerate: { directory: '01-setup' } }] },
         { label: '02. Hello World', items: [{ autogenerate: { directory: '02-hello-world' } }] },
-        { label: '03. Podman', items: [{ autogenerate: { directory: '03-podman' } }] },
-        { label: '04. 簡単な REST API', items: [{ autogenerate: { directory: '04-rest-api' } }] },
-        { label: '05. Next.js と Cognito の連携', items: [{ autogenerate: { directory: '05-cognito' } }] },
-        { label: '06. NestJS で認証と認可', items: [{ autogenerate: { directory: '06-nestjs-auth' } }] },
-        { label: '07. OpenAPI', items: [{ autogenerate: { directory: '07-openapi' } }] },
-        { label: '08. OpenAPI とアプリケーションの連携', items: [{ autogenerate: { directory: '08-openapi-integration' } }] },
-        { label: '09. ミドルウェアを使った最適化', items: [{ autogenerate: { directory: '09-middleware' } }] },
-        { label: '10. テスト', items: [{ autogenerate: { directory: '10-testing' } }] },
+        { label: '03. REST API', items: [{ autogenerate: { directory: '03-rest-api' } }] },
+        { label: '04. エラーとログ', items: [{ autogenerate: { directory: '04-errors-and-logs' } }] },
+        { label: '05. HTML から呼ぶ', items: [{ autogenerate: { directory: '05-html' } }] },
+        { label: '06. OpenAPI', items: [{ autogenerate: { directory: '06-openapi' } }] },
       ],
       editLink: {
         baseUrl: `${repoUrl}/edit/main/`,

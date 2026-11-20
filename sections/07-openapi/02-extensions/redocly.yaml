@@ -1,9 +1,0 @@
-# Redocly（CLI と VS Code 拡張機能）が openapi.yaml を確かめるときの決まり
-extends:
-  - recommended
-
-rules:
-  # 公開しない API なので、ライセンスは書かない
-  info-license: off
-  # 手元で動かす API なので、servers の localhost を許す
-  no-server-example.com: off

@@ -1,13 +1,13 @@
 ---
 docs: true
-title: Node.js を入れる
+title: Node.js と VS Code を入れる
 ---
 
-# Node.js を入れる
+# Node.js と VS Code を入れる
 
-![01 章 Node.js を入れる](./images/00-thumbnail.svg)
+![01 章 Node.js と VS Code を入れる](./images/00-thumbnail.svg)
 
-Next.js も NestJS も Node.js の上で動きます。このハンズオンでは **Node.js 26（LTS）** を使います。Node.js 26 が使えれば、入れ方は問いません。
+NestJS は Node.js の上で動きます。この節では、**Node.js 26（LTS）** と、エディタの **VS Code** を入れます。Node.js 26 が使えれば、入れ方は問いません。
 
 :::notice
 LTS（Long Term Support）は長期サポート版のことです。偶数番号のバージョンが毎年 10 月ごろに LTS になり、約 3 年間セキュリティ修正が届きます。仕事で使うなら LTS を選びます。
@@ -30,14 +30,13 @@ Windows では、**PowerShell 7** で進めます。コマンドの書き方が 
 
 | 項目 | 必要なもの |
 |---|---|
-| OS | Windows 11（Home・Pro どちらでも）。Podman 6 が Windows 11 を必要とします |
-| CPU | 64 ビット。仮想化（Intel VT-x / AMD-V）が有効になっていること |
-| WSL | 2.5.1 以上。Podman が、コンテナを動かす仮想マシンに使います（01-02 で入れます） |
-| メモリ | 16 GB 以上をすすめます（8 GB でも動きますが、コンテナとブラウザとエディタを同時に開くと重くなります） |
-| ディスクの空き | 30 GB 以上をすすめます（Node.js・Podman の仮想マシン・コンテナのイメージ・`node_modules`） |
-| 権限 | 管理者として PowerShell を開けること（WSL を入れるときに使います） |
+| OS | Windows 10 または Windows 11（Home・Pro どちらでも） |
+| CPU | 64 ビット |
+| シェル | PowerShell 7（下で入れます） |
+| メモリ | 8 GB 以上をすすめます（エディタとブラウザと API を同時に開くため） |
+| ディスクの空き | 5 GB 以上をすすめます（Node.js・VS Code・`node_modules`） |
 
-仮想化が有効かは、タスクマネージャーの「パフォーマンス」→「CPU」の「仮想化」で確かめられます。「無効」なら、パソコンの BIOS（UEFI）の設定で有効にします。
+数字は目安です。NestJS の API はとても軽いので、ふだん使っているパソコンなら、たいてい足ります。
 
 **PowerShell 7 を入れる**
 
@@ -185,17 +184,57 @@ v26.13.1
 11.12.1
 ```
 
-`v26.` から始まっていれば大丈夫です（細かい番号は入れた日によって違います）。npm は Node.js といっしょに入るパッケージマネージャーで、Next.js や NestJS のライブラリを入れるときに使います。
+`v26.` から始まっていれば大丈夫です（細かい番号は入れた日によって違います）。npm は Node.js といっしょに入るパッケージマネージャーで、NestJS などのライブラリを入れるときに使います。
 
 ## npx を確かめる
 
-npm には、パッケージをインストールせずに一度だけ実行する `npx` というコマンドが付いています。02 章で Next.js と NestJS のプロジェクトを作るときに使います。
+npm には、パッケージをインストールせずに一度だけ実行する `npx` というコマンドが付いています。02 章で NestJS のプロジェクトを作るときに使います。
 
 ```bash
 npx --version
 ```
 
 `npm -v` と同じ番号が出れば大丈夫です。
+
+## VS Code を入れる
+
+エディタには [Visual Studio Code](https://code.visualstudio.com/)（VS Code）を使います。TypeScript の補完が最初から効き、コードの編集と同じウィンドウでターミナルを開けます。06 章では、OpenAPI を書くための拡張機能も入れます。
+
+:::::platform
+::::macos
+[ダウンロードのページ](https://code.visualstudio.com/download) から macOS 用をダウンロードし、開いてできた **Visual Studio Code** を「アプリケーション」フォルダに移します。Homebrew を使っているなら、次でも入れられます。
+
+```bash
+brew install --cask visual-studio-code
+```
+
+VS Code を開き、コマンドパレット（Cmd + Shift + P）で **Shell Command: Install 'code' command in PATH** を実行すると、ターミナルから `code` で開けるようになります。
+::::
+::::windows
+[ダウンロードのページ](https://code.visualstudio.com/download) から Windows 用のインストーラーをダウンロードして開きます。winget でも入れられます。
+
+```powershell
+winget install --id Microsoft.VisualStudioCode --source winget
+```
+
+インストーラーは、`code` コマンドを `PATH` に足します。入れたあとに開いた PowerShell から使えます。
+::::
+::::linux
+[ダウンロードのページ](https://code.visualstudio.com/download) から、使っているディストリビューション用のパッケージ（Ubuntu なら `.deb`）をダウンロードして入れます。
+
+```bash
+sudo apt install ./code_*.deb
+```
+::::
+:::::
+
+ターミナルで確かめます。
+
+```bash
+code --version
+```
+
+番号が出れば大丈夫です。フォルダを VS Code で開くときは、そのフォルダで `code .` を実行します。VS Code の中では、`` Ctrl + ` ``（バッククォート）でターミナルが開きます。
 
 ## 参考にした公式ドキュメント
 
@@ -206,6 +245,9 @@ npx --version
 - [nvm（README）](https://github.com/nvm-sh/nvm) … nvm の入れ方と `nvm install` / `nvm alias default`
 - [Microsoft Learn: Windows への PowerShell のインストール](https://learn.microsoft.com/ja-jp/powershell/scripting/install/installing-powershell-on-windows) … winget で PowerShell 7 を入れる方法
 - [npm Docs: npx](https://docs.npmjs.com/cli/v11/commands/npx) … `npx` の働き
+- [VS Code: Visual Studio Code on macOS](https://code.visualstudio.com/docs/setup/mac) … macOS での入れ方と、`code` コマンドを `PATH` に足す方法
+- [VS Code: Visual Studio Code on Windows](https://code.visualstudio.com/docs/setup/windows) … Windows のインストーラーと `PATH`
+- [VS Code: Visual Studio Code on Linux](https://code.visualstudio.com/docs/setup/linux) … `.deb` パッケージでの入れ方
 
 :::faq
 
@@ -223,6 +265,6 @@ npx --version
 
 ### Node.js 26 ではなく 24 でも動く？
 
-このハンズオンで使う Next.js 16 と NestJS 12 は Node.js 24 でも動きます。ただし、手順やエラーメッセージは Node.js 26 で確かめています。迷ったら 26 を使ってください。
+このハンズオンで使う NestJS 12 は Node.js 24 でも動きます。ただし、手順やエラーメッセージは Node.js 26 で確かめています。迷ったら 26 を使ってください。
 
 :::
