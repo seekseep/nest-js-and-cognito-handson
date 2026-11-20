@@ -102,6 +102,13 @@ npm run test:integration
 
 Cognito の ID（`api/.env`）が無くても動きます。試しに `api/src/app.module.ts` の `forRoutes` の `admin{/*splat}` を `admin` に変えると、`/admin/notes は admin だけが呼べる` が落ちます。単体テストでは気づけない、組み合わせの間違いです（確かめたら戻してください）。
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [NestJS: Testing](https://docs.nestjs.com/fundamentals/testing) … アプリを丸ごと組み立てて HTTP で呼ぶテストと `overrideProvider()`
+- [supertest（README）](https://github.com/ladjs/supertest) … `request(app.getHttpServer())` の使い方
+
 ## この節を終えたときのディレクトリ
 
 ::tree

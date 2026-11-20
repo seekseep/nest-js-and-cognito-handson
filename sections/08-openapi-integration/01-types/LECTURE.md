@@ -101,6 +101,14 @@ src/notes/notes.service.ts(35,11): error TS2741: Property 'pinned' is missing in
 
 約束を変えると、直すべき場所をコンパイラが教えてくれます。確かめたら、`openapi.yaml` を元に戻して `npm run generate:api` を実行しておきます。
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [openapi-typescript: Introduction](https://openapi-ts.dev/introduction) … 作った型（`components["schemas"]`）の使い方
+- [TypeScript 4.9: satisfies](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html) … `satisfies` 演算子
+- [Zod](https://zod.dev/) … スキーマから型を取り出す `z.infer`
+
 ## この節を終えたときのディレクトリ
 
 ::tree

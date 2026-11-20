@@ -123,6 +123,13 @@ curl -s -o NUL -w "%{http_code}\n" http://localhost:3001/admin
 
 このハンズオンでは、ふだんの認証は Guard、`/admin` の下のように「パスでまとめて決めたい」ものは middleware、と使い分けています。
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [NestJS: Middleware](https://docs.nestjs.com/middleware) … middleware の書き方と `forRoutes()`
+- [NestJS: Request lifecycle](https://docs.nestjs.com/faq/request-lifecycle) … middleware・Guard・Pipe・Filter が動く順番
+
 ## この節を終えたときのディレクトリ
 
 ::tree

@@ -74,6 +74,13 @@ VS Code では、`client.GET("` と打った時点で、`openapi.yaml` にある
 
 これで、`openapi.yaml` の約束から作った型を、UI（呼ぶ側）と API（受ける側）の両方で使うようになりました。約束を変えたら `npm run generate:api` を実行すれば、合わなくなった場所を、両方でコンパイラが教えてくれます。
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [openapi-fetch](https://openapi-ts.dev/openapi-fetch/) … 型どおりに API を呼ぶクライアント
+- [openapi-fetch: Middleware & Auth](https://openapi-ts.dev/openapi-fetch/middleware-auth) … トークンを付ける middleware
+
 ## この節を終えたときのディレクトリ
 
 ::tree

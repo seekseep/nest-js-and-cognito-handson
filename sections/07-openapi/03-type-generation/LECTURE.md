@@ -101,6 +101,13 @@ API の `npm run format`（Prettier）が型のファイルを書き換えると
 
 ::diff{file="api/.prettierignore"}
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [openapi-typescript: Introduction](https://openapi-ts.dev/introduction) … `openapi.yaml` から型を作る
+- [openapi-typescript: CLI](https://openapi-ts.dev/cli) … `redocly.yaml` の `x-openapi-ts.output` と `--check`
+
 ## この節を終えたときのディレクトリ
 
 ::tree

@@ -122,6 +122,15 @@ title: Too small: expected string to have >=1 characters
 
 画面の側でも入力を確かめることはできますが、API の入力チェックは省けません。画面を通らずに curl などで直接呼ばれることもあるからです。
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [Next.js: Static Exports](https://nextjs.org/docs/app/guides/static-exports) … 静的書き出しでは、データをブラウザで取る
+- [Next.js: Environment Variables](https://nextjs.org/docs/app/guides/environment-variables) … `NEXT_PUBLIC_` がビルドのときに埋め込まれること
+- [NestJS: CORS](https://docs.nestjs.com/security/cors) … `enableCors()` の使い方
+- [MDN: オリジン間リソース共有（CORS）](https://developer.mozilla.org/ja/docs/Web/HTTP/Guides/CORS) … プリフライトと `Access-Control-Allow-Origin`
+
 ## この節を終えたときのディレクトリ
 
 ::tree

@@ -102,6 +102,13 @@ OpenAPI のファイルの作り方は 2 通りあります。
 `openapi.yaml` は約束を書いただけなので、ここで API の動きは何も変わりません。約束とコードを結び付けるのは 08 章です。それまでの間、約束とコードがずれないように気を付けてください。
 :::
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [OpenAPI Specification v3.1.1](https://spec.openapis.org/oas/v3.1.1.html) … `openapi.yaml` に書ける項目
+- [OpenAPI Documentation](https://learn.openapis.org/) … OpenAPI の考え方と書き方の入門
+
 ## この節を終えたときのディレクトリ
 
 ::tree

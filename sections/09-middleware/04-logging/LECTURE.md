@@ -52,6 +52,13 @@ api-1  | [Nest] 46  - 11/18/2026, 4:45:39 AM    WARN [HTTP] GET /nope 404 0ms us
 ログに、トークンやパスワード、メモの本文のような中身は書かないでください。ログはいろいろな人や道具が読むので、だれでも見てよい情報だけにします。このハンズオンでは、だれかを表す `sub`（ユーザー ID）だけを残しています。
 :::
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [NestJS: Middleware](https://docs.nestjs.com/middleware) … すべてのパスに掛ける middleware
+- [NestJS: Logger](https://docs.nestjs.com/application/logger) … `Logger` の使い方
+
 ## この節を終えたときのディレクトリ
 
 ::tree

@@ -140,6 +140,14 @@ ui-1  | ✓ Ready in 150ms
 podman compose down
 ```
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [Dockerfile reference](https://docs.docker.com/reference/dockerfile/) … `Containerfile` の書き方（Podman も同じ書き方）
+- [Compose file reference: services](https://docs.docker.com/reference/compose-file/services/) … `compose.yaml` の `build`・`ports`・`env_file` など
+- [Docker Compose: Use Compose Watch](https://docs.docker.com/compose/how-tos/file-watch/) … `develop.watch` の `sync`・`rebuild`
+
 ## この節を終えたときのディレクトリ
 
 ::tree

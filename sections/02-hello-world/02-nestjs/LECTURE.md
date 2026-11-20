@@ -104,6 +104,13 @@ export class AppController {
 NestJS 12 のプロジェクトは ES Modules で書かれています。`import { AppService } from './app.service.js'` のように、TypeScript のファイルでも import の末尾は `.js` にします（ビルド後のファイル名に合わせるため）。
 :::
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [NestJS: First steps](https://docs.nestjs.com/first-steps) … `nest new` で作るプロジェクトと `main.ts`
+- [NestJS: Controllers](https://docs.nestjs.com/controllers) … `@Controller()`・`@Get()` とルートの決まり方
+
 ## この節を終えたときのディレクトリ
 
 ::tree

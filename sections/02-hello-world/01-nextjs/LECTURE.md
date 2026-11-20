@@ -177,6 +177,14 @@ aws s3 sync out/ s3://<バケット名>/ --delete
 静的書き出しでは、リクエストのたびにサーバーで動く機能（Route Handlers の動的な応答、`cookies()` を使うページ、画像の最適化など）は使えません。サーバーの仕事は NestJS の API に任せる、というのがこの構成の考え方です。
 :::
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [Next.js: Installation](https://nextjs.org/docs/app/getting-started/installation) … プロジェクトの作り方と、できるファイル
+- [Next.js: create-next-app](https://nextjs.org/docs/app/api-reference/cli/create-next-app) … `--yes`・`--use-npm`・`--disable-git` などのオプション
+- [Next.js: Static Exports](https://nextjs.org/docs/app/guides/static-exports) … `output: "export"` と、静的書き出しで使えない機能
+
 ## この節を終えたときのディレクトリ
 
 ::tree

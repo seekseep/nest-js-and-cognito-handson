@@ -112,6 +112,12 @@ curl -s http://localhost:3001/notes
 
 画面でタイトルを空にして追加すると、これまでどおり入力チェックの結果が表示されます。
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [NestJS: Exception filters](https://docs.nestjs.com/exception-filters) … `@Catch()` と `APP_FILTER`
+
 ## この節を終えたときのディレクトリ
 
 ::tree

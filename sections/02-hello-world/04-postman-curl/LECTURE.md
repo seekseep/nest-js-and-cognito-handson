@@ -158,6 +158,14 @@ winget install jqlang.jq
 
 05 章からは、サインインして受け取ったトークンを `Authorization` ヘッダーに付けて呼び出します。そのときも同じ道具を使います。
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [NestJS: Controllers](https://docs.nestjs.com/controllers) … `@Query()`・`@Body()`・`@Post()` の使い方
+- [curl: man page](https://curl.se/docs/manpage.html) … `-i`・`-X`・`-H`・`-d`・`-s` などのオプション
+- [Postman Docs](https://learning.postman.com/docs/introduction/overview/) … Postman でのリクエストの送り方
+
 ## この節を終えたときのディレクトリ
 
 ::tree

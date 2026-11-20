@@ -81,6 +81,13 @@ curl http://localhost:3001/notes
 
 サインインの画面は「画面の入り口」を守っているだけで、API を直接呼ばれると防げません。次の章で、API がトークンを確かめて、サインインした人の呼び出しだけを受け付けるようにします。
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [Amplify UI: Authenticator](https://ui.docs.amplify.aws/react/connected-components/authenticator) … サインインの部品（`Authenticator`）
+- [Amplify: Use existing Cognito resources](https://docs.amplify.aws/react/build-a-backend/auth/use-existing-cognito-resources/) … Amplify のバックエンドを使わずに、作ってあるユーザープールを `Amplify.configure()` に渡す方法
+
 ## この節を終えたときのディレクトリ
 
 ::tree

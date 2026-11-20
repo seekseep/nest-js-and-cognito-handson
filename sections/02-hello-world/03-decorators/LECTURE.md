@@ -135,6 +135,16 @@ TypeScript 5.0 からは、この提案に合わせた **新しい方式** の�
 
 06 章と 09 章では、デコレーターを自分で作ります。そのときも「メタデータを貼る」「NestJS が読む」という仕組みは同じです。
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [TypeScript: Decorators](https://www.typescriptlang.org/docs/handbook/decorators.html) … `experimentalDecorators` のデコレーター（引数のデコレーター・メタデータ）
+- [TypeScript: experimentalDecorators](https://www.typescriptlang.org/tsconfig/#experimentalDecorators) … 設定の意味
+- [TypeScript: emitDecoratorMetadata](https://www.typescriptlang.org/tsconfig/#emitDecoratorMetadata) … 型の情報を JavaScript に残す設定
+- [TC39: proposal-decorators](https://github.com/tc39/proposal-decorators) … JavaScript の標準にする提案と、その段階
+- [NestJS: Custom decorators](https://docs.nestjs.com/custom-decorators) … NestJS でのデコレーターの使い方
+
 :::faq
 
 ### デコレーターを使わずに NestJS を書ける？

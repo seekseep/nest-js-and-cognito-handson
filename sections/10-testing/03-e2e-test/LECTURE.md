@@ -167,6 +167,17 @@ Running 3 tests using 1 worker
 - アプリ全体の Guard、パス単位の middleware、そろったエラー、ログ（09 章）
 - 単体テスト・結合テスト・E2E テスト（10 章）
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [Playwright: Installation](https://playwright.dev/docs/intro) … 入れ方と `npx playwright test`
+- [Playwright: Web server](https://playwright.dev/docs/test-webserver) … `webServer` でテストの前にサーバーを起動する
+- [Playwright: Locators](https://playwright.dev/docs/locators) … `getByRole()`・`getByPlaceholder()`
+- [Playwright: Assertions](https://playwright.dev/docs/test-assertions) … 待ちながら確かめる `expect`
+- [Playwright: Authentication](https://playwright.dev/docs/auth) … 本来の認証のやり方（setup project と `storageState`）
+- [Playwright: Browsers](https://playwright.dev/docs/browsers) … ブラウザの入れ方と置き場所
+
 ## この節を終えたときのディレクトリ
 
 ::tree

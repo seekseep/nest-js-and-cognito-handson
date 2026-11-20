@@ -203,6 +203,15 @@ HTTP/1.1 204 No Content
 
 `/notes/abc` のように UUID でない ID を送ると、`404` ではなく `400`（`Invalid UUID`）になります。探す前に、形が違うことで弾かれるからです。
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [NestJS: Validation](https://docs.nestjs.com/application/validation) … `StandardSchemaValidationPipe` と、`@Body()` へのスキーマの渡し方
+- [NestJS: Pipes](https://docs.nestjs.com/pipes) … pipe の役割と、グローバルな登録
+- [Zod](https://zod.dev/) … スキーマの書き方
+- [Standard Schema](https://standardschema.dev/) … Zod などのライブラリに共通の約束
+
 ## この節を終えたときのディレクトリ
 
 ::tree

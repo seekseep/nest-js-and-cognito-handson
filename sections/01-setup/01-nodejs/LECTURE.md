@@ -197,6 +197,16 @@ npx --version
 
 `npm -v` と同じ番号が出れば大丈夫です。
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [Node.js: ダウンロード](https://nodejs.org/ja/download) … 入れ方（インストーラー・パッケージマネージャー）
+- [Node.js: Previous Releases](https://nodejs.org/en/about/previous-releases) … LTS の決まりと、各バージョンのサポート期間
+- [nvm（README）](https://github.com/nvm-sh/nvm) … nvm の入れ方と `nvm install` / `nvm alias default`
+- [Microsoft Learn: Windows への PowerShell のインストール](https://learn.microsoft.com/ja-jp/powershell/scripting/install/installing-powershell-on-windows) … winget で PowerShell 7 を入れる方法
+- [npm Docs: npx](https://docs.npmjs.com/cli/v11/commands/npx) … `npx` の働き
+
 :::faq
 
 ### Homebrew で入れてもいい？

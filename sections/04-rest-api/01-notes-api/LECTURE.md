@@ -170,6 +170,15 @@ HTTP/1.1 201 Created
 
 `201 Created` で保存されてしまいました。`CreateNoteInput` は TypeScript の型なので、コンパイルのときにしか働かず、実際に届いた JSON の中身は確かめていません。次の節で、届いた値を確かめる **入力チェック** を入れます。
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [NestJS: Modules](https://docs.nestjs.com/modules) … モジュールの役割と、`cats/cats.controller.ts`・`cats.service.ts`・`cats.module.ts` というファイル名の付け方の例
+- [NestJS: Providers](https://docs.nestjs.com/providers) … サービス（`@Injectable()`）と DI
+- [NestJS: Controllers](https://docs.nestjs.com/controllers) … `@Post()`・`@Body()`・`@Param()`
+- [NestJS: CLI command reference](https://docs.nestjs.com/cli/usages) … `nest g module` / `controller` / `service` が作るファイル
+
 ## この節を終えたときのディレクトリ
 
 ::tree

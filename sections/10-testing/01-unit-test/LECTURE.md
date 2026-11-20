@@ -118,6 +118,16 @@ File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
 
 カバレッジは「テストが足りない場所を探す」ための目安です。100% を目指すより、間違えると困るところ（認可の判定など）を確かめることを大事にします。
 
+## 参考にした公式ドキュメント
+
+この節は、次の公式ドキュメントをもとに書いています。
+
+- [NestJS: Testing](https://docs.nestjs.com/fundamentals/testing) … テストのファイルの置き場所（クラスの隣に `.spec`）と `Test.createTestingModule()`
+- [Vitest: Getting Started](https://vitest.dev/guide/) … `describe`・`it`・`expect`
+- [Vitest: Mocking](https://vitest.dev/guide/mocking) … `vi.fn()` と偽物の使い方
+- [Vitest: Coverage](https://vitest.dev/guide/coverage) … カバレッジの出し方
+- [Vitest: Migration Guide](https://vitest.dev/guide/migration.html) … Jest との違い
+
 ## この節を終えたときのディレクトリ
 
 ::tree
