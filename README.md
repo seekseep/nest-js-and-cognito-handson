@@ -55,7 +55,7 @@ API の約束を OpenAPI（YAML）で書きます。VS Code の拡張機能と R
 
 ## ドキュメントサイト
 
-各節の解説は GitHub Pages で読めます: <https://seekseep.github.io/nest-js-and-cognito-handson/>
+各節の解説は GitHub Pages で読めます: <https://seekseep.github.io/nestjs-rest-api-handson/>
 
 ## ライセンス・注意事項
 
