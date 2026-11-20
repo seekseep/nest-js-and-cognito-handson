@@ -24,7 +24,7 @@ Next.js（SSG）で作った画面から、NestJS で作った BFF（Backend for
 
 ### 01. 基本的な環境構築
 
-Node.js と Podman を入れます。Node.js はバージョンを切り替えられるように、バージョン管理ツールを通して入れます。
+Node.js と Podman を入れます。Node.js は 26 が使えれば、公式サイトのインストーラーでもバージョン管理ツール（nvm など）でもかまいません。
 
 ### 02. Hello World
 
