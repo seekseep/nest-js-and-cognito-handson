@@ -1,6 +1,6 @@
 # 04-04 List を実装する
 
-`GET /notes` を足した状態です。 教材: `LECTURE.md`
+`GET /notes` を足した状態です。
 
 ## 動かし方
 

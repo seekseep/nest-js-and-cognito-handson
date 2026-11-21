@@ -1,6 +1,6 @@
 # 02-01 NestJS の Hello World
 
-NestJS のプロジェクトを作り、`GET /` で `Hello World!` を返す状態です。教材: `LECTURE.md`
+NestJS のプロジェクトを作り、`GET /` で `Hello World!` を返す状態です。
 
 ## 動かし方
 

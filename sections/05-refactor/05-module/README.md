@@ -1,6 +1,6 @@
 # 05-05 notes モジュールに分ける
 
-メモの API を `NotesModule` にまとめた状態です。 教材: `LECTURE.md`
+メモの API を `NotesModule` にまとめた状態です。
 
 ## 動かし方
 
