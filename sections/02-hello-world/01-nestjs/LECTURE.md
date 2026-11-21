@@ -51,7 +51,13 @@ Remove-Item .oxlintrc.json, .prettierrc, .gitattributes, AGENTS.md, README.md, v
 
 ```bash
 npm uninstall @nestjs/mau @nestjs/testing @types/supertest supertest @vitest/coverage-v8 vitest vite oxlint oxlint-tsgolint prettier source-map-support
-npm pkg delete scripts.deploy scripts.format scripts.start:debug scripts.lint scripts.test scripts.test:watch scripts.test:cov scripts.test:debug scripts.test:e2e
+npm pkg delete scripts.deploy scripts.format scripts.start:debug scripts.start:prod scripts.lint scripts.test scripts.test:watch scripts.test:cov scripts.test:debug scripts.test:e2e
+```
+
+`nest new` が入れる Node.js の型（`@types/node`）は 24 用なので、このハンズオンで使う Node.js 26 用に入れ替えます。
+
+```bash
+npm install -D @types/node@26
 ```
 
 `tsconfig.json` の `types` から、Vitest の型を外します。

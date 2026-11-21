@@ -1,6 +1,6 @@
 # 03-04 Update を設計する
 
-`api/openapi.yaml` に `PATCH /notes/{id}` を足した状態です。 教材: `LECTURE.md`
+`api/openapi.yaml` に `PATCH /notes/{id}` を足した状態です。
 
 ## 動かし方
 

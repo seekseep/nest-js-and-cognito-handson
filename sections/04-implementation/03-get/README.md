@@ -1,6 +1,6 @@
 # 04-03 Get を実装する
 
-`GET /notes/:id` を足した状態です。 教材: `LECTURE.md`
+`GET /notes/:id` を足した状態です。
 
 ## 動かし方
 

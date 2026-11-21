@@ -1,6 +1,6 @@
 # 03-03 List を設計する
 
-`api/openapi.yaml` に `GET /notes` を足した状態です。 教材: `LECTURE.md`
+`api/openapi.yaml` に `GET /notes` を足した状態です。
 
 ## 動かし方
 

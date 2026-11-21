@@ -1,6 +1,6 @@
 # 03-01 Create を設計する
 
-`api/openapi.yaml` に `POST /notes` を書いた状態です。 教材: `LECTURE.md`
+`api/openapi.yaml` に `POST /notes` を書いた状態です。
 
 ## 動かし方
 

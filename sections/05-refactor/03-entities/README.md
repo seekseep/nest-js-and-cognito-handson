@@ -1,6 +1,6 @@
 # 05-03 データの形を entities/ に分ける
 
-メモの形を `notes/entities/` に分けた状態です。 教材: `LECTURE.md`
+メモの形を `notes/entities/` に分けた状態です。
 
 ## 動かし方
 

@@ -1,6 +1,6 @@
 # 05-04 処理をサービスに分ける
 
-SQL と処理を `NotesService` に移した状態です。 教材: `LECTURE.md`
+SQL と処理を `NotesService` に移した状態です。
 
 ## 動かし方
 

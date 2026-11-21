@@ -20,7 +20,7 @@ title: Node.js と VS Code を入れる
 macOS では、ターミナル（「アプリケーション」→「ユーティリティ」→「ターミナル」）で進めます。
 ::::
 ::::windows
-Windows（10 または 11、64 ビット）では、**PowerShell 7** で進めます。最初から入っている Windows PowerShell 5.1 では、`&&` や `curl` がこのハンズオンのとおりに動かないためです。
+Windows（10 または 11、64 ビット）では、**PowerShell 7** で進めます。このハンズオンのコマンドは、最初から入っている Windows PowerShell 5.1 ではなく、PowerShell 7 で確かめています。
 
 スタートメニューから「Windows PowerShell」を開き、PowerShell 7 を入れます。
 

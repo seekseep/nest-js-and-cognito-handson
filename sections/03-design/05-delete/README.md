@@ -1,6 +1,6 @@
 # 03-05 Delete を設計する
 
-`api/openapi.yaml` に `DELETE /notes/{id}` を足し、5 つの操作がそろった状態です。 教材: `LECTURE.md`
+`api/openapi.yaml` に `DELETE /notes/{id}` を足し、5 つの操作がそろった状態です。
 
 ## 動かし方
 
