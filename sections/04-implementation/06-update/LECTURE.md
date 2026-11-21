@@ -20,6 +20,16 @@ title: Update を実装する
 
 `npm run start:dev` で API を起動したまま、VS Code で `api/openapi.yaml` を開きます。 `put:` の下の **Try it** を押し、`id` に作ったメモの ID を入れ、本文を `{ "title": "買い物", "body": "牛乳とパン" }` にして **Send** を押します。`title` と `body` が置き換わり、`updatedAt` が新しくなったメモが `200` で返れば大丈夫です。
 
+### curl で確かめる
+
+ID（`cf3ba8aa-850c-4fec-bd88-7378c0e88c37`）は、作ったメモの ID に置き換えます。
+
+```bash
+curl -i -X PUT http://localhost:3000/notes/cf3ba8aa-850c-4fec-bd88-7378c0e88c37 -H 'Content-Type: application/json' -d '{"title": "買い物", "body": "牛乳とパン"}'
+```
+
+1 行目が `HTTP/1.1 200 OK` で、置き換わったメモが出れば大丈夫です。
+
 ## 参考にした公式ドキュメント
 
 この節は、次の公式ドキュメントをもとに書いています。

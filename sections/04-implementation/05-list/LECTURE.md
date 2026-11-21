@@ -18,6 +18,14 @@ title: List を実装する
 
 `npm run start:dev` で API を起動したまま、VS Code で `api/openapi.yaml` を開きます。 `/notes:` の `get:` の下の **Try it** を押して **Send** を押します。これまでに作ったメモが、配列で `200` で返れば大丈夫です。
 
+### curl で確かめる
+
+```bash
+curl -i http://localhost:3000/notes
+```
+
+1 行目が `HTTP/1.1 200 OK` で、メモの配列が出れば大丈夫です。
+
 ## 参考にした公式ドキュメント
 
 この節は、次の公式ドキュメントをもとに書いています。

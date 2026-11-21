@@ -38,7 +38,7 @@ sections/<sec>/<lec>/
   04 実装する（`node:sqlite` の `DatabaseSync`。@hey-api/openapi-ts で型を作る節のあと、1 節 1 操作でコントローラーに直接書き、最後の節で Zod の入力チェックを足す）/ 05 整理する（1 節で 1 つだけ分け、動きは変えない）
 - 動作確認は、42Crunch の OpenAPI (Swagger) Editor の **Try it**（`openapi.yaml` の各操作の下に出る）で行う。
   Try it は拡張機能の中（Node.js）から送るので CORS は要らない。Try it は OpenAPI 2.0 / 3.0.x だけに出るので、`openapi: 3.0.3` で書く
-- curl・Postman・Redocly CLI などの、この流れに要らない道具は使わない
+- 04 章の動作確認では、Try it に加えて curl のコマンドも載せる（`curl -i` の 1 行で、OS で分けない）。Postman・Redocly CLI などは使わない
 
 - 言語は **TypeScript**（handson-builder 既定の「JS のみ」から外している。NestJS と OpenAPI からの型生成を扱うため）
 - Podman・compose・コンテナ・Next.js は使わない。Node.js と VS Code だけで進める

@@ -16,8 +16,10 @@ title: CRUD
 | 作成の設計 | Create | `POST` | `/notes` |
 | 単一取得の設計 | Read | `GET` | `/notes/{id}` |
 | 一覧取得の設計 | Read | `GET` | `/notes` |
-| 更新の設計 | Update | `PUT` | `/notes/{id}` |
+| 更新の設計 | Update | `PUT` / `PATCH` | `/notes/{id}` |
 | 削除の設計 | Delete | `DELETE` | `/notes/{id}` |
+
+更新には、送った中身でまるごと置き換える `PUT` と、送った項目だけを書き換える `PATCH` があります。このハンズオンでは `PUT` を使います。
 
 操作の種類は **メソッド** で、対象は **パス** で表します。`/notes` はメモ全体、`/notes/{id}` は `id` で決まる 1 件のメモです。
 

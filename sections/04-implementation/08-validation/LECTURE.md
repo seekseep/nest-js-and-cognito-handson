@@ -53,7 +53,15 @@ NestJS 12 の `StandardSchemaValidationPipe` を登録すると、`@Body({ schem
 }
 ```
 
-最後に、5 つの操作を Try it で順に送り、`openapi.yaml` に書いた応答（`200`・`201`・`204`・`400`・`404`）が返ることを確かめておきます。05 章では、コードを整理するたびに同じ確かめをします。
+### curl で確かめる
+
+```bash
+curl -i -X POST http://localhost:3000/notes -H 'Content-Type: application/json' -d '{"title": ""}'
+```
+
+1 行目が `HTTP/1.1 400 Bad Request` になれば大丈夫です。
+
+最後に、5 つの操作を Try it か curl で順に送り、`openapi.yaml` に書いた応答（`200`・`201`・`204`・`400`・`404`）が返ることを確かめておきます。05 章では、コードを整理するたびに同じ確かめをします。
 
 ## 参考にした公式ドキュメント
 

@@ -44,6 +44,16 @@ title: Create を実装する
 }
 ```
 
+### curl で確かめる
+
+ターミナルからも送れます。`-i` を付けると、ステータスも表示されます。
+
+```bash
+curl -i -X POST http://localhost:3000/notes -H 'Content-Type: application/json' -d '{"title": "買い物", "body": "牛乳を買う"}'
+```
+
+1 行目が `HTTP/1.1 201 Created` で、最後の行に作ったメモが出れば大丈夫です。
+
 ## 参考にした公式ドキュメント
 
 この節は、次の公式ドキュメントをもとに書いています。
