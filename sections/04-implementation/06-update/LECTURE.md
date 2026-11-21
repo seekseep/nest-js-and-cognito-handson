@@ -13,6 +13,7 @@ title: Update を実装する
 
 - `@Body() input: UpdateNoteInput` … `title` と `body` の両方がある本文を受け取ります
 - `this.findOne(id)` … Get の処理を使ってメモを探します。無ければ `404` です
+- `...note` … スプレッド構文です。`note` の項目（`id`・`title`・`body`・`createdAt`・`updatedAt`）を、新しいオブジェクトに写します。あとに書いた `title`・`body`・`updatedAt` が、写した値を上書きします。`id` と `createdAt` は、もとの値のまま残ります
 - `title: input.title` … 送られた中身でそのまま置き換えます
 - `UPDATE` の `?` には、`run()` に並べた値が順に入ります
 
@@ -35,6 +36,7 @@ curl -i -X PUT http://localhost:3000/notes/cf3ba8aa-850c-4fec-bd88-7378c0e88c37 
 この節は、次の公式ドキュメントをもとに書いています。
 
 - [Node.js: SQLite](https://nodejs.org/docs/latest-v26.x/api/sqlite.html) … `statement.run()` と、`?` への値の入れ方
+- [MDN: スプレッド構文](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Operators/Spread_syntax) … オブジェクトリテラルでの展開と、プロパティの上書き
 
 ## この節を終えたときのディレクトリ
 
