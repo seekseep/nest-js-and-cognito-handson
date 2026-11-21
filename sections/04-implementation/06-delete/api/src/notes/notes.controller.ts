@@ -6,8 +6,8 @@ import {
   HttpCode,
   NotFoundException,
   Param,
-  Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
@@ -24,10 +24,10 @@ const createNoteSchema = z.strictObject({
   body: z.string().max(1000).default(''),
 }) satisfies z.ZodType<unknown, CreateNoteInput>;
 
-/** PATCH /notes/:id の本文の決まり。openapi.yaml の UpdateNoteInput に合わせる。 */
+/** PUT /notes/:id の本文の決まり。openapi.yaml の UpdateNoteInput に合わせる。 */
 const updateNoteSchema = z.strictObject({
-  title: z.string().trim().min(1).max(100).optional(),
-  body: z.string().max(1000).optional(),
+  title: z.string().trim().min(1).max(100),
+  body: z.string().max(1000),
 }) satisfies z.ZodType<unknown, UpdateNoteInput>;
 
 /** URL の :id。メモの ID は UUID。 */
@@ -75,7 +75,7 @@ export class NotesController {
     return note;
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(
     @Param('id', { schema: noteIdSchema }) id: string,
     @Body({ schema: updateNoteSchema })
@@ -84,8 +84,8 @@ export class NotesController {
     const note = this.findOne(id);
     const updated: Note = {
       ...note,
-      title: input.title ?? note.title,
-      body: input.body ?? note.body,
+      title: input.title,
+      body: input.body,
       updatedAt: new Date().toISOString(),
     };
     this.db

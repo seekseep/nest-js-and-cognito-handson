@@ -20,7 +20,7 @@
 |---|---|
 | 01-setup | 01-nodejs（本文だけ。Node.js 26・VS Code・42Crunch の OpenAPI (Swagger) Editor。Windows は PowerShell 7） |
 | 02-hello-world | 01-nestjs（`nest new --skip-tests --no-observe` と、使わないファイルを消す手順） |
-| 03-design | 01-create・02-get・03-list・04-update・05-delete・06-components（`openapi.yaml` だけが変わる） |
+| 03-design | 01-crud（本文だけ）・02-openapi・03-create・04-get・05-list・06-update・07-delete・08-components（`openapi.yaml` だけが変わる） |
 | 04-implementation | 01-sqlite・02-create・03-get・04-list・05-update・06-delete（コントローラーに直接書く） |
 | 05-refactor | 01-database-provider・02-dto・03-entities・04-service・05-module |
 

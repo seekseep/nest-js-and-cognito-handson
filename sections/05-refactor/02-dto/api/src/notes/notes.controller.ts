@@ -6,8 +6,8 @@ import {
   HttpCode,
   NotFoundException,
   Param,
-  Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
@@ -63,7 +63,7 @@ export class NotesController {
     return note;
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(
     @Param('id', { schema: noteIdSchema }) id: string,
     @Body({ schema: updateNoteSchema })
@@ -72,8 +72,8 @@ export class NotesController {
     const note = this.findOne(id);
     const updated: Note = {
       ...note,
-      title: input.title ?? note.title,
-      body: input.body ?? note.body,
+      title: input.title,
+      body: input.body,
       updatedAt: new Date().toISOString(),
     };
     this.db

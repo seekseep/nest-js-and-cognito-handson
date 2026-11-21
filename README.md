@@ -25,7 +25,7 @@ NestJS のプロジェクトを作り、`GET /` で「Hello World!」を返し�
 
 ### 03. 設計する
 
-メモの API の約束を `openapi.yaml` に書きます。Create・Get・List・Update・Delete を 1 節に 1 つずつ書き足し、最後に共通部分を `components` にまとめます。
+CRUD を知り、メモの API の約束を `openapi.yaml` に書きます。空の `openapi.yaml` を作り、作成・単一取得・一覧取得・更新・削除を 1 節に 1 つずつ書き足し、最後に共通部分を `components` にまとめます。
 
 ### 04. 実装する
 

@@ -1,6 +1,6 @@
 # 04-05 Update を実装する
 
-`PATCH /notes/:id` を足した状態です。
+`PUT /notes/:id` を足した状態です。
 
 ## 動かし方
 

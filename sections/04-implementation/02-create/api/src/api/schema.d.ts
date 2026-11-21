@@ -97,35 +97,8 @@ export interface paths {
                 404: components["responses"]["NotFound"];
             };
         };
-        put?: never;
-        post?: never;
-        /** メモを消す */
-        delete: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    id: components["parameters"]["NoteId"];
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description 消した */
-                204: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                400: components["responses"]["BadRequest"];
-                404: components["responses"]["NotFound"];
-            };
-        };
-        options?: never;
-        head?: never;
-        /** メモを書き換える（送った項目だけ） */
-        patch: {
+        /** メモを置き換える（全部の項目を送る） */
+        put: {
             parameters: {
                 query?: never;
                 header?: never;
@@ -153,6 +126,33 @@ export interface paths {
                 404: components["responses"]["NotFound"];
             };
         };
+        post?: never;
+        /** メモを消す */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: components["parameters"]["NoteId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 消した */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                400: components["responses"]["BadRequest"];
+                404: components["responses"]["NotFound"];
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
 }
@@ -175,8 +175,8 @@ export interface components {
             body?: string;
         };
         UpdateNoteInput: {
-            title?: string;
-            body?: string;
+            title: string;
+            body: string;
         };
     };
     responses: {

@@ -76,11 +76,9 @@ await bootstrap();
 
 ## リクエストが届くまで
 
-`GET /` が届くと、NestJS は次の順で処理します。
+`GET /` が届くと、NestJS は `AppModule` の `AppController` から `@Get()` が付いた `getHello()` を呼びます。コントローラーは `AppService` の `getHello()` を呼び、返ってきた文字列がレスポンスの本文になります。
 
-1. `AppModule` に登録された `AppController` の中から、`@Get()` が付いたメソッドを探す
-2. `getHello()` を呼ぶ。コントローラーは `AppService` の `getHello()` を呼ぶ
-3. 返した文字列がレスポンスの本文になる
+![GET / が AppController の getHello() に届き、AppService の getHello() が返した Hello World! がレスポンスの本文になる](./images/01-request-flow.svg)
 
 :::code{filepath="api/src/app.controller.ts"}
 ```ts

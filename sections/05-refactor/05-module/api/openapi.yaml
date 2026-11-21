@@ -50,8 +50,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
-    patch:
-      summary: メモを書き換える（送った項目だけ）
+    put:
+      summary: メモを置き換える（全部の項目を送る）
       parameters:
         - $ref: '#/components/parameters/NoteId'
       requestBody:
@@ -125,6 +125,7 @@ components:
     UpdateNoteInput:
       type: object
       additionalProperties: false
+      required: [title, body]
       properties:
         title:
           type: string

@@ -1,0 +1,180 @@
+openapi: 3.0.3
+info:
+  title: メモ API
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+paths:
+  /notes:
+    get:
+      summary: メモの一覧を返す
+      responses:
+        '200':
+          description: メモの一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required: [id, title, body, createdAt, updatedAt]
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    title:
+                      type: string
+                    body:
+                      type: string
+                    createdAt:
+                      type: string
+                      format: date-time
+                    updatedAt:
+                      type: string
+                      format: date-time
+    post:
+      summary: メモを作る
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [title]
+              properties:
+                title:
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+                body:
+                  type: string
+                  maxLength: 1000
+                  default: ''
+      responses:
+        '201':
+          description: 作ったメモ
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [id, title, body, createdAt, updatedAt]
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  title:
+                    type: string
+                  body:
+                    type: string
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
+        '400':
+          description: 入力が決まりに合わない
+  /notes/{id}:
+    get:
+      summary: メモを 1 件返す
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: メモ
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [id, title, body, createdAt, updatedAt]
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  title:
+                    type: string
+                  body:
+                    type: string
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
+        '400':
+          description: ID が UUID の形でない
+        '404':
+          description: メモが無い
+    put:
+      summary: メモを置き換える（全部の項目を送る）
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [title, body]
+              properties:
+                title:
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+                body:
+                  type: string
+                  maxLength: 1000
+      responses:
+        '200':
+          description: 書き換えたメモ
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [id, title, body, createdAt, updatedAt]
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  title:
+                    type: string
+                  body:
+                    type: string
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
+        '400':
+          description: 入力が決まりに合わない
+        '404':
+          description: メモが無い
+    delete:
+      summary: メモを消す
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: 消した
+        '400':
+          description: ID が UUID の形でない
+        '404':
+          description: メモが無い

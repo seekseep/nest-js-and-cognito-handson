@@ -5,8 +5,8 @@ import {
   Get,
   HttpCode,
   Param,
-  Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { z } from 'zod';
 import { createNoteSchema, type CreateNoteDto } from './dto/create-note.dto.js';
@@ -36,7 +36,7 @@ export class NotesController {
     return this.notesService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(
     @Param('id', { schema: noteIdSchema }) id: string,
     @Body({ schema: updateNoteSchema }) input: UpdateNoteDto,

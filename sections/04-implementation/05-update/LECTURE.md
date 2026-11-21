@@ -7,18 +7,18 @@ title: Update を実装する
 
 ![04 章 Update を実装する](./images/00-thumbnail.svg)
 
-`PATCH /notes/{id}`（Update）を実装します。
+`PUT /notes/{id}`（Update）を実装します。
 
 ::diff{file="api/src/notes/notes.controller.ts"}
 
-- `updateNoteSchema` … `UpdateNoteInput` と同じ決まりです。どの項目も `.optional()` で省略でき、`default` はありません
+- `updateNoteSchema` … `UpdateNoteInput` と同じ決まりです。`title` と `body` はどちらも必須で、`default` はありません
 - `this.findOne(id)` … Get の処理を使ってメモを探します。無ければ `404` です
-- `input.title ?? note.title` … 送られてこなかった項目は、もとの値のままにします
+- `title: input.title` … 送られた中身でそのまま置き換えます
 - `UPDATE` の `?` には、`run()` に並べた値が順に入ります
 
 ## 動作確認する
 
-`npm run start:dev` で API を起動したまま、VS Code で `api/openapi.yaml` を開きます。 `patch:` の下の **Try it** を押し、`id` に作ったメモの ID を入れ、本文を `{ "body": "牛乳とパン" }` にして **Send** を押します。`body` だけが変わり、`updatedAt` が新しくなったメモが `200` で返れば大丈夫です。
+`npm run start:dev` で API を起動したまま、VS Code で `api/openapi.yaml` を開きます。 `put:` の下の **Try it** を押し、`id` に作ったメモの ID を入れ、本文を `{ "title": "買い物", "body": "牛乳とパン" }` にして **Send** を押します。`title` と `body` が置き換わり、`updatedAt` が新しくなったメモが `200` で返れば大丈夫です。`title` か `body` のどちらかを消して送ると `400` になります。
 
 ## 参考にした公式ドキュメント
 

@@ -45,8 +45,8 @@ export class NotesService {
     const note = this.findOne(id);
     const updated: Note = {
       ...note,
-      title: input.title ?? note.title,
-      body: input.body ?? note.body,
+      title: input.title,
+      body: input.body,
       updatedAt: new Date().toISOString(),
     };
     this.db
