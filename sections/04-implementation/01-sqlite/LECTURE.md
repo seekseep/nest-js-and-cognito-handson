@@ -44,7 +44,7 @@ UPDATE src/app.module.ts (335 bytes)
 
 `AppModule` に `NotesController` が登録されます。
 
-::diff{file="api/src/app.module.ts"}
+::diff{file="api/src/app.module.ts" by="command"}
 
 コントローラーが作られたときに、データベースを開くようにします。この章では、データベースの扱いもコントローラーに直接書きます（05 章で整理します）。
 

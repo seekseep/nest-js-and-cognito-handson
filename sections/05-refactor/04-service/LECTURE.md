@@ -20,7 +20,7 @@ UPDATE src/app.module.ts (671 bytes)
 
 `AppModule` の `providers` に `NotesService` が登録されます。
 
-::diff{file="api/src/app.module.ts"}
+::diff{file="api/src/app.module.ts" by="command"}
 
 ::diff{file="api/src/notes/notes.service.ts" base="generated"}
 
