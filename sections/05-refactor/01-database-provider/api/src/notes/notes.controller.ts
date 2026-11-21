@@ -12,11 +12,7 @@ import {
 import { randomUUID } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
 import { z } from 'zod';
-import type { components } from '../api/schema.js';
-
-type Note = components['schemas']['Note'];
-type CreateNoteInput = components['schemas']['CreateNoteInput'];
-type UpdateNoteInput = components['schemas']['UpdateNoteInput'];
+import type { CreateNoteInput, Note, UpdateNoteInput } from '../api/index.js';
 
 /** POST /notes の本文の決まり。openapi.yaml の CreateNoteInput に合わせる。 */
 const createNoteSchema = z.strictObject({

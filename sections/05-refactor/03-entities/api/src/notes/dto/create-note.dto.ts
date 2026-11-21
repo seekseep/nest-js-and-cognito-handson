@@ -1,7 +1,5 @@
 import { z } from 'zod';
-import type { components } from '../../api/schema.js';
-
-type CreateNoteInput = components['schemas']['CreateNoteInput'];
+import type { CreateNoteInput } from '../../api/index.js';
 
 /** POST /notes の本文の決まり。openapi.yaml の CreateNoteInput に合わせる。 */
 export const createNoteSchema = z.strictObject({

@@ -12,11 +12,9 @@ import {
 import { randomUUID } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
 import { z } from 'zod';
-import type { components } from '../api/schema.js';
+import type { Note } from '../api/index.js';
 import { createNoteSchema, type CreateNoteDto } from './dto/create-note.dto.js';
 import { updateNoteSchema, type UpdateNoteDto } from './dto/update-note.dto.js';
-
-type Note = components['schemas']['Note'];
 
 /** URL の :id。メモの ID は UUID。 */
 const noteIdSchema = z.uuid();

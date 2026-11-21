@@ -29,7 +29,7 @@ CRUD を知り、メモの API の約束を `openapi.yaml` に書きます。空
 
 ### 04. 実装する
 
-SQLite を用意し、`openapi.yaml` のとおりに 5 つの操作を 1 節に 1 つずつ実装します。まずはコントローラーに直接書き、VS Code で `openapi.yaml` からリクエストを送って動作確認します。
+SQLite を用意し、`openapi.yaml` から TypeScript の型を作ってから、`openapi.yaml` のとおりに 5 つの操作を 1 節に 1 つずつ実装します。まずはコントローラーに直接書き、VS Code で `openapi.yaml` からリクエストを送って動作確認します。5 つそろったら、最後に入力チェックを足します。
 
 ### 05. 整理する
 
