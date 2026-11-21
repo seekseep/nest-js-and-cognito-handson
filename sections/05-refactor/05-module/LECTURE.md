@@ -20,9 +20,9 @@ UPDATE src/app.module.ts (737 bytes)
 
 `nest g module` は、`AppModule` の `imports` に `NotesModule` を足します。`AppModule` に残っているメモのものを、`NotesModule` に移します。
 
-::diff{file="api/src/notes/notes.module.ts"}
+::diff{file="api/src/notes/notes.module.ts" base="generated"}
 
-::diff{file="api/src/app.module.ts"}
+::diff{file="api/src/app.module.ts" base="generated"}
 
 これで、メモの API は `notes/` の中にまとまりました。
 
