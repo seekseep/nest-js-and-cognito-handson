@@ -26,7 +26,7 @@ const TOOL_COLORS = {
 };
 
 const THUMBNAILS = [
-  ['01-setup/01-nodejs', '01', 'Node.js と VS Code を入れる', ['Node.js', 'VS Code']],
+  ['01-setup/01-environment', '01', '準備', ['Node.js', 'VS Code']],
   ['02-hello-world/01-nestjs', '02', 'NestJS の Hello World', ['NestJS']],
   ['03-design/01-create', '03', 'Create を設計する', ['OpenAPI']],
   ['03-design/02-get', '03', 'Get を設計する', ['OpenAPI']],

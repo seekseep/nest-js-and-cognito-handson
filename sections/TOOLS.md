@@ -8,7 +8,7 @@ sidebar:
 
 # 開発ツール（VS Code）
 
-入れ方は [Node.js と VS Code を入れる](./01-setup/01-nodejs/LECTURE.md) の節にあります。
+入れ方は [準備](./01-setup/01-environment/LECTURE.md) の節にあります。
 
 ## プロジェクトを開く
 
