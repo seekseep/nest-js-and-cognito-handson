@@ -1,11 +1,11 @@
 ---
 docs: true
-title: Node.js と VS Code を入れる
+title: 準備
 ---
 
-# Node.js と VS Code を入れる
+# 準備
 
-![01 章 Node.js と VS Code を入れる](./images/00-thumbnail.svg)
+![01 章 準備](./images/00-thumbnail.svg)
 
 このハンズオンで使うのは、**Node.js 26（LTS）** と、エディタの **VS Code** だけです。この節では、この 2 つと、OpenAPI を扱う VS Code の拡張機能を入れます。
 
