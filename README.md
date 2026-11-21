@@ -37,8 +37,9 @@ SQLite を用意し、`openapi.yaml` のとおりに 5 つの操作を 1 節に 
 
 ## 関連するハンズオン
 
-次の 2 つと合わせて 1 つのシリーズです。どれから始めても進められます。
+NestJS のハンズオンは 3 本に分かれていて、どれから始めても進められます。3 本のつながりは [関連するハンズオン](./sections/RELATED.md) にまとめています。
 
+- NestJS で作る REST API（このハンズオン）
 - [NestJS と Cognito で認証と認可](https://github.com/seekseep/nestjs-cognito-auth-handson)
 - [NestJS のテスト](https://github.com/seekseep/nestjs-testing-handson)
 
