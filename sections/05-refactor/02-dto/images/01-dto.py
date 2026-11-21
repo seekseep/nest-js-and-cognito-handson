@@ -10,22 +10,29 @@ import sys
 
 sys.path.insert(0, os.path.expanduser("~/.claude/skills/genfig"))
 from genfig import Canvas  # noqa: E402
+from genfig.tokens import PALETTE  # noqa: E402
 
-c = Canvas(960, 340)
+c = Canvas(960, 320)
 
-client = c.node(90, 160, "クライアント\n画面・curl など", emoji_cp="1f310", label_scale="label")  # 🌐
 
-c.sticky(200, 50, 740, 220, color="gray", dash="dashed", weight="thin")
-c.text(224, 86, "API", scale="heading", align="left")
+def box(draw, cx, cy, w, h, label, color):
+    """図形を描き、ラベルを図形の上下の中央に置く（2 行でも中央に来るように）。"""
+    n = draw(cx - w / 2, cy - h / 2, w, h, color=color)
+    lines = label.count("\n")
+    c.text(cx, cy + 8 - lines * 14, label, scale="label", fill=PALETTE[color]["text"])
+    return n
 
-check = c.node(335, 160, "入力チェック", shape="hexagon",
-               color="purple", w=185, h=80, label_scale="label")
-dto = c.node(590, 160, "CreateNoteDto", shape="parallelogram",
-             color="yellow", w=220, h=70, label_scale="label")
-ctrl = c.node(830, 160, "Notes\nController", shape="square",
-              color="blue", w=170, h=80, label_scale="label")
 
-c.link(client, check, label="JSON")
+client = c.node(105, 157, "クライアント\n画面・curl など", emoji_cp="1f310", label_scale="label")  # 🌐
+
+c.sticky(270, 40, 670, 180, color="gray", dash="dashed", weight="thin")
+c.text(294, 76, "API", scale="heading", align="left")
+
+check = box(c.hexagon, 400, 140, 170, 80, "入力チェック", "purple")
+dto = box(c.sticky, 620, 140, 200, 80, "CreateNoteDto", "yellow")
+ctrl = box(c.sticky, 840, 140, 150, 90, "Notes\nController", "blue")
+
+c.link((client.right, 140), check, label="JSON", label_pos="above")
 c.link(check, dto)
 c.link(dto, ctrl)
 c.link(ctrl, client, label="Note（応答）", primary=False, route="elbow",
