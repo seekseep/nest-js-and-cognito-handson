@@ -22,7 +22,7 @@ UPDATE src/app.module.ts (671 bytes)
 
 ::diff{file="api/src/app.module.ts"}
 
-::diff{file="api/src/notes/notes.service.ts"}
+::diff{file="api/src/notes/notes.service.ts" base="generated"}
 
 - メソッドの中身は、コントローラーにあったものをそのまま移しています
 - データベースは、サービスのコンストラクターで受け取ります

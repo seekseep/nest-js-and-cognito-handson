@@ -48,7 +48,7 @@ UPDATE src/app.module.ts (335 bytes)
 
 コントローラーが作られたときに、データベースを開くようにします。この章では、データベースの扱いもコントローラーに直接書きます（05 章で整理します）。
 
-::diff{file="api/src/notes/notes.controller.ts"}
+::diff{file="api/src/notes/notes.controller.ts" base="generated"}
 
 ## 確かめる
 
