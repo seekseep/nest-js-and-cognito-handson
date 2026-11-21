@@ -32,7 +32,7 @@ npm run generate:api
 🚀 openapi.yaml → src/api/schema.d.ts [17ms]
 ```
 
-::diff{file="api/src/api/schema.d.ts"}
+::diff{file="api/src/api/schema.d.ts" by="command"}
 
 `components['schemas']['Note']` のように取り出すと、`openapi.yaml` の `Note` の型になります。
 
@@ -46,7 +46,7 @@ npm install zod
 
 ここまでの `package.json` の変更は次のとおりです。
 
-::diff{file="api/package.json"}
+::diff{file="api/package.json" by="command"}
 
 ::diff{file="api/src/main.ts"}
 
