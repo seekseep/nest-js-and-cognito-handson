@@ -22,7 +22,7 @@
 | 02-hello-world | 01-nestjs（`nest new --skip-tests --no-observe` と、使わないファイルを消す手順） |
 | 03-design | 01-crud（本文だけ）・02-openapi・03-create・04-get・05-list・06-update・07-delete・08-components（`openapi.yaml` だけが変わる） |
 | 04-implementation | 01-sqlite・02-types（@hey-api/openapi-ts で型を作る）・03-create・04-get・05-list・06-update・07-delete（コントローラーに直接書く。入力チェックなし）・08-validation（Zod で入力チェック） |
-| 05-refactor | 01-database-provider・02-dto・03-entities・04-path-alias（`@/api`）・05-service・06-module |
+| 05-refactor | 01-database-provider・02-dto・03-entities・04-service・05-module |
 
 ## 決まっている設計
 
