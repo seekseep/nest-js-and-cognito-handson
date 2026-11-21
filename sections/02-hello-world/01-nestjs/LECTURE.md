@@ -18,10 +18,10 @@ NestJS は、Node.js で API を作るためのフレームワークです。URL
 ```bash
 mkdir handson
 cd handson
-npx @nestjs/cli@12 new api --package-manager npm --skip-tests --no-observe
+npx @nestjs/cli@12 new api --package-manager npm --skip-tests --type esm --no-observe --skip-skills
 ```
 
-Nest CLI の 12 系で `api/` を作り、ライブラリのインストールまで行います。モジュールの方式（module system）を聞かれたら **ESM** を選びます。`--skip-tests` でテストのファイルを作らず、`--no-observe` で監視サービス（NestJS Observe）の設定を飛ばします。
+Nest CLI の 12 系で `api/` を作り、ライブラリのインストールまで行います。`--skip-tests` でテストのファイルを作らず、`--type esm` でモジュールの方式を ESM にし、`--no-observe` で監視サービス（NestJS Observe）の設定を、`--skip-skills` でコーディングエージェント向けのファイルを飛ばします。
 
 以降のコマンドは、`api/` の中で実行します。VS Code で `api/` を開いておきます。
 
@@ -146,7 +146,7 @@ TypeScript をコンパイルして `dist/` に書き出します。このハン
 この節は、次の公式ドキュメントをもとに書いています。
 
 - [NestJS: First steps](https://docs.nestjs.com/first-steps) … `nest new` で作るプロジェクトのファイルと `main.ts`、`npm run start:dev`
-- [NestJS: CLI command reference](https://docs.nestjs.com/cli/usages) … `nest new` の `--skip-tests`・`--no-observe`
+- [NestJS: CLI command reference](https://docs.nestjs.com/cli/usages) … `nest new` の `--skip-tests`・`--type`・`--no-observe`・`--skip-skills`
 - [NestJS: Controllers](https://docs.nestjs.com/controllers) … `@Controller()`・`@Get()` とルートの決まり方
 - [NestJS: Providers](https://docs.nestjs.com/providers) … サービスとコンストラクターでの依存性の注入
 
