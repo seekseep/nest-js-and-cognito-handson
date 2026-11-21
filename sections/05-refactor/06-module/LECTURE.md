@@ -7,7 +7,9 @@ title: notes モジュールに分ける
 
 ![05 章 notes モジュールに分ける](./images/00-thumbnail.svg)
 
-メモに関わるもの（コントローラー・サービス・データベース）を、`NotesModule` にまとめます。`AppModule` は `NotesModule` を読み込むだけになります。
+メモに関わるもの（コントローラー・サービスと、`DatabaseModule` の読み込み）を、`NotesModule` にまとめます。`AppModule` は `NotesModule` を読み込むだけになります。
+
+![NotesController・NotesService・dto/・entities/ が NotesModule にまとまり、DatabaseModule はその外に残る](./images/01-structure.svg)
 
 ```bash
 npx nest g module notes
@@ -15,12 +17,14 @@ npx nest g module notes
 
 ```text
 CREATE src/notes/notes.module.ts (82 bytes)
-UPDATE src/app.module.ts (737 bytes)
+UPDATE src/app.module.ts (552 bytes)
 ```
 
 `nest g module` は、`AppModule` の `imports` に `NotesModule` を足します。`AppModule` に残っているメモのものを、`NotesModule` に移します。
 
 ::diff{file="api/src/notes/notes.module.ts" base="generated"}
+
+- `imports: [DatabaseModule]` … `NotesService` がデータベースを受け取れるように、`NotesModule` で `DatabaseModule` を読み込みます
 
 ::diff{file="api/src/app.module.ts" base="generated"}
 

@@ -9,6 +9,8 @@ title: データの形を entities/ に分ける
 
 メモ 1 件の形（`Note`）を、`notes/entities/` に分けます。エンティティは、そのモジュールが扱うデータの形です。
 
+![Note の形が NotesController から entities/ に分かれる](./images/01-structure.svg)
+
 ::diff{file="api/src/notes/entities/note.entity.ts"}
 
 ::diff{file="api/src/notes/notes.controller.ts"}

@@ -1,15 +1,11 @@
 import { Module } from '@nestjs/common';
-import { DatabaseSync } from 'node:sqlite';
-import { openDatabase } from '../database.js';
+import { DatabaseModule } from '../database/database.module.js';
 import { NotesController } from './notes.controller.js';
 import { NotesService } from './notes.service.js';
 
 @Module({
+  imports: [DatabaseModule],
   controllers: [NotesController],
-  providers: [
-    NotesService,
-    // DatabaseSync を受け取るクラスに、openDatabase() で開いたデータベースを渡す
-    { provide: DatabaseSync, useFactory: openDatabase },
-  ],
+  providers: [NotesService],
 })
 export class NotesModule {}

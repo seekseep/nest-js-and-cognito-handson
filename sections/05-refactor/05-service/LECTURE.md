@@ -7,7 +7,9 @@ title: 処理をサービスに分ける
 
 ![05 章 処理をサービスに分ける](./images/00-thumbnail.svg)
 
-SQL と処理を **サービス** に移し、コントローラーは「受け取って、サービスを呼んで、返す」だけにします。
+SQL と処理を **サービス** に移し、コントローラーは「受け取って、サービスを呼んで、返す」だけにします。データベースは、コントローラーではなくサービスに注入します。
+
+![SQL と処理が NotesService に分かれる。DatabaseSync は NotesService に、NotesService は NotesController に注入される](./images/01-structure.svg)
 
 ```bash
 npx nest g service notes
@@ -15,7 +17,7 @@ npx nest g service notes
 
 ```text
 CREATE src/notes/notes.service.ts (89 bytes)
-UPDATE src/app.module.ts (671 bytes)
+UPDATE src/app.module.ts (484 bytes)
 ```
 
 `AppModule` の `providers` に `NotesService` が登録されます。
