@@ -21,7 +21,7 @@ cd handson
 npx @nestjs/cli@12 new api --package-manager npm --skip-tests --type esm --no-observe --skip-skills
 ```
 
-Nest CLI の 12 系で `api/` を作り、ライブラリのインストールまで行います。`--skip-tests` でテストのファイルを作らず、`--type esm` でモジュールの方式を ESM にし、`--no-observe` で監視サービス（NestJS Observe）の設定を、`--skip-skills` でコーディングエージェント向けのファイルを飛ばします。
+Nest CLI の 12 系で `api/` を作り、ライブラリのインストールまで行います。`--skip-tests` でテストのファイルを作らず、`--type esm` でモジュールの方式を ESM にし、`--no-observe` で監視サービス（NestJS Observe）の設定を、`--skip-skills` でコーディングエージェント向けのスキルのファイルを飛ばします。
 
 以降のコマンドは、`api/` の中で実行します。VS Code で `api/` を開いておきます。
 
@@ -30,44 +30,7 @@ cd api
 code .
 ```
 
-## 使わないものを消す
-
-`nest new` は、lint（oxlint）・整形（Prettier）・テスト（Vitest）の道具も入れます。このハンズオンでは使わないので消し、ビルドして動かすのに要るものだけにします。
-
-:::::platform
-::::macos-linux
-```bash
-rm .oxlintrc.json .prettierrc .gitattributes AGENTS.md README.md vitest.config.ts vitest.config.e2e.ts
-```
-::::
-::::windows
-```powershell
-Remove-Item .oxlintrc.json, .prettierrc, .gitattributes, AGENTS.md, README.md, vitest.config.ts, vitest.config.e2e.ts
-```
-::::
-:::::
-
-使わないライブラリと、`package.json` の `scripts` も消します。
-
-```bash
-npm uninstall @nestjs/mau @nestjs/testing @types/supertest supertest @vitest/coverage-v8 vitest vite oxlint oxlint-tsgolint prettier source-map-support
-npm pkg delete scripts.deploy scripts.format scripts.start:debug scripts.start:prod scripts.lint scripts.test scripts.test:watch scripts.test:cov scripts.test:debug scripts.test:e2e
-```
-
-`nest new` が入れる Node.js の型（`@types/node`）は 24 用なので、このハンズオンで使う Node.js 26 用に入れ替えます。
-
-```bash
-npm install -D @types/node@26
-```
-
-`tsconfig.json` の `types` から、Vitest の型を外します。
-
-```diff lang="json"
--    "types": ["vitest/globals", "node"]
-+    "types": ["node"]
-```
-
-残ったファイルは次のとおりです。
+主なファイルは次のとおりです。
 
 | ファイル | 役割 |
 |---|---|
